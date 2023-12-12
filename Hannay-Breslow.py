@@ -9,10 +9,31 @@ Created on Wed Nov 15 10:57:02 2023
 
 #Armelle has been here 
 
+# --------- Learning Python --------------------
+
+# Class vs. Function
+    # Functions are blocks of reusable code that perform specific tasks
+    # Classes are blueprints for objects with attributes and methods
+    # By defining functions within classes, you can create methods that are 
+        # specific to that class
+    
+    # You can think of a class as a piece of code that specifies the data and 
+        #behavior that represent and model a particular type of object.
+    # A common analogy is that a class is like the blueprint for a house. You 
+        # can use the blueprint to create several houses and even a complete 
+        # neighborhood. Each concrete house is an object or instance that’s 
+        # derived from the blueprint.
+
 #-------- Set Up -------------------------------
 
 # Imports 
 
+from HCRSimPY.models import SinglePopModel
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy as sp
+
+# ------- Create Model Class -------------------
 
 
 
