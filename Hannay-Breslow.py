@@ -61,7 +61,8 @@ class IntegratedModel(SinglePopModel):
         self.beta_CP = 3.35e-4*60*60
         self.beta_AP = 1.62-4*60*60
 
-        self.a = 600
+        self.a = 1.0442e-3
+        self.delta_M = 600
         self.r = 15.36
 
         self.psi_on = 6.113
@@ -92,11 +93,11 @@ class IntegratedModel(SinglePopModel):
         self.G = 33.75
 
         # Melatonin Forcing Parameters
-        self.B_1 = 1
-        self.theta_M1 = 1
-        self.B_2 = 1
-        self.theta_M2 = 1
-        self.epsilon = 1
+        self.B_1 = -0.74545016
+        self.theta_M1 = 0.05671999
+        self.B_2 = -0.76024892
+        self.theta_M2 = 0.05994563
+        self.epsilon = 0.18366069
         
 
         """"Not sure about this stuff"""
@@ -126,34 +127,25 @@ class IntegratedModel(SinglePopModel):
 
     def circ_response(self,phi):
         dlmo_phase = 5*np.pi/12
-        phi = np.mod(phi - dlmo_phase,2*np.pi)
-        a = 4*60
-        phi_off = 4.3 
-        phi_on = 6.1
-        delta = 600/3600
-        r = 15.36/3600
+        psi = np.mod(psi - dlmo_phase,2*np.pi)
 
-        if phi > phi_off and phi <= phi_on:
-            return a * (1 - np.exp(-delta*np.mod(phi_on - phi,2*np.pi))) / (1 - np.exp(-delta*np.mod(phi_on - phi_off,2*np.pi)))
+        if psi > self.psi_off and psi <= self.psi_on:
+            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - phi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         else:
-            return a*np.exp(-r*np.mod(phi_on - phi_off,2*np.pi))
+            return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
 
     def mel_derv(self,t,u,bhat):
+    
         H1 = max(u[3],0)
         H2 = max(u[4],0)
         H3 = max(u[5],0)
-
-        m = 7*60 # maybe m = 7*3600?
-        beta_ip = 7.83e-4*3600
-        beta_cp = 3.35e-4*3600
-        beta_ap = 1.62e-4*3600
         
-        tmp = 1 - m*bhat # This m might need to be altered
+        tmp = 1 - self.m*bhat # This m might need to be altered
         S = not(H1 < 0.001 and tmp < 0)
 
-        dH1dt = -beta_ip*H1 + self.circ_response(u[1])*tmp*S
-        dH2dt = beta_ip*H1 - beta_cp*H2 + beta_ap*H3
-        dH3dt = -beta_ap*H3
+        dH1dt = -self.beta_IP*H1 + self.circ_response(u[1])*tmp*S
+        dH2dt = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3
+        dH3dt = -self.beta_AP*H3
 
         dHdt = np.array([dH1dt,dH2dt,dH3dt])
         dHdt = np.sign(dHdt)*np.minimum(60*200*np.ones(3),np.abs(dHdt))
@@ -248,19 +240,37 @@ class IntegratedModel(SinglePopModel):
 
 # Initial Conditions 
 
-
-
-
-# Time
-
-
+def get_baseline(model):
+    model.Light = light
+    model.integrateModel(24*7+15.1)
+    initial = model.results[-1,:]
+    model.Light = dim_light
+    model.integrateModel(15+24.1,tstart=15.0,initial=initial)
+    baseline_day = model.results[:-1,:]
+    phi = np.mod(baseline_day[:,1],2*np.pi)
+    dlmo_time = np.arange(15-24,15,0.1)[np.argmin(np.abs(phi - 5*np.pi/12))]
+    dlmo_time = np.round(np.mod(dlmo_time,24.0),1)
+    initial = baseline_day[-1,:]
+    return dlmo_time, initial
 
 
 # Light Schedule 
 
+def light(t):
+    full_light = 1000
+    dim_light = 300
+    wake_time = 7
+    sleep_time = 23
+    sun_up = 8
+    sun_down = 19
+
+    is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+    sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+    return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
 
 
-#--------- Create Model Function ---------------
+#--------- Run the Model ---------------
 
 
 
@@ -443,19 +453,6 @@ class IntegratedModel(SinglePopModel):
     
     '''
 
-# Initial conditions function
-def get_baseline(model):
-    model.Light = light
-    model.integrateModel(24*7+15.1)
-    initial = model.results[-1,:]
-    model.Light = dim_light
-    model.integrateModel(15+24.1,tstart=15.0,initial=initial)
-    baseline_day = model.results[:-1,:]
-    phi = np.mod(baseline_day[:,1],2*np.pi)
-    dlmo_time = np.arange(15-24,15,0.1)[np.argmin(np.abs(phi - 5*np.pi/12))]
-    dlmo_time = np.round(np.mod(dlmo_time,24.0),1)
-    initial = baseline_day[-1,:]
-    return dlmo_time, initial
 
 
 # Code to simulate PRC methodology
@@ -516,18 +513,6 @@ def objective_func(params, data):
         return 1e6
     
 
-def light(t):
-    full_light = 1000
-    dim_light = 300
-    wake_time = 7
-    sleep_time = 23
-    sun_up = 8
-    sun_down = 19
-
-    is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-    sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-
-    return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
 
 def dim_light(t):
     return 5
