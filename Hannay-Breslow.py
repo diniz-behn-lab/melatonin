@@ -45,7 +45,7 @@ import scipy as sp
 
 
 
-# ------- Create Model Class -------------------
+# ---------- Create Model Class -------------------
 
 
 class IntegratedModel(SinglePopModel):
@@ -111,7 +111,7 @@ class IntegratedModel(SinglePopModel):
         ## EFFICIENCY of 0.004 injestd -> blood plasma
         """
 
-
+    # Melatonin dynamics from Breslow model
     def m_process(self,u):
         H2 = max(u[4],0)
         H2_conc = H2*861/200 # Convert from pg/L to pmol/L
@@ -125,15 +125,19 @@ class IntegratedModel(SinglePopModel):
             output = self.M_max/(1 + np.exp((self.H_sat - H2_conc)/self.sigma_M))
         return output
 
-    def circ_response(self,phi):
+
+    # Timing of melatonin on and off
+    def circ_response(self,psi):
         dlmo_phase = 5*np.pi/12
         psi = np.mod(psi - dlmo_phase,2*np.pi)
 
         if psi > self.psi_off and psi <= self.psi_on:
-            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - phi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         else:
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
 
+
+    # 
     def mel_derv(self,t,u,bhat):
     
         H1 = max(u[3],0)
