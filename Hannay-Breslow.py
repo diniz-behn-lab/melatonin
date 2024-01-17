@@ -48,7 +48,7 @@ import scipy as sp
 # ---------- Create Model Class -------------------
 
 
-class IntegratedModel(SinglePopModel):
+class HannayBreslowModel(SinglePopModel):
     """Driver of ForwardModel simulation"""
 
     def __init__(self, LightFun):
@@ -101,15 +101,15 @@ class IntegratedModel(SinglePopModel):
         
 
         """"Not sure about this stuff"""
-        """
-        r2 = self.beta_cp
-        r3 = self.beta_ap
+        '''
+        r2 = self.beta_CP
+        r3 = self.beta_AP
         max_ratio = (r3/(r2-r3))*(np.power(r2/r3,-r3/(r2-r3))-np.power(r2/r3,-r2/(r2-r3)))
         mid_dose = (0.1+0.3)/2
         dose_ratio = 200/mid_dose
         self.aborption_conversion = dose_ratio/max_ratio
         ## EFFICIENCY of 0.004 injestd -> blood plasma
-        """
+        '''
 
     # Melatonin dynamics from Breslow model
     def m_process(self,u):
@@ -273,19 +273,97 @@ def light(t):
 
     return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
 
+def dim_light(t):
+    return 5
 
 #--------- Run the Model ---------------
 
+model = HannayBreslowModel(light)
+#model.set_melatonin_prc_params(np.array([ 0.18366069, -0.74545016, -0.76024892,  0.05671999,  0.05994563])) # found through optimization
+first_dlmo, initial = get_baseline(model)
+#control_dlmo = simulate_prc_test(model, initial)
+timings = np.round(np.linspace(-12,12,100),1)
+dose = 3
+results = []
+#for t in timings:
+ #   try:
+  #      tmp = prc_test(model, first_dlmo, initial, t, dose)
+   #     results.append(tmp)
+    #except:
+       # results.append(None)
+results = np.array(results)
+useful_results = np.array([el is not None for el in results])
+results = results[useful_results]
+timings = timings[useful_results]
+#shifts = np.mod(control_dlmo - results,24)
+#shifts[shifts > 12] = shifts[shifts > 12] - 24.0
 
+#plt.plot(data_vals[:,0],data_vals[:,1],'k.',markersize=12)
+#plt.plot(timings, shifts, lw=2)
+plt.grid()
+plt.xlim(-12,12)
+plt.xlabel("Time Relative to Baseline DLMO (hours)")
+plt.ylabel("Phase Shift (hours)")
+plt.title("3 mg PRC Data and Best Fit")
+plt.show()
+
+model = HannayBreslowModel(light)
+#model.set_melatonin_prc_params(np.array([ 0.18366069, -0.74545016, -0.76024892,  0.05671999,  0.05994563])) # found through optimization
+first_dlmo, initial = get_baseline(model)
+#control_dlmo = simulate_prc_test(model, initial)
+timings = np.round(np.linspace(-12,12,100),1)
+dose = 0.5
+results = []
+#for t in timings:
+ #   try:
+  #      tmp = prc_test(model, first_dlmo, initial, t, dose)
+   #     results.append(tmp)
+    #except:
+     #   results.append(None)
+results = np.array(results)
+useful_results = np.array([el is not None for el in results])
+results = results[useful_results]
+timings = timings[useful_results]
+#shifts = np.mod(control_dlmo - results,24)
+#shifts[shifts > 12] = shifts[shifts > 12] - 24.0
 
 
 
 #--------- Plot Model Output -------------------
 
+#plt.plot(timings, shifts, lw=2)
+plt.grid()
+plt.xlim(-12,12)
+plt.xlabel("Time Relative to Baseline DLMO (hours)")
+plt.ylabel("Phase Shift (hours)")
+plt.title("0.5 mg PRC Data and Predicted Curve")
+plt.show()
 
-'''
+# Plotting H1, H2, and H3 (melatonin concentrations)
+plt.plot(model.ts,model.results[:,3],lw=2)
+plt.plot(model.ts,model.results[:,4],lw=2)
+plt.plot(model.ts,model.results[:,5],lw=2)
+plt.show()
 
-class IntegratedModel(SinglePopModel):
+# Plotting R
+plt.plot(model.ts,model.results[:,0],lw=2)
+plt.show()
+
+# Plotting psi
+plt.plot(model.ts,model.results[:,1],lw=2)
+plt.show()
+
+# Plotting n
+plt.plot(model.ts,model.results[:,2],lw=2)
+plt.show()
+
+
+
+
+
+''' Will's Orignial Code
+
+class HannayBreslowModel(SinglePopModel):
     """Driver of ForwardModel simulation"""
 
     def __init__(self, LightFun):
@@ -458,7 +536,7 @@ class IntegratedModel(SinglePopModel):
     '''
 
 
-
+'''
 # Code to simulate PRC methodology
 def prc_test(model, first_dlmo_time, initial, timing, dose):
     # current_time = time.time()
@@ -494,7 +572,7 @@ def simulate_prc_test(model, initial, melatonin_timing=None, melatonin_dose=0):
 def objective_func(params, data):
     try:
         print("Doing an optimization boyo")
-        model = IntegratedModel(light)
+        model = HannayBreslowModel(light)
         #model.set_melatonin_prc_params(params)
         timings = np.round(data[:,0],1)
         observed = data[:,1]
@@ -524,9 +602,11 @@ def dim_light(t):
 def ultradian_light(t):
     lights_on = 150
     return lights_on*(np.mod(t-14.5,4) < 2.5)
+''' 
 
 
-model = IntegratedModel(light)
+'''
+model = HannayBreslowModel(light)
 #model.set_melatonin_prc_params(np.array([ 0.18366069, -0.74545016, -0.76024892,  0.05671999,  0.05994563])) # found through optimization
 first_dlmo, initial = get_baseline(model)
 control_dlmo = simulate_prc_test(model, initial)
@@ -555,7 +635,7 @@ plt.ylabel("Phase Shift (hours)")
 plt.title("3 mg PRC Data and Best Fit")
 plt.show()
 
-model = IntegratedModel(light)
+model = HannayBreslowModel(light)
 #model.set_melatonin_prc_params(np.array([ 0.18366069, -0.74545016, -0.76024892,  0.05671999,  0.05994563])) # found through optimization
 first_dlmo, initial = get_baseline(model)
 control_dlmo = simulate_prc_test(model, initial)
@@ -574,8 +654,9 @@ results = results[useful_results]
 timings = timings[useful_results]
 shifts = np.mod(control_dlmo - results,24)
 shifts[shifts > 12] = shifts[shifts > 12] - 24.0
+'''
 
-
+'''
 plt.plot(timings, shifts, lw=2)
 plt.grid()
 plt.xlim(-12,12)
@@ -597,4 +678,4 @@ plt.show()
 
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.show()
-
+'''
