@@ -238,7 +238,7 @@ class HannayBreslowModel(SinglePopModel):
         
         
         return
-
+# end of class
 
 
 
@@ -262,7 +262,7 @@ def get_baseline(model):
 
 def light(t):
     full_light = 1000
-    dim_light = 300
+    dim_light = 300 # reduced light
     wake_time = 7
     sleep_time = 23
     sun_up = 8
