@@ -41,11 +41,14 @@ import scipy as sp
 class HannayBreslowModel(object):
     """Driver of ForwardModel simulation"""
 
+# initialize the class
     def __init__(self):
         #super().__init__(LightFun) # expecting to recieve a light function 
         self.set_params() # setting parameters every time an object of the class is created
         #self.light=LightFun
 
+
+# set parameter values 
     def set_params(self):
         ## Breslow Model
         self.beta_IP = 7.83e-4*60*60
@@ -91,6 +94,7 @@ class HannayBreslowModel(object):
         self.epsilon = 0.18366069
         
 
+# set up the light schedule (timings and intensities)
     def light(self,t):
         full_light = 1000
         dim_light = 300 # reduced light
@@ -104,11 +108,14 @@ class HannayBreslowModel(object):
 
         return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
 
+
+# define the alpha(L) function 
     def alpha0(self,t):
         """A helper function for modeling the light input processing"""
         return(self.alpha_0*pow(self.light(t), self.p)/(pow(self.light(t), self.p)+self.I_0));
 
-    # Melatonin dynamics from Breslow model
+
+# Melatonin dynamics from Breslow model
     def m_process(self,u):
         H2 = max(u[4],0)
         H2_conc = H2*861/200 # Convert from pg/L to pmol/L
@@ -123,7 +130,7 @@ class HannayBreslowModel(object):
         return output
 
 
-    # Timing of melatonin on and off
+# Timing of melatonin on and off
     def circ_response(self,psi):
         dlmo_phase = 5*np.pi/12
         psi = np.mod(psi - dlmo_phase,2*np.pi)
@@ -134,7 +141,7 @@ class HannayBreslowModel(object):
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
 
 
-    # Maybe we consolidate mel_derv and derv at some point 
+# Maybe we consolidate mel_derv and derv at some point 
     def mel_derv(self,t,u,bhat):
     
         H1 = max(u[3],0)
@@ -151,6 +158,7 @@ class HannayBreslowModel(object):
         dHdt = np.array([dH1dt,dH2dt,dH3dt])
         dHdt = np.sign(dHdt)*np.minimum(60*200*np.ones(3),np.abs(dHdt))
         return dHdt
+
 
     def derv(self,t,y):
         """
