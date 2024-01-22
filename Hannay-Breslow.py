@@ -28,7 +28,7 @@ Created on Wed Nov 15 10:57:02 2023
 
 # Imports 
 
-from HCRSimPY.models import SinglePopModel
+#from HCRSimPY.models import SinglePopModel
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
@@ -37,12 +37,14 @@ import scipy as sp
 # ---------- Create Model Class -------------------
 
 
-class HannayBreslowModel(SinglePopModel):
+#class HannayBreslowModel(SinglePopModel):
+class HannayBreslowModel(object):
     """Driver of ForwardModel simulation"""
 
-    def __init__(self, LightFun):
-        super().__init__(LightFun) # expecting to recieve a light function 
+    def __init__(self):
+        #super().__init__(LightFun) # expecting to recieve a light function 
         self.set_params() # setting parameters every time an object of the class is created
+        #self.light=LightFun
 
     def set_params(self):
         ## Breslow Model
@@ -88,6 +90,23 @@ class HannayBreslowModel(SinglePopModel):
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
         
+
+    def light(self,t):
+        full_light = 1000
+        dim_light = 300 # reduced light
+        wake_time = 7
+        sleep_time = 23
+        sun_up = 8
+        sun_down = 19
+
+        is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+        sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+        return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+
+    def alpha0(self,t):
+        """A helper function for modeling the light input processing"""
+        return(self.alpha_0*pow(self.light(t), self.p)/(pow(self.light(t), self.p)+self.I_0));
 
     # Melatonin dynamics from Breslow model
     def m_process(self,u):
@@ -147,7 +166,6 @@ class HannayBreslowModel(SinglePopModel):
         H3 = y[5]
 
         # Light interaction with pacemaker
-        # Note: alpha0 is defined within singlepopmodel
         Bhat = self.G*(1.0-n)*self.alpha0(t)
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
@@ -198,30 +216,10 @@ class HannayBreslowModel(SinglePopModel):
 
 
 
-# ---------- Light Schedule ------------
-
-def light(t):
-    full_light = 1000
-    dim_light = 300 # reduced light
-    wake_time = 7
-    sleep_time = 23
-    sun_up = 8
-    sun_down = 19
-
-    is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-    sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-
-    return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-
-def alpha0(self,t):
-    """A helper function for modeling the light input processing"""
-    return(self.alpha_0*pow(self.Light(t), self.p)/(pow(self.Light(t), self.p)+self.I0));
-
-
 
 #--------- Run the Model ---------------
 
-model = HannayBreslowModel(light) # passing the light function to the class and defining model
+model = HannayBreslowModel() # passing the light function to the class and defining model
 model.integrateModel(24*50) # use the integrateModel method with model
 IC = model.results[-1,:] # get initial conditions from entrained model
 model.integrateModel(24*7,tstart=0.0,initial=IC) # run the model from entrained ICs
