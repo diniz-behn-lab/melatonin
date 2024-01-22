@@ -147,9 +147,10 @@ class HannayBreslowModel(SinglePopModel):
         H3 = y[5]
 
         # Light interaction with pacemaker
-        Bhat=self.G*(1.0-n)*self.alpha0(t)
-        LightAmp=self.A1*0.5*Bhat*(1.0-pow(R,4.0))*np.cos(Psi+self.BetaL1)+self.A2*0.5*Bhat*R*(1.0-pow(R,8.0))*np.cos(2.0*Psi+self.BetaL2)
-        LightPhase=self.sigma*Bhat-self.A1*Bhat*0.5*(pow(R,3.0)+1.0/R)*np.sin(Psi+self.BetaL1)-self.A2*Bhat*0.5*(1.0+pow(R,8.0))*np.sin(2.0*Psi+self.BetaL2)
+        # Note: alpha0 is defined within singlepopmodel
+        Bhat = self.G*(1.0-n)*self.alpha0(t)
+        LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
+        LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
 
         dydt=np.zeros(6)
 
@@ -159,13 +160,12 @@ class HannayBreslowModel(SinglePopModel):
         
         # Melatonin interaction with pacemaker
         Mhat = self.m_process(y)
-        MelAmp = self.B_1*0.5*Mhat*(1.0-pow(R,4.0))*np.cos(Psi+self.theta_M1)+self.B_2*0.5*Mhat*R*(1.0-pow(R,8.0))*np.cos(2.0*Psi+self.theta_M2)
-        MelPhase = self.epsilon*Mhat-self.B_1*Mhat*0.5*(pow(R,3.0)+1.0/R)*np.sin(Psi+self.theta_M1)-self.B_2*Mhat*0.5*(1.0+pow(R,8.0))*np.sin(2.0*Psi+self.theta_M2)
+        MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
+        MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
 
-        dydt[0]=-1.0*self.gamma*R+self.K*np.cos(self.Beta1)/2.0*R*(1.0-pow(R,4.0))+LightAmp+MelAmp
-        dydt[1]=self.w0+self.K/2.0*np.sin(self.Beta1)*(1+pow(R,4.0))+LightPhase+MelPhase
-        dydt[2]=60.0*(self.alpha0(t)*(1.0-n)-self.delta*n)
-
+        dydt[0]=-1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
+        dydt[1]=self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
+        dydt[2]=60.0*(self.alpha0(t)*(1.0-n)-self.delta*n) # dn/dt
 
         return(dydt)
 
@@ -194,11 +194,11 @@ class HannayBreslowModel(SinglePopModel):
         
         return
 
-# end of HannayBreslowModel class
+#-------- end of HannayBreslowModel class ---------
 
 
 
-# Light Schedule 
+# ---------- Light Schedule ------------
 
 def light(t):
     full_light = 1000
@@ -213,11 +213,16 @@ def light(t):
 
     return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
 
+def alpha0(self,t):
+    """A helper function for modeling the light input processing"""
+    return(self.alpha_0*pow(self.Light(t), self.p)/(pow(self.Light(t), self.p)+self.I0));
+
+
 
 #--------- Run the Model ---------------
 
 model = HannayBreslowModel(light) # passing the light function to the class and defining model
-model.integrateModel(24*20) # use the integrateModel method with model
+model.integrateModel(24*50) # use the integrateModel method with model
 IC = model.results[-1,:] # get initial conditions from entrained model
 model.integrateModel(24*7,tstart=0.0,initial=IC) # run the model from entrained ICs
 
