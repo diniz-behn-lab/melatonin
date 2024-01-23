@@ -54,9 +54,9 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60
         self.beta_AP = 1.62-4*60*60
 
-        self.a = 4*60#1.0442e-3
-        self.delta_M = 600/3600
-        self.r = 15.36/3600
+        self.a = 4*60#1.0442e-3 # CHANGED
+        self.delta_M = 600/3600 # CHANGED
+        self.r = 15.36/3600 # CHANGED
 
         self.psi_on = 6.113
         self.psi_off = 4.352
@@ -64,7 +64,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60
+        self.m = 7*60 # CHANGED
 
         ## Hannay Model
         self.D = 1
@@ -183,11 +183,17 @@ class HannayBreslowModel(object):
 
     def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0],melatonin_timing = None,melatonin_dosage=None):
         """ Integrate the model forward in time.
+        
         integrateModel(tend, initial=[1.0,0.0, 0.0])
+        
         tend: float giving the final time to integrate to.
+        
         initial: initial dynamical state
+        
         The parameters are tend= the end time to stop the simulation and initial=[R, Psi, n]
+        
         Writes the integration results into the scipy array self.results.
+        
         Returns the circadian phase (in hours) at the ending time for the system.
         """
         dt = 0.1
@@ -203,7 +209,6 @@ class HannayBreslowModel(object):
         self.results = np.transpose(r_variable.y)
         
         return
-
 #-------- end of HannayBreslowModel class ---------
 
 
@@ -211,10 +216,12 @@ class HannayBreslowModel(object):
 
 #--------- Run the Model ---------------
 
-model = HannayBreslowModel() # passing the light function to the class and defining model
-model.integrateModel(24*10) # use the integrateModel method with model
+model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
+model.integrateModel(24*10) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 model.integrateModel(24*7,tstart=0.0,initial=IC) # run the model from entrained ICs
+
+
 
 
 #--------- Plot Model Output -------------------
