@@ -142,13 +142,13 @@ class HannayBreslowModel(object):
 
 
 # Maybe we consolidate mel_derv and derv at some point 
-    def mel_derv(self,t,u,bhat):
+    def mel_derv(self,t,u,Bhat):
     
         H1 = max(u[3],0)
         H2 = max(u[4],0)
         H3 = max(u[5],0)
         
-        tmp = 1 - self.m*bhat # This m might need to be altered
+        tmp = 1 - self.m*Bhat # This m might need to be altered
         S = not(H1 < 0.001 and tmp < 0)
 
         dH1dt = -self.beta_IP*H1 + self.circ_response(u[1])*tmp*S
@@ -215,8 +215,8 @@ class HannayBreslowModel(object):
         self.ts = self.ts[self.ts >= tstart]
         
         #if melatonin_timing is None:
-        r = sp.integrate.solve_ivp(self.derv,(tstart,tend), initial, t_eval=self.ts, method='Radau')
-        self.results = np.transpose(r.y)
+        r_variable = sp.integrate.solve_ivp(self.derv,(tstart,tend), initial, t_eval=self.ts, method='Radau')
+        self.results = np.transpose(r_variable.y)
         
         return
 
@@ -228,7 +228,7 @@ class HannayBreslowModel(object):
 #--------- Run the Model ---------------
 
 model = HannayBreslowModel() # passing the light function to the class and defining model
-model.integrateModel(24*50) # use the integrateModel method with model
+model.integrateModel(24*10) # use the integrateModel method with model
 IC = model.results[-1,:] # get initial conditions from entrained model
 model.integrateModel(24*7,tstart=0.0,initial=IC) # run the model from entrained ICs
 
