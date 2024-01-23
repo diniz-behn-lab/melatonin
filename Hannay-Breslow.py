@@ -147,9 +147,11 @@ class HannayBreslowModel(object):
         H1 = max(u[3],0)
         H2 = max(u[4],0)
         H3 = max(u[5],0)
+        print(u)
         
         tmp = 1 - self.m*Bhat # This m might need to be altered
-        S = not(H1 < 0.001 and tmp < 0)
+        #S = not(H1 < 0.001 and tmp < 0)
+        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
 
         dH1dt = -self.beta_IP*H1 + self.circ_response(u[1])*tmp*S
         dH2dt = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3
@@ -230,7 +232,7 @@ class HannayBreslowModel(object):
 model = HannayBreslowModel() # passing the light function to the class and defining model
 model.integrateModel(24*10) # use the integrateModel method with model
 IC = model.results[-1,:] # get initial conditions from entrained model
-model.integrateModel(24*7,tstart=0.0,initial=IC) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC) # run the model from entrained ICs
 
 
 #--------- Plot Model Output -------------------
