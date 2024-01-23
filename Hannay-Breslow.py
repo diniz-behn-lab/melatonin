@@ -36,18 +36,16 @@ import scipy as sp
 
 # ---------- Create Model Class -------------------
 
-
-#class HannayBreslowModel(SinglePopModel):
 class HannayBreslowModel(object):
     """Driver of ForwardModel simulation"""
 
-# initialize the class
+# Initialize the class
     def __init__(self):
         #super().__init__(LightFun) # expecting to recieve a light function 
         self.set_params() # setting parameters every time an object of the class is created
 
 
-# set parameter values 
+# Set parameter values 
     def set_params(self):
         ## Breslow Model
         self.beta_IP = 7.83e-4*60*60
@@ -92,8 +90,10 @@ class HannayBreslowModel(object):
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
         
+        self.aborption_conversion = 1
+        
 
-# set up the light schedule (timings and intensities)
+# Set the light schedule (timings and intensities)
     def light(self,t):
         full_light = 1000
         dim_light = 300 # reduced light
@@ -108,7 +108,7 @@ class HannayBreslowModel(object):
         return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
 
 
-# define the alpha(L) function 
+# Define the alpha(L) function 
     def alpha0(self,t):
         """A helper function for modeling the light input processing"""
         return(self.alpha_0*pow(self.light(t), self.p)/(pow(self.light(t), self.p)+self.I_0));
@@ -140,10 +140,10 @@ class HannayBreslowModel(object):
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
 
 # Defining the system of ODEs (6-dimensional system)
-    def derv(self,t,y):
+    def ODESystem(self,t,y):
         """
         This defines the ode system for the single population model.
-        derv(self,t,y)
+        ODESystem(self,t,y)
         returns dydt numpy array.
         """
         R = y[0]
@@ -182,7 +182,8 @@ class HannayBreslowModel(object):
 
 
     def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0],melatonin_timing = None,melatonin_dosage=None):
-        """ Integrate the model forward in time.
+        """ 
+        Integrate the model forward in time.
         
         integrateModel(tend, initial=[1.0,0.0, 0.0])
         
@@ -204,10 +205,33 @@ class HannayBreslowModel(object):
         self.ts = self.ts[self.ts <= tend]
         self.ts = self.ts[self.ts >= tstart]
         
-        #if melatonin_timing is None:
-        r_variable = sp.integrate.solve_ivp(self.derv,(tstart,tend), initial, t_eval=self.ts, method='Radau')
-        self.results = np.transpose(r_variable.y)
-        
+        if melatonin_timing is None:
+            r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau')
+            self.results = np.transpose(r_variable.y)
+        else:
+            t_start = self.ts[0]
+            all_arrays = []
+            for t_end in melatonin_timing:
+                local_ts = self.ts[np.logical_and(self.ts >= t_start, self.ts <= t_end)]
+                r_variable = sp.integrate.solve_ivp(self.ODESystem,(t_start,t_end+0.1), initial, t_eval = local_ts, method="Radau")
+                self.check = all_arrays
+                self.check2 = r_variable.y[:,:-1]
+                all_arrays.append(r_variable.y[:,:-1])
+                initial = r_variable.y[:,-1]
+                initial[5] = initial[5] + melatonin_dosage*self.aborption_conversion
+                
+                t_start = t_end
+                t_end = tend
+                local_ts = self.ts[np.logical_and(self.ts >= t_start, self.ts <= t_end)]
+                r_variable = sp.integrate.solve_ivp(self.ODESystem,(t_start,t_end+0.1), initial, t_eval = local_ts, method="Radau") # might be a way to constrain parameter values, help ensure there are no negative concentrations for example
+                all_arrays.append(r_variable.y)
+                results = all_arrays[0]
+               
+            for i in np.arange(1,len(all_arrays)):
+                results = np.hstack((results,all_arrays[i]))
+                
+            self.results = np.transpose(results)
+
         return
 #-------- end of HannayBreslowModel class ---------
 
@@ -219,8 +243,9 @@ class HannayBreslowModel(object):
 model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
 model.integrateModel(24*10) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
-model.integrateModel(24*7,tstart=0.0,initial=IC) # run the model from entrained ICs
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(5), melatonin_dosage=0.0)
 
 
 
