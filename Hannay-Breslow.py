@@ -140,7 +140,7 @@ class HannayBreslowModel(object):
         else:
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
 
-
+    '''
 # Maybe we consolidate mel_derv and derv at some point 
     def mel_derv(self,t,u,Bhat):
     
@@ -160,7 +160,7 @@ class HannayBreslowModel(object):
         dHdt = np.array([dH1dt,dH2dt,dH3dt])
         dHdt = np.sign(dHdt)*np.minimum(60*200*np.ones(3),np.abs(dHdt))
         return dHdt
-
+    '''
 
     def derv(self,t,y):
         """
@@ -180,20 +180,27 @@ class HannayBreslowModel(object):
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
 
-        dydt=np.zeros(6)
-
         # Melatonin variables
-        dHdt = self.mel_derv(t,y,Bhat)
-        dydt[3:] = dHdt
+        #dHdt = self.mel_derv(t,y,Bhat)
+        #dydt[3:] = dHdt
         
         # Melatonin interaction with pacemaker
         Mhat = self.m_process(y)
         MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
 
+        tmp = 1 - self.m*Bhat # This m might need to be altered
+        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+
+        dydt=np.zeros(6)
+
         dydt[0]=-1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
         dydt[1]=self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
         dydt[2]=60.0*(self.alpha0(t)*(1.0-n)-self.delta*n) # dn/dt
+
+        dydt[3] = -self.beta_IP*H1 + self.circ_response(dydt[2])*tmp*S
+        dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3
+        dydt[5] = -self.beta_AP*H3
 
         return(dydt)
 
