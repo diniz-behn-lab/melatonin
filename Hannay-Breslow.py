@@ -45,7 +45,6 @@ class HannayBreslowModel(object):
     def __init__(self):
         #super().__init__(LightFun) # expecting to recieve a light function 
         self.set_params() # setting parameters every time an object of the class is created
-        #self.light=LightFun
 
 
 # set parameter values 
@@ -55,9 +54,9 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60
         self.beta_AP = 1.62-4*60*60
 
-        self.a = 1.0442e-3
-        self.delta_M = 600
-        self.r = 15.36
+        self.a = 4*60#1.0442e-3
+        self.delta_M = 600/3600
+        self.r = 15.36/3600
 
         self.psi_on = 6.113
         self.psi_off = 4.352
@@ -65,7 +64,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7
+        self.m = 7*60
 
         ## Hannay Model
         self.D = 1
@@ -140,37 +139,16 @@ class HannayBreslowModel(object):
         else:
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
 
-    '''
-# Maybe we consolidate mel_derv and derv at some point 
-    def mel_derv(self,t,u,Bhat):
-    
-        H1 = max(u[3],0)
-        H2 = max(u[4],0)
-        H3 = max(u[5],0)
-        print(u)
-        
-        tmp = 1 - self.m*Bhat # This m might need to be altered
-        #S = not(H1 < 0.001 and tmp < 0)
-        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
-
-        dH1dt = -self.beta_IP*H1 + self.circ_response(u[1])*tmp*S
-        dH2dt = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3
-        dH3dt = -self.beta_AP*H3
-
-        dHdt = np.array([dH1dt,dH2dt,dH3dt])
-        dHdt = np.sign(dHdt)*np.minimum(60*200*np.ones(3),np.abs(dHdt))
-        return dHdt
-    '''
-
+# Defining the system of ODEs (6-dimensional system)
     def derv(self,t,y):
         """
         This defines the ode system for the single population model.
         derv(self,t,y)
         returns dydt numpy array.
         """
-        R=y[0]
-        Psi=y[1]
-        n=y[2]
+        R = y[0]
+        Psi = y[1]
+        n = y[2]
         H1 = y[3]
         H2 = y[4]
         H3 = y[5]
@@ -179,10 +157,6 @@ class HannayBreslowModel(object):
         Bhat = self.G*(1.0-n)*self.alpha0(t)
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
-
-        # Melatonin variables
-        #dHdt = self.mel_derv(t,y,Bhat)
-        #dydt[3:] = dHdt
         
         # Melatonin interaction with pacemaker
         Mhat = self.m_process(y)
@@ -190,6 +164,7 @@ class HannayBreslowModel(object):
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
+        #S = not(H1 < 0.001 and tmp < 0)
         S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
 
         dydt=np.zeros(6)
@@ -198,9 +173,9 @@ class HannayBreslowModel(object):
         dydt[1]=self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
         dydt[2]=60.0*(self.alpha0(t)*(1.0-n)-self.delta*n) # dn/dt
 
-        dydt[3] = -self.beta_IP*H1 + self.circ_response(dydt[2])*tmp*S
-        dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3
-        dydt[5] = -self.beta_AP*H3
+        dydt[3] = -self.beta_IP*H1 + self.circ_response(y[2])*tmp*S # dH1/dt
+        dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
+        dydt[5] = -self.beta_AP*H3 # dH3/dt
 
         return(dydt)
 
@@ -239,7 +214,7 @@ class HannayBreslowModel(object):
 model = HannayBreslowModel() # passing the light function to the class and defining model
 model.integrateModel(24*10) # use the integrateModel method with model
 IC = model.results[-1,:] # get initial conditions from entrained model
-model.integrateModel(24*1,tstart=0.0,initial=IC) # run the model from entrained ICs
+model.integrateModel(24*7,tstart=0.0,initial=IC) # run the model from entrained ICs
 
 
 #--------- Plot Model Output -------------------
