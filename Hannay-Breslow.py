@@ -48,13 +48,13 @@ class HannayBreslowModel(object):
 # Set parameter values 
     def set_params(self):
         ## Breslow Model
-        self.beta_IP = 7.83e-4*60*60
-        self.beta_CP = 3.35e-4*60*60
-        self.beta_AP = 1.62-4*60*60
+        self.beta_IP = 7.83e-4*60*60 #converting 1/sec to 1/hr
+        self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
+        self.beta_AP = 1.62-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 4*60#1.0442e-3 # CHANGED
-        self.delta_M = 600/3600 # CHANGED
-        self.r = 15.36/3600 # CHANGED
+        self.a = 4*60#1.0442e-3 # CHANGED, the tiny value is from Breslow
+        self.delta_M = 600/3600 # CHANGED, converting secs to hrs
+        self.r = 15.36/3600 # CHANGED, converting secs to hrs
 
         self.psi_on = 6.113
         self.psi_off = 4.352
@@ -62,7 +62,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60 # CHANGED
+        self.m = 7*60 # CHANGED, converting 1/sec to 1/min 
 
         ## Hannay Model
         self.D = 1
