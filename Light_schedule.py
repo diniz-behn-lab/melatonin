@@ -10,7 +10,7 @@ Code to generate plot of light level
 import numpy as np
 import matplotlib.pyplot as plt
 
-j = 1 # Number of days to be plotted
+j = 4 # Number of days to be plotted
 
 n = j*24
 
