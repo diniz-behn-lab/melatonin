@@ -211,8 +211,9 @@ class HannayBreslowModel(object):
         else:
             t_start = self.ts[0]
             all_arrays = []
-            for t_end in melatonin_timing:
+            for t_end in melatonin_timing: # t_end = timing of melatonin administration
                 local_ts = self.ts[np.logical_and(self.ts >= t_start, self.ts <= t_end)]
+                print(local_ts)
                 r_variable = sp.integrate.solve_ivp(self.ODESystem,(t_start,t_end+0.1), initial, t_eval = local_ts, method="Radau")
                 self.check = all_arrays
                 self.check2 = r_variable.y[:,:-1]
@@ -240,24 +241,25 @@ class HannayBreslowModel(object):
 
 #--------- Run the Model ---------------
 
-model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(24*10) # use the integrateModel method with the object model
-IC = model.results[-1,:] # get initial conditions from entrained model
+model_run_IC = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
+model_run_IC.integrateModel(24*10) # use the integrateModel method with the object model
+IC = model_run_IC.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(5), melatonin_dosage=0.0)
+model_run = HannayBreslowModel()
+model_run.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(1), melatonin_dosage=3.0)
 
-
+model = model_run
 
 #--------- Plot Model Output -------------------
 
 # Plotting H1, H2, and H3 (melatonin concentrations)
-plt.plot(model.ts,model.results[:,3],lw=2)
-plt.plot(model.ts,model.results[:,4],lw=2)
-plt.plot(model.ts,model.results[:,5],lw=2)
+plt.plot(model_run.ts,model_run.results[:,3],lw=2)
+plt.plot(model_run.ts,model_run.results[:,4],lw=2)
+plt.plot(model_run.ts,model_run.results[:,5],lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Time Trace of Melatonin Concentrations")
