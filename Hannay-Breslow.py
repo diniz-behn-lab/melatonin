@@ -249,14 +249,10 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-<<<<<<< Updated upstream
-model_run = HannayBreslowModel()
-model_run.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(1), melatonin_dosage=3.0)
-
-model = model_run
-=======
+#model = HannayBreslowModel()
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(1), melatonin_dosage=3.0)
->>>>>>> Stashed changes
+
+
 
 #--------- Plot Model Output -------------------
 
