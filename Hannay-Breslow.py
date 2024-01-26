@@ -92,6 +92,21 @@ class HannayBreslowModel(object):
         
         self.aborption_conversion = 1
         
+        
+# Set the exogenous melatonin administration schedule 
+    def ex_melatonin(self,t):
+        dosage = 10.0
+        timing = 10
+        
+        ex_melatonin = list()
+
+        if np.mod(t,24) == timing:
+            ex_melatonin(t) == dosage
+        else:
+            ex_melatonin(t) == 0
+            
+        return ex_melatonin
+
 
 # Set the light schedule (timings and intensities)
     def light(self,t):
@@ -138,6 +153,7 @@ class HannayBreslowModel(object):
             return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         else:
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
+
 
 # Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y):
@@ -249,7 +265,6 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-#model = HannayBreslowModel()
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(1), melatonin_dosage=3.0)
 
 
