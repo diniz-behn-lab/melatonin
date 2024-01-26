@@ -241,25 +241,29 @@ class HannayBreslowModel(object):
 
 #--------- Run the Model ---------------
 
-model_run_IC = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model_run_IC.integrateModel(24*10) # use the integrateModel method with the object model
-IC = model_run_IC.results[-1,:] # get initial conditions from entrained model
+model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
+model.integrateModel(24*10) # use the integrateModel method with the object model
+IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
+<<<<<<< Updated upstream
 model_run = HannayBreslowModel()
 model_run.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(1), melatonin_dosage=3.0)
 
 model = model_run
+=======
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(1), melatonin_dosage=3.0)
+>>>>>>> Stashed changes
 
 #--------- Plot Model Output -------------------
 
 # Plotting H1, H2, and H3 (melatonin concentrations)
-plt.plot(model_run.ts,model_run.results[:,3],lw=2)
-plt.plot(model_run.ts,model_run.results[:,4],lw=2)
-plt.plot(model_run.ts,model_run.results[:,5],lw=2)
+plt.plot(model.ts,model.results[:,3],lw=2)
+plt.plot(model.ts,model.results[:,4],lw=2)
+plt.plot(model.ts,model.results[:,5],lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Time Trace of Melatonin Concentrations")
