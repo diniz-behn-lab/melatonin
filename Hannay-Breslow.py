@@ -41,7 +41,6 @@ class HannayBreslowModel(object):
 
 # Initialize the class
     def __init__(self):
-        #super().__init__(LightFun) # expecting to recieve a light function 
         self.set_params() # setting parameters every time an object of the class is created
 
 
@@ -98,14 +97,9 @@ class HannayBreslowModel(object):
         dosage = 10.0
         timing = 10
         
-        ex_melatonin = list()
-
-        if np.mod(t,24) == timing:
-            ex_melatonin(t) == dosage
-        else:
-            ex_melatonin(t) == 0
+        mel = np.mod(t, 24) == timing
             
-        return ex_melatonin
+        return mel*dosage
 
 
 # Set the light schedule (timings and intensities)
@@ -180,7 +174,6 @@ class HannayBreslowModel(object):
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
-        #S = not(H1 < 0.001 and tmp < 0)
         S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
 
         dydt=np.zeros(6)
@@ -191,7 +184,7 @@ class HannayBreslowModel(object):
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[2])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
-        dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t) # dH3/dt
+        dydt[5] = -self.beta_AP*H3 #self.ex_melatonin(t) # dH3/dt
 
         return(dydt)
 
@@ -221,9 +214,10 @@ class HannayBreslowModel(object):
         self.ts = self.ts[self.ts <= tend]
         self.ts = self.ts[self.ts >= tstart]
         
-        if melatonin_timing is None:
-            r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau')
-            self.results = np.transpose(r_variable.y)
+        #if melatonin_timing is None:
+        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau')
+        self.results = np.transpose(r_variable.y)
+        '''
         else:
             t_start = self.ts[0]
             all_arrays = []
@@ -248,6 +242,7 @@ class HannayBreslowModel(object):
                 results = np.hstack((results,all_arrays[i]))
                 
             self.results = np.transpose(results)
+            '''
 
         return
 #-------- end of HannayBreslowModel class ---------
