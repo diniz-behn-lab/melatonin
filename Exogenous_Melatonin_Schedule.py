@@ -26,7 +26,5 @@ for t in range(0, n):
         melatonin = 0
 
     ex_melatonin.append(melatonin)
-
-    #return light_level
         
 plt.plot(range(0,n),ex_melatonin)
