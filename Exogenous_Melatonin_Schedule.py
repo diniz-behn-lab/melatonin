@@ -17,11 +17,11 @@ n = j*24
 ex_melatonin = list()
 
 for t in range(0, n):
-    dosage = 5.0
+    dosage = 0.2
     timing = 18
 
     mel = np.mod(t, 24) == timing
 
-    ex_melatonin.append(mel*dosage)
+    ex_melatonin.append(mel*(dosage/1e-9))
         
 plt.plot(range(0,n),ex_melatonin)

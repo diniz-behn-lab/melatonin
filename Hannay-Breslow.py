@@ -94,12 +94,12 @@ class HannayBreslowModel(object):
         
 # Set the exogenous melatonin administration schedule 
     def ex_melatonin(self,t):
-        dosage = 10.0
+        dosage = 0.2
         timing = 20
         
         mel = np.round(np.mod(t, 24)) == timing
             
-        return mel*dosage
+        return mel*(dosage/1e-9)
 
 
 # Set the light schedule (timings and intensities)
@@ -184,7 +184,7 @@ class HannayBreslowModel(object):
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[2])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
-        dydt[5] = -self.beta_AP*H3 #self.ex_melatonin(t) # dH3/dt
+        dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t) # dH3/dt
 
         return(dydt)
 
