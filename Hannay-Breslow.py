@@ -253,11 +253,11 @@ class HannayBreslowModel(object):
 #--------- Run the Model ---------------
 
 model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(24*10) # use the integrateModel method with the object model
+model.integrateModel(24*20) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(1), melatonin_dosage=3.0)
