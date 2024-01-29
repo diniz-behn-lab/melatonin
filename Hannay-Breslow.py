@@ -214,35 +214,8 @@ class HannayBreslowModel(object):
         self.ts = self.ts[self.ts <= tend]
         self.ts = self.ts[self.ts >= tstart]
         
-        #if melatonin_timing is None:
         r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau')
         self.results = np.transpose(r_variable.y)
-        '''
-        else:
-            t_start = self.ts[0]
-            all_arrays = []
-            for t_end in melatonin_timing: # t_end = timing of melatonin administration
-                local_ts = self.ts[np.logical_and(self.ts >= t_start, self.ts <= t_end)]
-                print(local_ts)
-                r_variable = sp.integrate.solve_ivp(self.ODESystem,(t_start,t_end+0.1), initial, t_eval = local_ts, method="Radau")
-                self.check = all_arrays
-                self.check2 = r_variable.y[:,:-1]
-                all_arrays.append(r_variable.y[:,:-1])
-                initial = r_variable.y[:,-1]
-                initial[5] = initial[5] + melatonin_dosage*self.aborption_conversion
-                
-                t_start = t_end
-                t_end = tend
-                local_ts = self.ts[np.logical_and(self.ts >= t_start, self.ts <= t_end)]
-                r_variable = sp.integrate.solve_ivp(self.ODESystem,(t_start,t_end+0.1), initial, t_eval = local_ts, method="Radau") # might be a way to constrain parameter values, help ensure there are no negative concentrations for example
-                all_arrays.append(r_variable.y)
-                results = all_arrays[0]
-               
-            for i in np.arange(1,len(all_arrays)):
-                results = np.hstack((results,all_arrays[i]))
-                
-            self.results = np.transpose(results)
-            '''
 
         return
 #-------- end of HannayBreslowModel class ---------
