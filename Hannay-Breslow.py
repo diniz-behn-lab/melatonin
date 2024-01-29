@@ -257,7 +257,7 @@ model.integrateModel(24*20) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=8.0+24*np.arange(1), melatonin_dosage=3.0)
@@ -273,6 +273,7 @@ plt.plot(model.ts,model.results[:,5],lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Time Trace of Melatonin Concentrations")
+plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
 # Plotting R
