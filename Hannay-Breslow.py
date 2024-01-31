@@ -189,7 +189,7 @@ class HannayBreslowModel(object):
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[2])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
-        dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t) # dH3/dt
+        dydt[5] = -self.beta_AP*H3 #+ self.ex_melatonin(t) # dH3/dt
 
         return(dydt)
 
@@ -235,10 +235,10 @@ model.integrateModel(24*10) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=18.0+24*np.arange(1), melatonin_dosage=0.2)
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=18.0+24*np.arange(1), melatonin_dosage=0.2)
 
 
 
