@@ -28,7 +28,6 @@ Created on Wed Nov 15 10:57:02 2023
 
 # Imports 
 
-#from HCRSimPY.models import SinglePopModel
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
@@ -235,10 +234,10 @@ model.integrateModel(24*10) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=18.0+24*np.arange(1), melatonin_dosage=0.2)
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=18.0+24*np.arange(1), melatonin_dosage=0.2)
 
 
 
@@ -263,6 +262,7 @@ plt.show()
 
 # Plotting psi
 plt.plot(model.ts,model.results[:,1],lw=2)
+#plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
