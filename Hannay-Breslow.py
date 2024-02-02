@@ -60,7 +60,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60 # CHANGED, converting 1/sec to 1/min 
+        self.m = 7*60*60 # CHANGED, converting 1/sec to 1/min 
 
         ## Hannay Model
         self.D = 1
@@ -128,7 +128,6 @@ class HannayBreslowModel(object):
 
 
 # Melatonin dynamics from Breslow model
-    '''
     def m_process(self,u):
         H2 = max(u[4],0)
         H2_conc = H2*861/200 # Convert from pg/L to pmol/L
@@ -141,7 +140,6 @@ class HannayBreslowModel(object):
             print("Slow the heck down there")
             output = self.M_max/(1 + np.exp((self.H_sat - H2_conc)/self.sigma_M))
         return output
-    '''
     
 
 
@@ -176,13 +174,14 @@ class HannayBreslowModel(object):
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
         
         # Melatonin interaction with pacemaker
-        #Mhat = self.m_process(y)
-        Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
+        Mhat = self.m_process(y)
+        #Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
         MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
-        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        S = not(H1 < 0.001 and tmp < 0)
+        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
 
         dydt=np.zeros(6)
 
@@ -192,7 +191,7 @@ class HannayBreslowModel(object):
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[2])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
-        dydt[5] = -self.beta_AP*H3 + 1 #self.ex_melatonin(t,melatonin_timing) # dH3/dt
+        dydt[5] = -self.beta_AP*H3 #+ 1 #self.ex_melatonin(t,melatonin_timing) # dH3/dt
 
         return(dydt)
 
