@@ -60,7 +60,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60*60 # CHANGED, converting 1/sec to 1/min 
+        self.m = 7*60 # CHANGED, converting 1/sec to 1/min 
 
         ## Hannay Model
         self.D = 1
@@ -92,17 +92,17 @@ class HannayBreslowModel(object):
         
        
 # Set the exogenous melatonin administration schedule 
-    def ex_melatonin(self,t,melatonin_timing):
+    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
         
         if melatonin_timing == None:
             self.dosage = 0
             mel = 0
         else: 
-            self.dosage = 0.2
-            timing = 22
+            self.dosage = melatonin_dosage
+            timing = melatonin_timing
             mel = np.round(np.mod(t, 24)) == timing
             
-        return 1#mel*(self.dosage/1e-9)
+        return mel*(self.dosage)
 
     
 
@@ -155,7 +155,7 @@ class HannayBreslowModel(object):
 
 
 # Defining the system of ODEs (6-dimensional system)
-    def ODESystem(self,t,y,melatonin_timing):
+    def ODESystem(self,t,y,melatonin_timing,melatonin_dosage):
         """
         This defines the ode system for the single population model.
         ODESystem(self,t,y)
@@ -191,7 +191,7 @@ class HannayBreslowModel(object):
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[2])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
-        dydt[5] = -self.beta_AP*H3 #+ 1 #self.ex_melatonin(t,melatonin_timing) # dH3/dt
+        dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t,melatonin_timing,melatonin_dosage) # dH3/dt
 
         return(dydt)
 
@@ -221,7 +221,7 @@ class HannayBreslowModel(object):
         self.ts = self.ts[self.ts <= tend]
         self.ts = self.ts[self.ts >= tstart]
         
-        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau', args=(melatonin_timing,))
+        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau', args=(melatonin_timing,melatonin_dosage,))
         self.results = np.transpose(r_variable.y)
 
         return
@@ -237,11 +237,10 @@ model.integrateModel(24*10) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=18.0+24*np.arange(1), melatonin_dosage=0.2)
-#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=18.0, melatonin_dosage=0.2)
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=18.0, melatonin_dosage=10)
 
 
 
