@@ -48,7 +48,7 @@ class HannayBreslowModel(object):
         ## Breslow Model
         self.beta_IP = 7.83e-4*60*60 #converting 1/sec to 1/hr
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
-        self.beta_AP = 1.62-4*60*60 #converting 1/sec to 1/hr
+        self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
         self.a = 4*60#1.0442e-3 # CHANGED, the tiny value is from Breslow
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
