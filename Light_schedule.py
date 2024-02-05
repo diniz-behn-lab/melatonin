@@ -10,15 +10,15 @@ Code to generate plot of light level
 import numpy as np
 import matplotlib.pyplot as plt
 
-j = 4 # Number of days to be plotted
+j = 2 # Number of days to be plotted
 
 n = j*24
 
 light_level = list()
 
 for t in range(0, n):
-    full_light = 1000
-    dim_light = 300 # reduced light
+    full_light = 10#1000
+    dim_light = 10#300 # reduced light
     wake_time = 7
     sleep_time = 23
     sun_up = 8
