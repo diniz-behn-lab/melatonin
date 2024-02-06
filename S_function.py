@@ -9,6 +9,7 @@ Code to look closer as the S function
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 delta = 0.0075
 alpha_0 = 0.05
@@ -259,6 +260,8 @@ H1_vector = [29.4774,
 27.7483,
 29.4771]
 
+H1 = np.array(H1_vector,dtype=float)
+
 n_vector = [0.470169,
 0.449481,
 0.429703,
@@ -501,7 +504,9 @@ n_vector = [0.470169,
 0.470169,
 ]
 
-t_vector = np.linspace(0,24,240)
+n = np.array(n_vector,dtype=float)
+
+t = np.linspace(0,24,240)
 
 # Set the light schedule (timings and intensities)
 def light(t):
@@ -524,13 +529,25 @@ def alpha0(t):
     return(alpha_0*pow(light(t), p)/(pow(light(t), p)+I_0));
 
 
-Bhat = G*(1.0-n_vector)*alpha0(t_vector)
+Bhat = G*(1.0-n)*alpha0(t)
 
 tmp = 1 - m*Bhat
 
-S = not(H1_vector < 0.001 and tmp < 0)
+
+
+S = not(H1 < 0.001 and tmp < 0)
 
 #S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
 
 
+# and H1 < 0.001
 
+plt.plot(t,H1)
+plt.show()
+plt.plot(t,n)
+plt.show()
+plt.plot(t,S)
+plt.show()
+
+plt.plot(t,H1)
+plt.plot(t,S*50)
