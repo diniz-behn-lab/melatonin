@@ -50,7 +50,7 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 4*60#6*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
+        self.a = 6*60#6*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
         self.r = 15.36/3600 # CHANGED, converting secs to hrs
 
@@ -182,8 +182,8 @@ class HannayBreslowModel(object):
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
-        #S = not(H1 < 0.001 and tmp < 0)
-        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        S = not(H1 < 0.001 and tmp < 0)
+        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
 
         dydt=np.zeros(6)
 
@@ -239,10 +239,10 @@ model.integrateModel(24*30) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=20.0, melatonin_dosage=40)
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=20.0, melatonin_dosage=400)
 
 
 
