@@ -74,7 +74,7 @@ print(Y)
 
 #---------------------
 
-j = 2 # Number of days to be plotted
+j = 3 # Number of days to be plotted
 
 n = j*24
 
@@ -82,7 +82,8 @@ T = np.linspace(0,n,100)
 
 T_round = np.round(T)
 
-mel_timing = [8,12,20]
+#mel_timing = [8,12,20]
+mel_timing = 8.0+24*np.arange(3)
 
 Times = np.intersect1d(mel_timing, T_round, return_indices=True)[2]
 
