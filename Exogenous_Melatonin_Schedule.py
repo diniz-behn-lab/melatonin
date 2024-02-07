@@ -10,11 +10,11 @@ Code to generate plot of exogenous melatonin administration
 import numpy as np
 import matplotlib.pyplot as plt
 
-j = 1 # Number of days to be plotted
+j = 3 # Number of days to be plotted
 
 n = j*24
 
-ex_melatonin = list()
+ex_melatonin_1 = list()
 
 for t in range(0, n):
     dosage = 0.2
@@ -22,9 +22,9 @@ for t in range(0, n):
 
     mel = np.mod(t, 24) == timing
 
-    ex_melatonin.append(mel*(dosage/1e-9))
+    ex_melatonin_1.append(mel*(dosage/1e-9))
         
-plt.plot(range(0,n),ex_melatonin)
+plt.plot(range(0,n),ex_melatonin_1)
 plt.show()
 
 
@@ -78,16 +78,14 @@ j = 3 # Number of days to be plotted
 
 n = j*24
 
-T = np.linspace(0,n,100)
-
+T = np.linspace(0,n,720)
 T_round = np.round(T)
 
-#mel_timing = [8,12,20]
-mel_timing = 8.0+24*np.arange(3)
+mel_timing = 10.0+24*np.arange(j)
 
 Times = np.intersect1d(mel_timing, T_round, return_indices=True)[2]
 
-ex_melatonin = signal.unit_impulse(100,Times)
+ex_melatonin = signal.unit_impulse(720,Times)
 
 plt.plot(T,ex_melatonin)
 plt.show()
