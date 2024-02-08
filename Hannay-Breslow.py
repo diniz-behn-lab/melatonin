@@ -105,8 +105,8 @@ class HannayBreslowModel(object):
             
         return mel*(self.dosage)
     '''
-    
-    # Set the exogenous melatonin administration schedule
+    ''' 
+    # Set the exogenous melatonin administration schedule VERSION 2
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
             
         if melatonin_timing == None:
@@ -122,6 +122,21 @@ class HannayBreslowModel(object):
                 return 0
             else: 
                 return self.dosage
+    '''
+    '''         
+    # Set the exogenous melatonin administration schedule VERSION 3
+    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
+            
+        if melatonin_timing == None:
+            self.dosage = 0
+            return 0
+        else: 
+            self.dosage = melatonin_dosage
+            if melatonin_timing <= t <= melatonin_timing+0.1:
+                H = (self.dosage*pow(t,n))/(b + pow(t,n))
+            else: 
+                return 0
+    '''         
         
 
 # Set the light schedule (timings and intensities)
@@ -258,7 +273,7 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=40)
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=40)
 
 
 
