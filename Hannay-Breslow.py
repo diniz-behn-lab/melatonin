@@ -93,6 +93,7 @@ class HannayBreslowModel(object):
        
     '''             
 # Set the exogenous melatonin administration schedule VERSION 1
+# Administered melatonin for too long
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
         
         if melatonin_timing == None:
@@ -107,6 +108,7 @@ class HannayBreslowModel(object):
     '''
     ''' 
     # Set the exogenous melatonin administration schedule VERSION 2
+    # Possible issues with discontinuity
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
             
         if melatonin_timing == None:
@@ -125,6 +127,7 @@ class HannayBreslowModel(object):
     '''
     '''         
     # Set the exogenous melatonin administration schedule VERSION 3
+    # Use a Hill function - not working yet
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
             
         if melatonin_timing == None:
