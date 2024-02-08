@@ -91,8 +91,8 @@ class HannayBreslowModel(object):
         self.aborption_conversion = 1
         
        
-             
-# Set the exogenous melatonin administration schedule
+    '''             
+# Set the exogenous melatonin administration schedule VERSION 1
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
         
         if melatonin_timing == None:
@@ -104,7 +104,25 @@ class HannayBreslowModel(object):
             mel = np.round(np.mod(t, 24)) == timing
             
         return mel*(self.dosage)
+    '''
     
+    # Set the exogenous melatonin administration schedule
+    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
+            
+        if melatonin_timing == None:
+            self.dosage = 0
+            return 0
+        else: 
+            self.dosage = melatonin_dosage
+            t_round = np.round(t,decimals=1)
+            timing = melatonin_timing+24*np.arange(5)
+            print(timing)
+            Times = np.intersect1d(timing, t_round, return_indices=True)[2]
+            if len(Times) == 0:
+                return 0
+            else: 
+                return self.dosage
+        
 
 # Set the light schedule (timings and intensities)
     def light(self,t):
@@ -250,8 +268,8 @@ model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=12.0, melatoni
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-#plt.axvline(x=7)
-#plt.axvline(x=23)
+plt.axvline(x=12)
+plt.axvline(x=36)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Time Trace of Melatonin Concentrations")
