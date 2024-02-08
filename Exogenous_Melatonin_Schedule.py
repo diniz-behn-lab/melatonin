@@ -10,6 +10,7 @@ Code to generate plot of exogenous melatonin administration
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 j = 3 # Number of days to be plotted
 
 n = j*24
@@ -136,4 +137,44 @@ plt.xlim(0, 24)
 plt.ylim(0, 1)
 plt.grid(True)
 plt.legend()
+plt.show()
+
+#-----------------------
+
+# Hill Function 
+T = np.linspace(0,250,100)
+V_max = 100
+K = 50
+n = 2
+
+V = (V_max*pow(T,n))/(pow(K,n) + pow(T,n)) 
+
+plt.plot(T,V)
+plt.show()
+
+#----------------
+
+# Steady-state firing rate response function
+T = np.linspace(-5,5,100)
+X_max = 6
+s_x = 1
+beta_x = -0.34
+alpha_x = 0.5
+
+
+X_infty = (X_max/2)*(s_x + np.tanh((T-beta_x)/alpha_x))
+
+plt.plot(T,X_infty)
+plt.show()
+
+#-------------------
+
+# Guassian function 
+T = np.linspace(0,4,100)
+sigma = np.sqrt(0.02)
+mu = 2
+
+Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(T-mu,2))/(2*pow(sigma,2)))
+
+plt.plot(T,Guassian)
 plt.show()
