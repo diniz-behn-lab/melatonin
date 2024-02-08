@@ -89,3 +89,25 @@ ex_melatonin = signal.unit_impulse(720,Times)
 
 plt.plot(T,ex_melatonin)
 plt.show()
+
+
+#---------------------------------
+
+def smooth_pulse(time, start, stop, cycle=1, steep=1000):
+    xi = 3/4 - (stop - start) / (2 * cycle) * (cycle / (stop - start))
+    return 1 / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
+    #return (cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
+
+x = np.arange(0, 5, 0.001)
+y_smooth = smooth_pulse(x, start=0.2, stop=0.3, cycle=0.5)
+
+
+plt.plot(x, y_smooth, label='Smooth Pulse')
+plt.xlabel('Time')
+plt.ylabel('f(t)')
+plt.title('Smooth Differentiable Pulse Function')
+plt.xlim(0, 2)
+plt.ylim(0, 1)
+plt.grid(True)
+plt.legend()
+plt.show()
