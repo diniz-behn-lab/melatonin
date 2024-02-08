@@ -150,6 +150,7 @@ n = 2
 V = (V_max*pow(T,n))/(pow(K,n) + pow(T,n)) 
 
 plt.plot(T,V)
+plt.title("Hill Equation")
 plt.show()
 
 #----------------
@@ -160,7 +161,6 @@ X_max = 6
 s_x = 1
 beta_x = -0.34
 alpha_x = 0.5
-
 
 X_infty = (X_max/2)*(s_x + np.tanh((T-beta_x)/alpha_x))
 
@@ -177,4 +177,21 @@ mu = 2
 Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(T-mu,2))/(2*pow(sigma,2)))
 
 plt.plot(T,Guassian)
+plt.show()
+
+#----------------------------
+
+# Generalized Logistic Function 
+T = np.linspace(0,4,100)
+A = 0 
+K = 1
+C = 1
+Q = -0.5
+B = 3
+nu = 0.5
+
+G = A + (K - A)/pow((C + Q*np.exp(-B*T)),(1/nu)) 
+
+plt.plot(T,G)
+plt.title("Generalized Logistic Function")
 plt.show()
