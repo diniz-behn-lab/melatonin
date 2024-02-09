@@ -144,8 +144,8 @@ class HannayBreslowModel(object):
 
 # Set the light schedule (timings and intensities)
     def light(self,t):
-        full_light = 1000
-        dim_light = 300 # reduced light
+        full_light = 0#1000
+        dim_light = 0#300 # reduced light
         wake_time = 7
         sleep_time = 23
         sun_up = 8
@@ -223,7 +223,7 @@ class HannayBreslowModel(object):
 
         dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
         dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
-        dydt[2] = 60.0*(self.alpha0(t)*(1.0-n)-self.delta*n) # dn/dt
+        dydt[2] = 60.0*(self.alpha0(t)*(1.0-n)-(self.delta*n)) # dn/dt
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[2])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
