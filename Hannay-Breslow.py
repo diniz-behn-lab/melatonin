@@ -50,7 +50,7 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 4*60#6*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
+        self.a = 9*60#6*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
         self.r = 15.36/3600 # CHANGED, converting secs to hrs
 
@@ -91,7 +91,7 @@ class HannayBreslowModel(object):
         self.aborption_conversion = 1
         
        
-    '''             
+                 
 # Set the exogenous melatonin administration schedule VERSION 1
 # Administered melatonin for too long
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
@@ -105,7 +105,7 @@ class HannayBreslowModel(object):
             mel = np.round(np.mod(t, 24)) == timing
             
         return mel*(self.dosage)
-    '''
+    
     ''' 
     # Set the exogenous melatonin administration schedule VERSION 2
     # Possible issues with discontinuity
@@ -273,10 +273,10 @@ model.integrateModel(24*30) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=40)
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=40)
 
 
 
@@ -286,8 +286,9 @@ model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatoni
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=12)
-plt.axvline(x=36)
+#plt.axvline(x=12)
+#plt.axvline(x=4)
+plt.axhline(300)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Time Trace of Melatonin Concentrations")
