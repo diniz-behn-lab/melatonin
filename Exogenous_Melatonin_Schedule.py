@@ -195,3 +195,17 @@ G = A + (K - A)/pow((C + Q*np.exp(-B*T)),(1/nu))
 plt.plot(T,G)
 plt.title("Generalized Logistic Function")
 plt.show()
+
+#---------------------------------
+
+# Logistic Growth Function
+T = np.linspace(0,5,100)
+L = 100
+k = 3
+T0 = 2
+
+Logistic = L/(1 + np.exp(-k*(T - T0)))
+
+plt.plot(T,Logistic)
+plt.title("Logistic Growth Function")
+plt.show()
