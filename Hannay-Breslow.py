@@ -60,7 +60,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60 # CHANGED, converting 1/sec to 1/min 
+        self.m = 7*60*60 # CHANGED, converting 1/sec to 1/min 
 
         ## Hannay Model
         self.D = 0
@@ -144,8 +144,8 @@ class HannayBreslowModel(object):
 
 # Set the light schedule (timings and intensities)
     def light(self,t):
-        full_light = 0#1000
-        dim_light = 0#300 # reduced light
+        full_light = 1#1000
+        dim_light = 1#300 # reduced light
         wake_time = 7
         sleep_time = 23
         sun_up = 8
@@ -216,8 +216,8 @@ class HannayBreslowModel(object):
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
-        S = not(H1 < 0.001 and tmp < 0)
-        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        #S = not(H1 < 0.001 and tmp < 0)
+        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
 
         dydt=np.zeros(6)
 
@@ -312,6 +312,8 @@ plt.show()
 
 # Plotting n
 plt.plot(model.ts,model.results[:,2],lw=2)
+plt.axvline(x=7)
+plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
