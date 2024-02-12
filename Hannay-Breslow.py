@@ -206,9 +206,9 @@ class HannayBreslowModel(object):
 
 # Timing of melatonin on and off
     def circ_response(self,psi):
-        #dlmo_phase = 5*np.pi/12
-        #psi = np.mod(psi - dlmo_phase,2*np.pi)
-        psi = np.mod(psi,2*np.pi)
+        dlmo_phase = 5*np.pi/12
+        psi = np.mod(psi - dlmo_phase,2*np.pi)
+        #psi = np.mod(psi,2*np.pi)
 
         if psi > self.psi_off and psi <= self.psi_on:
             return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
