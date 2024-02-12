@@ -218,8 +218,7 @@ class HannayBreslowModel(object):
 # Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage):
         """
-        This defines the ode system for the single population model.
-        ODESystem(self,t,y)
+        This defines the ode system for the single population model and 
         returns dydt numpy array.
         """
         R = y[0]
@@ -261,17 +260,12 @@ class HannayBreslowModel(object):
     def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0],melatonin_timing = None,melatonin_dosage=None):
         """ 
         Integrate the model forward in time.
-        
-        integrateModel(tend, initial=[1.0,0.0, 0.0])
-        
-        tend: float giving the final time to integrate to.
-        
-        initial: initial dynamical state
-        
-        The parameters are tend= the end time to stop the simulation and initial=[R, Psi, n]
-        
+            tend: float giving the final time to integrate to
+            initial=[R, Psi, n, H1, H2, H3]: initial dynamical state (initial 
+            conditions)
+            melatonin_timing is set to "None" as default
+            melatonin_dosage is set to "None" as default
         Writes the integration results into the scipy array self.results.
-        
         Returns the circadian phase (in hours) at the ending time for the system.
         """
         dt = 0.1
@@ -312,7 +306,7 @@ plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
 #plt.axvline(x=12)
-#plt.axvline(x=4)
+#plt.axvline(x=7)
 #plt.axhline(300)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
