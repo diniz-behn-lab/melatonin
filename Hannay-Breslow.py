@@ -48,7 +48,7 @@ class HannayBreslowModel(object):
         ## Breslow Model
         self.beta_IP = 7.83e-4*60*60 #converting 1/sec to 1/hr
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
-        self.beta_AP = 1.62e-4*60*60#1.62e-4*60*60 #converting 1/sec to 1/hr
+        self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
         self.a = 4*60#9*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
@@ -60,7 +60,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60*60 # CHANGED, converting 1/sec to 1/min 
+        self.m = 7*60 # CHANGED, converting 1/sec to 1/min 
 
         ## Hannay Model
         self.D = 0
@@ -185,7 +185,7 @@ class HannayBreslowModel(object):
         """A helper function for modeling the light input processing"""
         return(self.alpha_0*pow(self.light(t), self.p)/(pow(self.light(t), self.p)+self.I_0));
 
-
+    '''
 # Melatonin dynamics from Breslow model
     def m_process(self,u):
         H2 = max(u[4],0)
@@ -199,7 +199,7 @@ class HannayBreslowModel(object):
             print("Slow the heck down there")
             output = self.M_max/(1 + np.exp((self.H_sat - H2_conc)/self.sigma_M))
         return output
-    
+    '''
 
 
 # Timing of melatonin on and off
@@ -248,7 +248,7 @@ class HannayBreslowModel(object):
         dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
         dydt[2] = 60.0*(self.alpha0(t)*(1.0-n)-(self.delta*n)) # dn/dt
 
-        dydt[3] = -self.beta_IP*H1 + self.circ_response(y[2])*tmp*S # dH1/dt
+        dydt[3] = -self.beta_IP*H1 + self.circ_response(y[1])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
         dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t,melatonin_timing,melatonin_dosage) # dH3/dt
 
@@ -299,7 +299,7 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=8.0, melatonin_dosage=100)
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=7.0, melatonin_dosage=1000)
 
 
 
