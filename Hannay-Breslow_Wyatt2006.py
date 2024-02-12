@@ -33,9 +33,9 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 4*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
-        self.delta_M = 600/3600 # CHANGED, converting secs to hrs
-        self.r = 15.36/3600 # CHANGED, converting secs to hrs
+        self.a = 6*60 #1.0442e-3 # CHANGED, increased from 4 to 6
+        self.delta_M = 600/3600 # converting secs to hrs
+        self.r = 15.36/3600 # converting secs to hrs
 
         self.psi_on = 6.113
         self.psi_off = 4.352
@@ -275,8 +275,8 @@ model = HannayBreslowModel() # defining model as a new object built with the Han
 model.integrateModel(24*30) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
-#Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+#Uncomment this one to run Wyatt 2006 baseline days
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
@@ -289,8 +289,9 @@ model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-#plt.axvline(x=12)
-#plt.axvline(x=5)
+plt.axvline(x=22)
+plt.axvline(x=6)
+plt.axvline(x=4)
 #plt.axhline(300)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
