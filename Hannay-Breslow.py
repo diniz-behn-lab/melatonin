@@ -159,11 +159,13 @@ class HannayBreslowModel(object):
             ex_mel = (melatonin_dosage/max_value)*(cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((t - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
             return ex_mel
 
+
 # Generate the curve for a 24h melatonin schedule so that the max value can be determined      
     def max_value(self, time, start, stop, cycle=24, steep=1000, dosage=0.0):
     
         xi = 3/4 - (stop - start) / (2 * cycle)
         return (cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
+
 
 # Set the light schedule (timings and intensities)
     def light(self,t):
@@ -296,7 +298,7 @@ model.integrateModel(24*30) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=7.0, melatonin_dosage=100)
@@ -338,7 +340,13 @@ plt.show()
 
 # Plotting psi
 plt.plot(model.ts,model.results[:,1],lw=2)
-#plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),lw=2)
+plt.xlabel("Time (hours)")
+plt.ylabel("Psi, Mean Phase (radians)")
+plt.title("Time Trace of Psi, Mean Phase")
+plt.show()
+
+# Plotting psi mod 2pi
+plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
