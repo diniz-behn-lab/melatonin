@@ -161,7 +161,7 @@ class HannayBreslowModel(object):
             x = np.arange(0, 24, 0.1)
             melatonin_values = self.max_value(x, start=start, stop=stop, dosage=melatonin_dosage)
             max_value = max(melatonin_values)
-            print(max_value)
+            #print(max_value)
             
             dose = self.aborption_conversion*melatonin_dosage
             #print(dose)
