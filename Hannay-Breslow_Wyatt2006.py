@@ -43,7 +43,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60 # CHANGED, converting 1/sec to 1/min 
+        self.m = 7*60 
 
         ## Hannay Model
         self.D = 0
