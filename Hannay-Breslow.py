@@ -174,23 +174,25 @@ class HannayBreslowModel(object):
         if melatonin_timing == None:
             return 0 #set exogenous melatonin to zero
         else: 
-            sigma = np.sqrt(0.002)
-            mu = melatonin_timing
+            if melatonin_timing-0.5 <= t <= melatonin_timing+0.5:
+                sigma = np.sqrt(0.002)
+                mu = melatonin_timing
 
-            ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2)))
+                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2)))
 
-            x = np.arange(0, 24, 0.01)
-            melatonin_values = self.max_value(x, sigma, mu)
-            max_value = max(melatonin_values)
-            #print(max_value)
+                x = np.arange(0, 1, 0.01)
+                melatonin_values = self.max_value(x, sigma)
+                max_value = max(melatonin_values)
+                #print(max_value)
             
-            normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
-            dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
+                normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+                dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
             
-            return dose_ex_mel        
+                return dose_ex_mel        
+            else: 
+                return 0
         
-        
-    '''
+    ''' for version 4
 # Generate the curve for a 24h melatonin schedule so that the max value can be determined      
     def max_value(self, time, start, stop, cycle=24, steep=1000, dosage=0.0):
     
@@ -199,10 +201,9 @@ class HannayBreslowModel(object):
     '''
     
 # Generate the curve for a 24h melatonin schedule so that the max value can be determined      
-    def max_value(self, time, sigma, mu):
-    
+    def max_value(self, time, sigma):
+        mu = 1/2
         Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(time-mu,2))/(2*pow(sigma,2)))
-        print(type(Guassian))
         return Guassian
 
     
@@ -337,7 +338,7 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=20)
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=20.0, melatonin_dosage=2000)
 
 
 
