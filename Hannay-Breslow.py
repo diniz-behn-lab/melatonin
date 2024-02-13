@@ -141,31 +141,71 @@ class HannayBreslowModel(object):
             else: 
                 return 0
     '''  
-    
+    '''
 # Set the exogenous melatonin administration schedule VERSION 4
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
         
         if melatonin_timing == None:
-            return 0
+            return 0 #set exogenous melatonin to zero
         else: 
             start = melatonin_timing 
             stop = start + 0.01
-            cycle = 24
+            cycle = 24 # daily melatonin at the same clock time
             steep = 1000
+            
             x = np.arange(0, 24, 0.1)
             melatonin_values = self.max_value(x, start=start, stop=stop, dosage=melatonin_dosage)
             max_value = max(melatonin_values)
+            
             xi = 3/4 - (stop - start) / (2 * cycle)
-            ex_mel = (melatonin_dosage/max_value)*(cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((t - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
-            return ex_mel
+            ex_mel = (cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((t - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
+            
+            normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+            dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
+            
+            print(type(dose_ex_mel))
+            
+            return dose_ex_mel
+     '''   
+        
+# Set the exogenous melatonin administration schedule VERSION 5
+    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
+        
+        if melatonin_timing == None:
+            return 0 #set exogenous melatonin to zero
+        else: 
+            sigma = np.sqrt(0.002)
+            mu = melatonin_timing
 
+            ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2)))
 
+            x = np.arange(0, 24, 0.01)
+            melatonin_values = self.max_value(x, sigma, mu)
+            max_value = max(melatonin_values)
+            #print(max_value)
+            
+            normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+            dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
+            
+            return dose_ex_mel        
+        
+        
+    '''
 # Generate the curve for a 24h melatonin schedule so that the max value can be determined      
     def max_value(self, time, start, stop, cycle=24, steep=1000, dosage=0.0):
     
         xi = 3/4 - (stop - start) / (2 * cycle)
         return (cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
+    '''
+    
+# Generate the curve for a 24h melatonin schedule so that the max value can be determined      
+    def max_value(self, time, sigma, mu):
+    
+        Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(time-mu,2))/(2*pow(sigma,2)))
+        print(type(Guassian))
+        return Guassian
 
+    
 
 # Set the light schedule (timings and intensities)
     def light(self,t):
@@ -296,8 +336,8 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=36.0, melatonin_dosage=800)#2500)
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=20)
 
 
 
