@@ -296,7 +296,8 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=36.0, melatonin_dosage=800)#2500)
 
 
 
@@ -311,7 +312,7 @@ plt.plot(model.ts,model.results[:,5],lw=2)
 #plt.axhline(300)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
-plt.title("Time Trace of Melatonin Concentrations (pmol/L)")
+plt.title("Melatonin Concentrations (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
@@ -322,7 +323,7 @@ plt.plot(model.ts[120:180],model.results[120:180,5],lw=2)
 plt.axhline(200)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
-plt.title("Time Trace of Melatonin Concentrations")
+plt.title("Melatonin Concentrations")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
@@ -333,18 +334,29 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 plt.axhline(4)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Time Trace of Melatonin Concentrations (pg/mL)")
+plt.title("Melatonin Concentrations (pg/mL)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL, zoomed)
-plt.plot(model.ts[180:250],model.results[180:250,3]/4.3,lw=2)
-plt.plot(model.ts[180:250],model.results[180:250,4]/4.3,lw=2)
-plt.plot(model.ts[180:250],model.results[180:250,5]/4.3,lw=2)
+plt.plot(model.ts[220:250],model.results[220:250,3]/4.3,lw=2)
+plt.plot(model.ts[220:250],model.results[220:250,4]/4.3,lw=2)
+plt.plot(model.ts[220:250],model.results[220:250,5]/4.3,lw=2)
 plt.axhline(4)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Time Trace of Melatonin Concentrations at DLMO (4pg/mL)")
+plt.title("Melatonin Concentrations at DLMO (4pg/mL) Before")
+plt.legend(["Pineal","Plasma", "Exogenous"])
+plt.show()
+
+# Plotting H1, H2, and H3 (melatonin concentrations, pg/mL, zoomed)
+plt.plot(model.ts[450:479],model.results[450:479,3]/4.3,lw=2)
+plt.plot(model.ts[450:479],model.results[450:479,4]/4.3,lw=2)
+plt.plot(model.ts[450:479],model.results[450:479,5]/4.3,lw=2)
+plt.axhline(4)
+plt.xlabel("Time (hours)")
+plt.ylabel("Melatonin Concentration (pg/mL)")
+plt.title("Melatonin Concentrations at DLMO (4pg/mL) After")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
