@@ -197,13 +197,18 @@ plt.show()
 #-------------------
 
 # Guassian function 
-T = np.linspace(0,4,100)
-sigma = np.sqrt(0.02)
-mu = 2
+T = np.linspace(0,24,100)
+sigma = np.sqrt(0.002)
+mu = 12
 
 Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(T-mu,2))/(2*pow(sigma,2)))
 
-plt.plot(T,Guassian)
+max_val = max(Guassian)
+print(max_val)
+
+normalize_Guassian = (1/max_val)*Guassian
+
+plt.plot(T,normalize_Guassian)
 plt.show()
 
 #----------------------------
