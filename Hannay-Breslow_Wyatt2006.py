@@ -286,10 +286,10 @@ model.integrateModel(24*50) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run Wyatt 2006 baseline days
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=0.3)
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=0.3)
 
 
 
