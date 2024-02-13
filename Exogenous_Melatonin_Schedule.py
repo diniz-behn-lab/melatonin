@@ -141,23 +141,30 @@ plt.show()
 
 #--------------------------------------
 
-def ex_melatonin(time, start, stop, cycle=24, steep=1000, dosage=816):
+def ex_melatonin(time, start, stop, cycle=24, steep=1000, dosage=80):
     
     xi = 3/4 - (stop - start) / (2 * cycle)
-    return (dosage/1200)*(cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
+    return (cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
 
 x = np.arange(0, 48, 0.1)
 y_smooth = ex_melatonin(x, start=10.0, stop=10.01, cycle=24, dosage=800)
 
+max_value = max(y_smooth)
 
-plt.plot(x, y_smooth, label='Smooth Pulse')
+normalize_y_smooth = (1/max_value)*y_smooth
+
+dose_y_smooth = 2*normalize_y_smooth
+
+
+plt.plot(x, dose_y_smooth, label='Smooth Pulse')
 plt.xlabel('Time')
 plt.ylabel('ex_melatonin(t)')
 plt.title('Exogenous Melatonin Dosing')
 plt.xlim(0, 24)
-plt.ylim(0, 1000)
+plt.ylim(0, 2)
 plt.legend()
 plt.show()
+
 
 #-----------------------
 
