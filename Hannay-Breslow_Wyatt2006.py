@@ -130,7 +130,7 @@ class HannayBreslowModel(object):
             else: 
                 return 0
     '''  
-    
+    '''
 # Set the exogenous melatonin administration schedule VERSION 4
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
         
@@ -158,7 +158,38 @@ class HannayBreslowModel(object):
     
         xi = 3/4 - (stop - start) / (2 * cycle)
         return (cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
+    '''
+    
+# Set the exogenous melatonin administration schedule VERSION 5
+    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
+        
+        if melatonin_timing == None:
+            return 0 #set exogenous melatonin to zero
+        else: 
+            if melatonin_timing-0.5 <= t <= melatonin_timing+0.5:
+                sigma = np.sqrt(0.002)
+                mu = melatonin_timing
 
+                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2)))
+
+                x = np.arange(0, 1, 0.01)
+                melatonin_values = self.max_value(x, sigma)
+                max_value = max(melatonin_values)
+                #print(max_value)
+            
+                normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+                dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
+            
+                return dose_ex_mel        
+            else: 
+                return 0
+        
+    
+# Generate the curve for a 24h melatonin schedule so that the max value can be determined      
+    def max_value(self, time, sigma):
+        mu = 1/2
+        Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(time-mu,2))/(2*pow(sigma,2)))
+        return Guassian    
 
 # Set the light schedule (timings and intensities)
     def light(self,t):
