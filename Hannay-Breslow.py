@@ -88,13 +88,7 @@ class HannayBreslowModel(object):
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
         
-        # Converting mg dosage to pmol/L
-        r2 = self.beta_CP
-        r3 = self.beta_AP
-        max_ratio = (r3/(r2-r3))*(np.power(r2/r3,-r3/(r2-r3))-np.power(r2/r3,-r2/(r2-r3)))
-        mid_dose = (0.1+0.3)/2
-        dose_ratio = 200/mid_dose
-        self.aborption_conversion = dose_ratio/max_ratio
+        self.aborption_conversion = 1
         
        
     '''             
@@ -161,13 +155,8 @@ class HannayBreslowModel(object):
             x = np.arange(0, 24, 0.1)
             melatonin_values = self.max_value(x, start=start, stop=stop, dosage=melatonin_dosage)
             max_value = max(melatonin_values)
-            #print(max_value)
-            
-            dose = self.aborption_conversion*melatonin_dosage
-            #print(dose)
-            
             xi = 3/4 - (stop - start) / (2 * cycle)
-            ex_mel = (dose/max_value)*(cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((t - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
+            ex_mel = (melatonin_dosage/max_value)*(cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((t - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
             return ex_mel
 
 
@@ -304,10 +293,10 @@ model.integrateModel(24*30) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=0.2)
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
 
 
 
