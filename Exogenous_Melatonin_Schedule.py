@@ -147,7 +147,7 @@ def ex_melatonin(time, start, stop, cycle=24, steep=1000, dosage=816):
     return (dosage/1200)*(cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
 
 x = np.arange(0, 48, 0.1)
-y_smooth = ex_melatonin(x, start=12.0, stop=12.01, cycle=24, dosage=100)
+y_smooth = ex_melatonin(x, start=10.0, stop=10.01, cycle=24, dosage=800)
 
 
 plt.plot(x, y_smooth, label='Smooth Pulse')
