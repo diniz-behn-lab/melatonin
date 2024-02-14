@@ -88,7 +88,12 @@ class HannayBreslowModel(object):
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
         
-        self.aborption_conversion = 1
+        r2 = self.beta_CP
+        r3 = self.beta_AP
+        max_ratio = (r3/(r2-r3))*(np.power(r2/r3,-r3/(r2-r3))-np.power(r2/r3,-r2/(r2-r3)))
+        mid_dose = (0.1+0.3)/2
+        dose_ratio = 200/mid_dose
+        self.aborption_conversion = dose_ratio/max_ratio
         
        
     '''             
@@ -337,8 +342,9 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=8000)
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=8000) # with Guassian
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=0.2)
 
 
 
