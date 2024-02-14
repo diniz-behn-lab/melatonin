@@ -320,9 +320,8 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=0.3)
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=30000)
-
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=25000) #reproduces 0.3mg dosage
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=300000) #reproduces 5.0mg dosage
 
 #--------- Plot Model Output -------------------
 
@@ -337,6 +336,20 @@ plt.plot(model.ts,model.results[:,5],lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Time Trace of Melatonin Concentrations (pmol/L)")
+plt.legend(["Pineal","Plasma", "Exogenous"])
+plt.show()
+
+# Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
+#plt.plot(model.ts,model.results[:,3],lw=2)
+plt.plot(model.ts[210:280],model.results[210:280,4],lw=2)
+#plt.plot(model.ts,model.results[:,5],lw=2)
+plt.axvline(x=23.5)
+#plt.axvline(x=6)
+#plt.axvline(x=4)
+#plt.axhline(300)
+plt.xlabel("Time (hours)")
+plt.ylabel("Melatonin Concentration (pmol/L)")
+plt.title("Blood Plasma Melatonin Concentration (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
