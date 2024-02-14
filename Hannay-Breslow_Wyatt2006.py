@@ -323,6 +323,8 @@ model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=25000) #reproduces 0.3mg dosage
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=300000) #reproduces 5.0mg dosage
 
+
+
 #--------- Plot Model Output -------------------
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
