@@ -317,10 +317,10 @@ model.integrateModel(24*50) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run Wyatt 2006 baseline days
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=25000) #reproduces 0.3mg dosage
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=25000) #reproduces 0.3mg dosage
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=300000) #reproduces 5.0mg dosage
 
 
@@ -371,6 +371,7 @@ plt.plot(model.ts[180:250],model.results[180:250,3]/4.3,lw=2)
 plt.plot(model.ts[180:250],model.results[180:250,4]/4.3,lw=2)
 plt.plot(model.ts[180:250],model.results[180:250,5]/4.3,lw=2)
 plt.axhline(4)
+plt.axvline(21.5)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Time Trace of Melatonin Concentrations at DLMO (4pg/mL)")
