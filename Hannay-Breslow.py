@@ -334,11 +334,11 @@ model.integrateModel(24*30) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500)
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=8000)
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=8000)
 
 
 
