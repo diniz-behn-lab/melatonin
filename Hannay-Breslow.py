@@ -186,7 +186,7 @@ class HannayBreslowModel(object):
         if melatonin_timing == None:
             return 0 #set exogenous melatonin to zero
         else: 
-            if melatonin_timing-0.5 <= t <= melatonin_timing+0.5:
+            if melatonin_timing-0.1 <= t <= melatonin_timing+0.1:
                 sigma = np.sqrt(0.002)
                 mu = melatonin_timing
 
@@ -343,7 +343,7 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=8000) # with Guassian
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500) # with Guassian
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=0.2)
 
 
