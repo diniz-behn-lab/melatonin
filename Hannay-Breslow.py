@@ -342,7 +342,7 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500) # with Guassian
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500) # with Guassian
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=0.2)
 
 
@@ -362,6 +362,8 @@ plt.title("Melatonin Concentrations (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
+
+'''
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L, zoomed)
 plt.plot(model.ts[120:180],model.results[120:180,3],lw=2)
 plt.plot(model.ts[120:180],model.results[120:180,4],lw=2)
@@ -437,3 +439,4 @@ plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
+'''
