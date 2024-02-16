@@ -182,13 +182,12 @@ class HannayBreslowModel(object):
         
 # Set the exogenous melatonin administration schedule VERSION 5
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
-        
         if melatonin_timing == None:
             return 0 #set exogenous melatonin to zero
         else: 
-            if melatonin_timing-0.1 <= t <= melatonin_timing+0.1:
+            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
                 sigma = np.sqrt(0.002)
-                mu = melatonin_timing
+                mu = melatonin_timing+0.1
 
                 ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2)))
 
