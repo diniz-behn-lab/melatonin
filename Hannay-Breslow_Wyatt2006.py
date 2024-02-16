@@ -33,7 +33,7 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 6*60 #1.0442e-3 # CHANGED, increased from 4 to 6
+        self.a = 4*60 #1.0442e-3 
         self.delta_M = 600/3600 # converting secs to hrs
         self.r = 15.36/3600 # converting secs to hrs
 
@@ -320,8 +320,8 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=24000) #reproduces 0.3mg dosage
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000) #reproduces 5.0mg dosage
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=26000) #reproduces 0.3mg dosage
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000) #reproduces 5.0mg dosage
 
 
 
