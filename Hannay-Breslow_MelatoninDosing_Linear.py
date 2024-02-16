@@ -71,14 +71,6 @@ class HannayBreslowModel(object):
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
         
-        # Converting mg dosage to pmol/L
-        r2 = self.beta_CP
-        r3 = self.beta_AP
-        max_ratio = (r3/(r2-r3))*(np.power(r2/r3,-r3/(r2-r3))-np.power(r2/r3,-r2/(r2-r3)))
-        mid_dose = (0.1+0.3)/2
-        dose_ratio = 200/mid_dose
-        self.aborption_conversion = dose_ratio/max_ratio
-        
        
     
 # Set the exogenous melatonin administration schedule VERSION 5
@@ -97,9 +89,12 @@ class HannayBreslowModel(object):
                 melatonin_values = self.max_value(x, sigma)
                 max_value = max(melatonin_values)
                 #print(max_value)
+                
+                converted_dose = self.mg_conversion(melatonin_dosage)
+                print(converted_dose)
             
                 normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
-                dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
+                dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
             
                 return dose_ex_mel        
             else: 
@@ -111,6 +106,12 @@ class HannayBreslowModel(object):
         mu = 1/2
         Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(time-mu,2))/(2*pow(sigma,2)))
         return Guassian    
+
+# Convert mg dose to value to be used in the Guassian dosing curve
+    def mg_conversion(self, melatonin_dosage):
+        x_line = melatonin_dosage
+        y_line = (56686*x_line) + 16897
+        return y_line
 
 # Set the light schedule (timings and intensities)
     def light(self,t,schedule):
@@ -250,9 +251,9 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=24500,schedule=2) #reproduces 0.3mg dosage
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=0.3,schedule=2) #reproduces 0.3mg dosage, 24500
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000,schedule=2) #reproduces 5.0mg dosage
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=145000,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=145000,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage
 
 
 
