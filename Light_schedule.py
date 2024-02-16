@@ -67,26 +67,29 @@ plt.show()
 
 #------------------- Burgess 2008 Ultradian Light Schedule ------------
 
-j = 5 # Number of days to be plotted
+j = 1 # Number of days to be plotted
 
 n = j*24
 
 standard_lightschedule = list()
 
 for t in range(0, n):
-    full_light = 1000
-    dim_light = 300 # reduced light
-    wake_time = 7
-    sleep_time = 23
-    sun_up = 8
-    sun_down = 19
+    full_light = 150
+    dim_light = 150 # reduced light
+    wake_time = 2.5
+    sleep_time = 5
+    sun_up = 2.5
+    sun_down = 5
 
-    is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-    sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+    is_awake = np.mod(t - wake_time,2.5) <= np.mod(sleep_time - wake_time,2.5)
+    sun_is_up = np.mod(t - sun_up,2.5) <= np.mod(sun_down - sun_up,2.5)
 
     standard_lightschedule.append(is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up)))
 
         
 plt.plot(range(0,n),standard_lightschedule)
-plt.title("Standard Light:Dark Schedule (16:8)")
+plt.title("Burgess 2008 Ultradian Light:Dark Schedule (2.5:1.5)")
+plt.axvline(2.5)
+plt.axvline(5)
+plt.axvline(6.5)
 plt.show()
