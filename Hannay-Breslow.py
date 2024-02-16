@@ -189,7 +189,7 @@ class HannayBreslowModel(object):
                 sigma = np.sqrt(0.002)
                 mu = melatonin_timing+0.1
 
-                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2)))
+                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
 
                 x = np.arange(0, 1, 0.01)
                 melatonin_values = self.max_value(x, sigma)

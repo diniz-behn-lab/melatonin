@@ -33,7 +33,7 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 4*60 #1.0442e-3 
+        self.a = 4*60 #1.0442e-3, the tiny value is from Breslow 
         self.delta_M = 600/3600 # converting secs to hrs
         self.r = 15.36/3600 # converting secs to hrs
 
@@ -80,85 +80,6 @@ class HannayBreslowModel(object):
         self.aborption_conversion = dose_ratio/max_ratio
         
        
-    '''             
-# Set the exogenous melatonin administration schedule VERSION 1
-# Administered melatonin for too long
-    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
-        
-        if melatonin_timing == None:
-            self.dosage = 0
-            mel = 0
-        else: 
-            self.dosage = melatonin_dosage
-            timing = melatonin_timing
-            mel = np.round(np.mod(t, 24)) == timing
-            
-        return mel*(self.dosage)
-    '''
-    
-    ''' 
-    # Set the exogenous melatonin administration schedule VERSION 2
-    # Possible issues with discontinuity
-    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
-            
-        if melatonin_timing == None:
-            self.dosage = 0
-            return 0
-        else: 
-            self.dosage = melatonin_dosage
-            t_round = np.round(t,decimals=1)
-            timing = melatonin_timing+24*np.arange(5)
-            print(timing)
-            Times = np.intersect1d(timing, t_round, return_indices=True)[2]
-            if len(Times) == 0:
-                return 0
-            else: 
-                return self.dosage
-    '''
-    '''         
-    # Set the exogenous melatonin administration schedule VERSION 3
-    # Use a Hill function - not working yet
-    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
-            
-        if melatonin_timing == None:
-            self.dosage = 0
-            return 0
-        else: 
-            self.dosage = melatonin_dosage
-            if melatonin_timing <= t <= melatonin_timing+0.1:
-                H = (self.dosage*pow(t,n))/(b + pow(t,n))
-            else: 
-                return 0
-    '''  
-    '''
-# Set the exogenous melatonin administration schedule VERSION 4
-    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
-        
-        if melatonin_timing == None:
-            return 0
-        else: 
-            start = melatonin_timing 
-            stop = start + 0.01
-            cycle = 24
-            steep = 1000
-            
-            x = np.arange(0, 24, 0.1)
-            melatonin_values = self.max_value(x, start=start, stop=stop, dosage=melatonin_dosage)
-            max_value = max(melatonin_values)
-            
-            dose = self.aborption_conversion*melatonin_dosage
-            
-            xi = 3/4 - (stop - start) / (2 * cycle)
-            ex_mel = (dose/max_value)*(cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((t - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
-            return ex_mel
-
-
-# Generate the curve for a 24h melatonin schedule so that the max value can be determined      
-    def max_value(self, time, start, stop, cycle=24, steep=1000, dosage=0.0):
-    
-        xi = 3/4 - (stop - start) / (2 * cycle)
-        return (cycle/(stop - start)) / (1 + np.exp(steep * (np.sin(2 * np.pi * ((time - start) / cycle + xi)) - np.sin(2 * np.pi * xi))))
-    '''
     
 # Set the exogenous melatonin administration schedule VERSION 5
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
@@ -170,7 +91,7 @@ class HannayBreslowModel(object):
                 sigma = np.sqrt(0.002)
                 mu = melatonin_timing+0.1
 
-                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2)))
+                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
 
                 x = np.arange(0, 1, 0.01)
                 melatonin_values = self.max_value(x, sigma)
