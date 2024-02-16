@@ -250,9 +250,9 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=24500,schedule=2) #reproduces 0.3mg dosage
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=24500,schedule=2) #reproduces 0.3mg dosage
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000,schedule=2) #reproduces 5.0mg dosage
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=145000,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=145000,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage
 
 
 
