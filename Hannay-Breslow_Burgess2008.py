@@ -80,28 +80,30 @@ class HannayBreslowModel(object):
         if melatonin_timing == None:
             return 0 #set exogenous melatonin to zero
         else: 
-            t = np.mod(t,24)
-            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
-                sigma = np.sqrt(0.002)
-                mu = melatonin_timing+0.1
+            if 24 < t < 96: 
+                t = np.mod(t,24)
+                if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
+                    sigma = np.sqrt(0.002)
+                    mu = melatonin_timing+0.1
 
-                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
+                    ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
 
-                x = np.arange(0, 1, 0.01)
-                melatonin_values = self.max_value(x, sigma)
-                max_value = max(melatonin_values)
-                #print(max_value)
+                    x = np.arange(0, 1, 0.01)
+                    melatonin_values = self.max_value(x, sigma)
+                    max_value = max(melatonin_values)
+                    #print(max_value)
                 
-                converted_dose = self.mg_conversion(melatonin_dosage)
-                #print(converted_dose)
+                    converted_dose = self.mg_conversion(melatonin_dosage)
+                    #print(converted_dose)
             
-                normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
-                dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
+                    normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+                    dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
             
-                return dose_ex_mel        
+                    return dose_ex_mel        
+                else: 
+                    return 0
             else: 
                 return 0
-        
     
 # Generate the curve for a 24h melatonin schedule so that the max value can be determined      
     def max_value(self, time, sigma):
@@ -132,12 +134,15 @@ class HannayBreslowModel(object):
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: 
-            full_light = 150
-            if 1 <= np.mod(t,4) <= 2.5 :
-                return 0 
-            else:
-                return full_light
-
+            if 24 < t < 96: 
+                full_light = 150
+                dim_light = 5
+                if 1 <= np.mod(t,4) <= 2.5 :
+                    return 0 
+                else:
+                    return full_light
+            else: 
+                return dim_light
 
 
 # Define the alpha(L) function 
@@ -254,12 +259,12 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=6.5, melatonin_dosage=3.0,schedule=2) 
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=10.5, melatonin_dosage=3.0,schedule=2)
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=14.5, melatonin_dosage=3.0,schedule=2)
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=18.5, melatonin_dosage=3.0,schedule=2)
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=22.5, melatonin_dosage=3.0,schedule=2)
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=6.5, melatonin_dosage=3.0,schedule=2) 
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10.5, melatonin_dosage=3.0,schedule=2)
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=14.5, melatonin_dosage=3.0,schedule=2)
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=18.5, melatonin_dosage=3.0,schedule=2)
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=22.5, melatonin_dosage=3.0,schedule=2)
 
 #--------- Plot Model Output -------------------
 
@@ -276,19 +281,22 @@ plt.title("Time Trace of Melatonin Concentrations (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
-# Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
-#plt.plot(model.ts,model.results[:,3],lw=2)
-plt.plot(model.ts[210:280],model.results[210:280,4],lw=2)
-#plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=23.1)
+'''
+# Plotting H1, H2, and H3 on baseline day (melatonin concentrations, pmol/L)
+plt.plot(model.ts[0:240],model.results[0:240,3],lw=2)
+plt.plot(model.ts[0:240],model.results[0:240,4],lw=2)
+plt.plot(model.ts[0:240],model.results[0:240,5],lw=2)
+#plt.axvline(x=23.1)
 #plt.axvline(x=6)
 #plt.axvline(x=4)
 #plt.axhline(300)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
-plt.title("Blood Plasma Melatonin Concentration (pmol/L)")
+plt.title("Baseline Day Blood Plasma Melatonin Concentration (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
+'''
+
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
@@ -301,15 +309,28 @@ plt.title("Time Trace of Melatonin Concentrations (pg/mL)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
-# Plotting H1, H2, and H3 (melatonin concentrations, pg/mL, zoomed)
-plt.plot(model.ts[180:250],model.results[180:250,3]/4.3,lw=2)
-plt.plot(model.ts[180:250],model.results[180:250,4]/4.3,lw=2)
-plt.plot(model.ts[180:250],model.results[180:250,5]/4.3,lw=2)
+
+# Plotting H1, H2, and H3 on baseline day (melatonin concentrations, pg/mL, zoomed)
+plt.plot(model.ts[0:240],model.results[0:240,3]/4.3,lw=2)
+plt.plot(model.ts[0:240],model.results[0:240,4]/4.3,lw=2)
+plt.plot(model.ts[0:240],model.results[0:240,5]/4.3,lw=2)
 plt.axhline(4)
-plt.axvline(21.5)
+#plt.axvline(21.5)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Time Trace of Melatonin Concentrations at DLMO (4pg/mL)")
+plt.title("Baseline Day Time Trace of Melatonin Concentrations (DLMO = 4pg/mL)")
+plt.legend(["Pineal","Plasma", "Exogenous"])
+plt.show()
+
+# Plotting H1, H2, and H3 on final day (melatonin concentrations, pg/mL, zoomed)
+plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,3]/4.3,lw=2)
+plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,4]/4.3,lw=2)
+plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,5]/4.3,lw=2)
+plt.axhline(4)
+#plt.axvline(21.5)
+plt.xlabel("Time (hours)")
+plt.ylabel("Melatonin Concentration (pg/mL)")
+plt.title("FInal Day Time Trace of Melatonin Concentrations (DLMO 4pg/mL)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
