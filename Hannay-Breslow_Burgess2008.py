@@ -136,12 +136,12 @@ class HannayBreslowModel(object):
         else: 
             if 24 < t < 96: 
                 full_light = 150
-                dim_light = 5
                 if 1 <= np.mod(t,4) <= 2.5 :
                     return 0 
                 else:
                     return full_light
             else: 
+                dim_light = 5
                 return dim_light
 
 
@@ -258,13 +258,27 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #Uncomment this one to run Wyatt 2006 baseline days
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
-#Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
+#Uncomment this one to run it with exogenous melatonin, given at start of wake episode 
 model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=6.5, melatonin_dosage=3.0,schedule=2) 
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10.5, melatonin_dosage=3.0,schedule=2)
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=14.5, melatonin_dosage=3.0,schedule=2)
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=18.5, melatonin_dosage=3.0,schedule=2)
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=22.5, melatonin_dosage=3.0,schedule=2)
+
+
+# ---------- Find DLMO times and calculate phase shift --------------
+
+baseline_plasma_mel = model.results[0:240,4]/4.3 # converting output to pg/mL
+baseline_times = model.ts[0:240] # defining times from first 24hrs 
+baseline, = np.where(baseline_plasma_mel<=4) # finding all the indices where concentration is below 4pg/mL
+baseline_DLMO = baseline_times[baseline[0]] # finding the time corresponding to the first index below threshold
+
+final_plasma_mel = model.results[960:1199,4]/4.3 # converting output to pg/mL
+final_times = model.ts[960:1199] # defining times from last 24hrs
+final, = np.where(final_plasma_mel<=4) # finding all the indices where concentration is below 4pg/mL
+final_DLMO = np.mod(final_times[final[0]],24) # finding the time corresponding to the first index below threshold
+
 
 #--------- Plot Model Output -------------------
 
@@ -357,9 +371,6 @@ plt.show()
 
 # Plotting n
 plt.plot(model.ts,model.results[:,2],lw=2)
-plt.axvline(x=1)
-plt.axvline(x=2.5)
-plt.axvline(x=5)
 plt.xlabel("Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
