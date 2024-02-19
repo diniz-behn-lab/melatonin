@@ -34,7 +34,7 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 6*60 #1.0442e-3, the tiny value is from Breslow 
+        self.a = 4*60 #1.0442e-3, the tiny value is from Breslow 
         self.delta_M = 600/3600 # converting secs to hrs
         self.r = 15.36/3600 # converting secs to hrs
 
@@ -92,7 +92,7 @@ class HannayBreslowModel(object):
                 #print(max_value)
                 
                 converted_dose = self.mg_conversion(melatonin_dosage)
-                print(converted_dose)
+                #print(converted_dose)
             
                 normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
                 dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
@@ -125,18 +125,18 @@ class HannayBreslowModel(object):
             sleep_time = 23
             sun_up = 8
             sun_down = 19
+            
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: 
-            full_light = 15
-            dim_light = 15
-            wake_time = 6
-            sleep_time = 22
-            sun_up = 6
-            sun_down = 22
+            full_light = 150
+            if 1 <= np.mod(t,4) <= 2.5 :
+                return 0 
+            else:
+                return full_light
 
-        is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-        sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-
-        return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
 
 
 # Define the alpha(L) function 
@@ -250,10 +250,10 @@ model.integrateModel(24*50,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run Wyatt 2006 baseline days
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=0.3,schedule=2) #reproduces 0.3mg dosage, 24500
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=0.3,schedule=2) #reproduces 0.3mg dosage, 24500
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=5.0,schedule=2) #reproduces 5.0mg dosage, 295000
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=2.0,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage, 145000
 
@@ -335,8 +335,9 @@ plt.show()
 
 # Plotting n
 plt.plot(model.ts,model.results[:,2],lw=2)
-#plt.axvline(x=7)
-#plt.axvline(x=23)
+plt.axvline(x=1)
+plt.axvline(x=2.5)
+plt.axvline(x=5)
 plt.xlabel("Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
