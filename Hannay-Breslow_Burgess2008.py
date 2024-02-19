@@ -34,7 +34,7 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 4*60 #1.0442e-3, the tiny value is from Breslow 
+        self.a = 6*60 #1.0442e-3, the tiny value is from Breslow 
         self.delta_M = 600/3600 # converting secs to hrs
         self.r = 15.36/3600 # converting secs to hrs
 
@@ -80,6 +80,7 @@ class HannayBreslowModel(object):
         if melatonin_timing == None:
             return 0 #set exogenous melatonin to zero
         else: 
+            t = np.mod(t,24)
             if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
                 sigma = np.sqrt(0.002)
                 mu = melatonin_timing+0.1
@@ -250,12 +251,12 @@ model.integrateModel(24*50,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run Wyatt 2006 baseline days
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=0.3,schedule=2) #reproduces 0.3mg dosage, 24500
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=5.0,schedule=2) #reproduces 5.0mg dosage, 295000
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=2.0,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage, 145000
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=5.0,schedule=2) 
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=2.0,schedule=2)
 
 
 
@@ -265,9 +266,9 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-#plt.axvline(x=22)
-#plt.axvline(x=6)
-#plt.axvline(x=4)
+plt.axvline(x=1)
+plt.axvline(x=2.5)
+plt.axvline(x=5)
 #plt.axhline(300)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
