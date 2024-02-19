@@ -72,24 +72,21 @@ j = 1 # Number of days to be plotted
 n = j*24
 
 BurgessUltradian_lightschedule = list()
+time = np.linspace(0,n,97)
 
-for t in range(0, n):
+for t in time:
     full_light = 150
-    dim_light = 150 # reduced light
-    wake_time = 2.5
-    sleep_time = 5
-    sun_up = 2.5
-    sun_down = 5
-
-    is_awake = np.mod(t - wake_time,2.5) <= np.mod(sleep_time - wake_time,2.5)
-    sun_is_up = np.mod(t - sun_up,2.5) <= np.mod(sun_down - sun_up,2.5)
-
-    BurgessUltradian_lightschedule.append(is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up)))
+    
+    if 1 <= np.mod(t,4) <= 2.5 :
+        BurgessUltradian_lightschedule.append(0)
+    else:
+        BurgessUltradian_lightschedule.append(full_light)
 
         
-plt.plot(range(0,n),BurgessUltradian_lightschedule)
+plt.plot(time[0:40],BurgessUltradian_lightschedule[0:40])
 plt.title("Burgess 2008 Ultradian Light:Dark Schedule (2.5:1.5)")
-plt.axvline(2.5)
-plt.axvline(5)
-plt.axvline(6.5)
+#plt.axvline(1)
+#plt.axvline(2.5)
+#plt.axvline(5)
+#plt.axvline(6.5)
 plt.show()
