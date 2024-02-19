@@ -254,11 +254,12 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=5.0,schedule=2) 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=2.0,schedule=2)
-
-
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=6.5, melatonin_dosage=3.0,schedule=2) 
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=10.5, melatonin_dosage=3.0,schedule=2)
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=14.5, melatonin_dosage=3.0,schedule=2)
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=18.5, melatonin_dosage=3.0,schedule=2)
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=22.5, melatonin_dosage=3.0,schedule=2)
 
 #--------- Plot Model Output -------------------
 
@@ -266,10 +267,9 @@ model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=1)
-plt.axvline(x=2.5)
-plt.axvline(x=5)
-#plt.axhline(300)
+#plt.axvline(x=2.5)
+#plt.axvline(x=26.5)
+#plt.axvline(x=50.5)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Time Trace of Melatonin Concentrations (pmol/L)")
