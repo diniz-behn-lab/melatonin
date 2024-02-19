@@ -150,7 +150,7 @@ class HannayBreslowModel(object):
         """A helper function for modeling the light input processing"""
         return(self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0));
 
-    '''
+    '''    
 # Melatonin dynamics from Breslow model
     def m_process(self,u):
         H2 = max(u[4],0)
@@ -164,7 +164,7 @@ class HannayBreslowModel(object):
             print("Slow the heck down there")
             output = self.M_max/(1 + np.exp((self.H_sat - H2_conc)/self.sigma_M))
         return output
-    '''
+    '''  
 
 
 # Timing of melatonin on and off
@@ -198,8 +198,8 @@ class HannayBreslowModel(object):
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
         
         # Melatonin interaction with pacemaker
-        #Mhat = self.m_process(y)
-        Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
+        Mhat = self.m_process(y)
+        #Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
         MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
 
