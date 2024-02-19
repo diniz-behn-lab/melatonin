@@ -135,7 +135,7 @@ class HannayBreslowModel(object):
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: # Laboratory days (5 total)
             if 24 < t < 96: # Days 2-4, ultradian schedule 
-                full_light = 150
+                full_light = 40
                 if 1 <= np.mod(t,4) <= 2.5 :
                     return 0 
                 else:
@@ -255,13 +255,13 @@ model = HannayBreslowModel() # defining model as a new object built with the Han
 model.integrateModel(24*50,schedule=1) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
-#Uncomment this one to run Wyatt 2006 baseline days
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+#Uncomment this one to run Burgess 2008 placebo protocol
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
-#Uncomment this one to run it with exogenous melatonin, given at start of wake episode 
+#Uncomment this one to run Burgess 2008 with exogenous melatonin, given at start of wake episode 
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=6.5, melatonin_dosage=3.0,schedule=2) 
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10.5, melatonin_dosage=3.0,schedule=2)
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10.5, melatonin_dosage=3.0,schedule=2)
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=14.5, melatonin_dosage=3.0,schedule=2)
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=18.5, melatonin_dosage=3.0,schedule=2)
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=22.5, melatonin_dosage=3.0,schedule=2)
@@ -269,16 +269,18 @@ model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10.5, melatoni
 
 # ---------- Find DLMO times and calculate phase shift --------------
 
+DLMO_threshold = 3
+
 # Baseline day 
 baseline_plasma_mel = model.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model.ts[0:240] # defining times from first 24hrs 
-baseline, = np.where(baseline_plasma_mel<=4) # finding all the indices where concentration is below 4pg/mL
+baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 
 # Final day 
 final_plasma_mel = model.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=4) # finding all the indices where concentration is below 4pg/mL
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
