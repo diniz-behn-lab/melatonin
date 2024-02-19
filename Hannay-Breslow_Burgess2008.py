@@ -460,7 +460,7 @@ phase_shift_22 = final_DLMO - baseline_DLMO
 phase_shifts = [phase_shift_2, phase_shift_6, phase_shift_10, phase_shift_14, phase_shift_18, phase_shift_22];
 
 # Subtract off the shift due to the protocol
-phase_shifts_corrected = -(phase_shifts - phase_shift_placebo)
+phase_shifts_corrected = (phase_shifts - phase_shift_placebo)
 
 # Make array of administration times for plotting PRC 
 ExMel_times = [2.5, 6.5, 10.5, 14.5, 18.5, 22.5]
@@ -476,7 +476,8 @@ plt.title("3 Pulse Melatonin (3mg) Phase Response Curve")
 plt.show()
 
 
-#----------- Load Burgess 2008 PRC data (from Will's excel file, only yaxis values given)
+#----------- Load Burgess 2008 PRC data -------------
+# From Will's excel file, only yaxis values given
 
 Burgess_2008_PRC = [
 -0.330434783,
@@ -508,9 +509,10 @@ Burgess_2008_PRC = [
 -0.617391304]
 
 # Eyeballed it
-Burgess_2008_PRC_times = [14,15,16,17,18,18,19,20,21,22,23,24,1,2,3,4,5,6,7,8,9,10,10,11,12,13,13]#np.linspace(-9, 15, 27)
+Burgess_2008_PRC_times = [14.5,15.5,16.5,17.5,18.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,10.5,11.5,12.5,13.5,13.5]#np.linspace(-9, 15, 27)
 
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o')
+plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.show()
 
 '''
