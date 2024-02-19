@@ -269,15 +269,20 @@ model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin
 
 # ---------- Find DLMO times and calculate phase shift --------------
 
+# Baseline day 
 baseline_plasma_mel = model.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=4) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[0]] # finding the time corresponding to the first index below threshold
 
+# Final day 
 final_plasma_mel = model.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=4) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[0]],24) # finding the time corresponding to the first index below threshold
+
+# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
+phase_shift = final_DLMO - baseline_DLMO
 
 
 #--------- Plot Model Output -------------------
