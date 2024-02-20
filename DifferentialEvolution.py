@@ -85,11 +85,11 @@ class HannayBreslowModel(object):
 
         ## Melatonin Forcing Parameters 
         # TO BE OPTIMIZED
-        self.B_1 = x[0]#0.74545016
-        self.theta_M1 = x[1]#-0.05671999
-        self.B_2 = x[2]#0.76024892
-        self.theta_M2 = x[3]#-0.05994563
-        self.epsilon = x[4]#-0.18366069
+        self.B_1 = params[0] #0.74545016
+        self.theta_M1 = params[1] #-0.05671999
+        self.B_2 = params[2] #0.76024892
+        self.theta_M2 = params[3] #-0.05994563
+        self.epsilon = params[4] #-0.18366069
         
        
     
@@ -268,14 +268,15 @@ class HannayBreslowModel(object):
 
 
    
-def run_HannayBreslow(x):
-    
+def run_HannayBreslow(params):
+    #print("here")
     #--------- Run the model to find initial conditions --------------- 
     model_IC = HannayBreslowModel()
-    model_IC.integrateModel(24*50,schedule=1) # use the integrateModel method with the object model
+    
+    model_IC.integrateModel(24*50, schedule=1) # use the integrateModel method with the object model
     IC = model_IC.results[-1,:] # get initial conditions from entrained model
     
-
+    
     #--------- Run the model under the placebo condition ---------------   
     model_placebo = HannayBreslowModel()
     model_placebo.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
@@ -436,17 +437,48 @@ def run_HannayBreslow(x):
     # Subtract off the shift due to the protocol
     phase_shifts_corrected = (phase_shifts - phase_shift_placebo)
     
-    return abs(phase_shifts_corrected - data_vals)
+    return phase_shifts_corrected
+    
+def objective_func(params):
+    #try: 
+        phase_shifts = run_HannayBreslow(params)
+        #print(phase_shifts - data_vals)
+        #print(abs(phase_shifts_corrected - data_vals))
+    
+        error = np.mean(abs(phase_shifts - data_vals))
+        print(error)
+    
+        return error
+    #except: 
+     #   return 1e6
 
 
-#x = [0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069]
-#anything = run_HannayBreslow(x)
 
+params = np.array([0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069])
+anything = objective_func(params)
 
-
+'''
 #------------- Run the differential evolution algorithm ----------
+# To be optimized: [(B_1), (B_2), (theta_M1), (theta_M2), (epsilon)]
 
-#------ Set bounds & ICs for the five parameters to be optimized ------------
+# Set bounds for the five parameters to be optimized
+bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
+
+optimized = differential_evolution(objective_func, bounds)#, args=(data_vals,), popsize=15, maxiter=4, disp=True)
+
+# Print the best solution found
+print(optimized.x)
+# Print the function value at the best solution
+print(optimized.fun)
+# Print the number of iterations
+print(optimized.nit)
+# Print the success flag
+print(optimized.success)
+
+'''
+
+
+'''
 
 # B_1, B_2, theta_M1, theta_M2, epsilon
 opt_lower_bound = np.array([-1,-1,0,0,-0.5])
@@ -458,7 +490,9 @@ bounds = [(l,u) for l, u in zip(opt_lower_bound,opt_upper_bound)]
 
 x = [0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069]
 
-optimized = differential_evolution(run_HannayBreslow(x), bounds, args=(data_vals,), popsize=15, maxiter=4, disp=True)
+optimized = differential_evolution(run_HannayBreslow(x,data_vals), bounds, args=(data_vals,), popsize=15, maxiter=4, disp=True)
 
 print(optimized)
+
+'''
 
