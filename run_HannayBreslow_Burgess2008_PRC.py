@@ -447,21 +447,6 @@ def objective_func(params,data_vals):
         phase_shifts = run_HannayBreslow_PRC(params)
         print(phase_shifts)
         
-        '''
-        Burgess_2008_PRC = [
-        0.782608696,#13
-        -0.556521739,#17
-        -1.782608696,#21
-        #-2.695652174,#22
-        -0.330434783,#0
-        1.095652174,#4
-        #2.182608696,#5
-        1.634782609,#9
-        ]
-        
-        data_vals = Burgess_2008_PRC
-        '''
-        
         #print(phase_shifts - data_vals)
         #print(abs(phase_shifts - data_vals))
     
