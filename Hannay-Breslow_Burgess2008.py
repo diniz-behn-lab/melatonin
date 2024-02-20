@@ -44,7 +44,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60 
+        self.m = 7*60
 
         ## Hannay Model
         self.D = 0
@@ -65,8 +65,9 @@ class HannayBreslowModel(object):
         self.I_0 = 9325
         self.G = 33.75
 
-        ## Melatonin Forcing Parameters
-        self.B_1 = 0.74545016#-0.74545016
+        ## Melatonin Forcing Parameters 
+        # Switched sign of all five 
+        self.B_1 = 0.74545016#-0.74545016 
         self.theta_M1 = -0.05671999#0.05671999
         self.B_2 = 0.76024892#-0.76024892
         self.theta_M2 = -0.05994563#0.05994563
@@ -78,7 +79,7 @@ class HannayBreslowModel(object):
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
         
         if melatonin_timing == None:
-            return 0 #set exogenous melatonin to zero
+            return 0 # set exogenous melatonin to zero
         else: 
             if 24 < t < 96: 
                 t = np.mod(t,24)
@@ -523,10 +524,10 @@ plt.show()
 #model = model_placebo
 #model = model_2
 #model = model_6
-#model = model_10
+model = model_10
 #model = model_14
 #model = model_18
-model = model_22
+#model = model_22
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
