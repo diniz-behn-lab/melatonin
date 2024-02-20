@@ -20,8 +20,9 @@ class HannayBreslowModel(object):
 # Initialize the class
     def __init__(self):
         self.set_params() # setting parameters every time an object of the class is created
-        self.set_melatonin_prc_params()
-
+        #self.set_melatonin_prc_params()
+        print("here")
+        
         ## Melatonin Forcing Parameters 
         # TO BE OPTIMIZED
     def set_melatonin_prc_params(self, params):
@@ -258,14 +259,16 @@ class HannayBreslowModel(object):
 def run_HannayBreslow_PRC():
     
     #--------- Run the model to find initial conditions --------------- 
+    '''
     model_IC = HannayBreslowModel()
-    print("here")
+    
     model_IC.set_melatonin_prc_params(params)
     model_IC.integrateModel(24*50, schedule=1) # use the integrateModel method with the object model
     IC = model_IC.results[-1,:] # get initial conditions from entrained model
+    '''
+    IC = ([0.832584, 2.0647, 0.470171, 116.73, 138.898, 0])
     
-    
-    #--------- Run the model under the placebo condition ---------------   
+    #--------- Run the model under the placebo condition ---------------
     model_placebo = HannayBreslowModel()
     model_placebo.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
@@ -427,6 +430,8 @@ def run_HannayBreslow_PRC():
     
     return phase_shifts_corrected
     
+
+
 def objective_func(data_vals):
     try: 
         phase_shifts = run_HannayBreslow_PRC()
