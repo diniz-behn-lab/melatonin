@@ -10,6 +10,7 @@ Optimize the melatonin forcing parameters (B1, B2, theta_M1, theta_M2, epsilon)
 
 #------- Set Up ----------------
 
+import numpy as np
 from scipy.optimize import differential_evolution
 from run_HannayBreslow_Burgess2008_PRC import objective_func
 import time
@@ -39,13 +40,13 @@ now = time.time()
 # To be optimized: [(B_1), (B_2), (theta_M1), (theta_M2), (epsilon)]
 
 # Set bounds for the five parameters to be optimized
-#bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
-bounds = [(-0.1, 0.1), (-0.1, 0.1), (0, 0.1), (0, 0.1), (-0.1, 0.1)]
+bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
+#bounds = [(-0.1, 0.1), (-0.1, 0.1), (0, 0.1), (0, 0.1), (-0.1, 0.1)]
 
 optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=15, maxiter=1, disp=True)
 
-# Print how long the run took
-print(time.time() - now)
+# Print how long (mins) the run took
+print((time.time() - now)/60) 
 
 # Print the best solution found
 print(optimized.x)
@@ -55,6 +56,9 @@ print(optimized.fun)
 print(optimized.nit)
 # Print the success flag
 print(optimized.success)
+# Print the success flag
+print(optimized.message)
+
 
 
 
