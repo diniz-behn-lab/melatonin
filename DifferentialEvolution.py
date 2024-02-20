@@ -47,7 +47,8 @@ data_vals = Burgess_2008_PRC
 # To be optimized: [(B_1), (B_2), (theta_M1), (theta_M2), (epsilon)]
 
 # Set bounds for the five parameters to be optimized
-bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
+#bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
+bounds = [(-0.1, 0.1), (-0.1, 0.1), (0, 0.1), (0, 0.1), (-0.1, 0.1)]
 #params = np.array([0,0,0,0,0])
 
 optimized = differential_evolution(objective_func, bounds)#, args=(data_vals,), popsize=15, maxiter=4, disp=True)
