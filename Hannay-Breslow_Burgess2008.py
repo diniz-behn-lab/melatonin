@@ -66,11 +66,11 @@ class HannayBreslowModel(object):
         self.G = 33.75
 
         ## Melatonin Forcing Parameters
-        self.B_1 = -0.74545016
-        self.theta_M1 = 0.05671999
-        self.B_2 = -0.76024892
-        self.theta_M2 = 0.05994563
-        self.epsilon = 0.18366069
+        self.B_1 = 0.74545016#-0.74545016
+        self.theta_M1 = -0.05671999#0.05671999
+        self.B_2 = 0.76024892#-0.76024892
+        self.theta_M2 = -0.05994563#0.05994563
+        self.epsilon = -0.18366069#0.18366069
         
        
     
@@ -315,7 +315,8 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_2 = final_DLMO - baseline_DLMO
+phase_shift_2 = final_DLMO - baseline_DLMO # 2.5h, or 6.4h after DLMO
+
 
 
 
@@ -342,7 +343,7 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_6 = final_DLMO - baseline_DLMO
+phase_shift_6 = final_DLMO - baseline_DLMO # 6.5h, or 10.4h after DLMO
 
 
 
@@ -369,7 +370,7 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_10 = final_DLMO - baseline_DLMO
+phase_shift_10 = final_DLMO - baseline_DLMO # 10.5h, or 14.4h after DLMO
 
 
 
@@ -395,7 +396,7 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_14 = final_DLMO - baseline_DLMO
+phase_shift_14 = final_DLMO - baseline_DLMO # 14.5h, or 6.4h before DLMO
 
 
 
@@ -421,7 +422,7 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_18 = final_DLMO - baseline_DLMO
+phase_shift_18 = final_DLMO - baseline_DLMO # 18.5h, or 2.4h before DLMO
 
 
 
@@ -447,7 +448,7 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_22 = final_DLMO - baseline_DLMO
+phase_shift_22 = final_DLMO - baseline_DLMO # 22.5h, or 1.4h after DLMO
 
 
 
@@ -515,11 +516,18 @@ plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.show()
 
-'''
+
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-model = model_2
+#model = model_placebo
+#model = model_2
+#model = model_6
+#model = model_10
+#model = model_14
+#model = model_18
+model = model_22
+
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
@@ -635,4 +643,3 @@ plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
-'''
