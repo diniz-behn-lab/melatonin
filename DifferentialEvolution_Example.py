@@ -16,7 +16,7 @@ def rosenbrock(x):
     return sum(100 * (x[i + 1] - x[i] ** 2) ** 2 + (x[i] - 1) ** 2 for i in range(len(x) - 1))
 
 # Define the bounds of the input variables (2 dimensions)
-bounds = [(-10, 10), (-10, 10)]
+bounds = [(-5, 5), (-5, 5)]
 
 # Call the differential_evolution function with the objective function and the bounds
 result = differential_evolution(rosenbrock, bounds)
