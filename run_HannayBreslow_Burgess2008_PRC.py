@@ -21,12 +21,13 @@ class HannayBreslowModel(object):
     def __init__(self):
         self.set_params() # setting parameters every time an object of the class is created
         #self.set_melatonin_prc_params()
-        print("here")
         
         ## Melatonin Forcing Parameters 
         # TO BE OPTIMIZED
     def set_melatonin_prc_params(self, params):
         #params = np.array([0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069])
+        print("here")
+        print(params)
         self.B_1 = params[0] #0.74545016
         self.theta_M1 = params[1] #-0.05671999
         self.B_2 = params[2] #0.76024892
