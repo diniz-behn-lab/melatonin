@@ -24,15 +24,15 @@ class HannayBreslowModel(object):
         
         ## Melatonin Forcing Parameters 
         # TO BE OPTIMIZED
-    def set_melatonin_prc_params(self, params):
-        #params = np.array([0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069])
-        print("here")
-        print(params)
-        self.B_1 = params[0] #0.74545016
-        self.theta_M1 = params[1] #-0.05671999
-        self.B_2 = params[2] #0.76024892
-        self.theta_M2 = params[3] #-0.05994563
-        self.epsilon = params[4] #-0.18366069    
+    def set_melatonin_prc_params(self, theta):
+        self.B_1 = theta[0] #0.74545016
+        self.theta_M1 = theta[1] #-0.05671999
+        self.B_2 = theta[2] #0.76024892
+        self.theta_M2 = theta[3] #-0.05994563
+        self.epsilon = theta[4] #-0.18366069    
+        
+        print("melatonin parameters are set")
+        print(theta)
 
 # Set parameter values 
     def set_params(self):
@@ -72,15 +72,13 @@ class HannayBreslowModel(object):
         self.I_0 = 9325
         self.G = 33.75
         
-        self.B_1 = 0
-        self.theta_M1 = 0
-        self.B_2 = 0
-        self.theta_M2 = 0
-        self.epsilon = 0
-
-
+        self.B_1 = 0#0.74545016
+        self.theta_M1 = 0#-0.05671999
+        self.B_2 = 0#0.76024892
+        self.theta_M2 = 0#-0.05994563
+        self.epsilon = 0#-0.18366069
         
-       
+        print("parameters are set")
     
 # Set the exogenous melatonin administration schedule VERSION 5
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
@@ -257,7 +255,7 @@ class HannayBreslowModel(object):
 
 
    
-def run_HannayBreslow_PRC():
+def run_HannayBreslow_PRC(params):
     
     #--------- Run the model to find initial conditions --------------- 
     '''
@@ -271,6 +269,7 @@ def run_HannayBreslow_PRC():
     
     #--------- Run the model under the placebo condition ---------------
     model_placebo = HannayBreslowModel()
+    model_placebo.set_melatonin_prc_params(params)
     model_placebo.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
     # Calculate shift due to protocol
@@ -289,9 +288,11 @@ def run_HannayBreslow_PRC():
     # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
     phase_shift_placebo = final_DLMO - baseline_DLMO
         
+    print("placebo shift found")    
 
     #--------- Run the model with exogenous melatonin at 2.5h ---------------
     model_2 = HannayBreslowModel()
+    model_2.set_melatonin_prc_params(params)
     model_2.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
 
     # Calculate shift due to protocol
@@ -310,10 +311,11 @@ def run_HannayBreslow_PRC():
     # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
     phase_shift_2 = final_DLMO - baseline_DLMO # 2.5h, or 6.4h after DLMO
        
-
+    print("2.5 shift found") 
         
     #--------- Run the model with exogenous melatonin at 6.5h ---------------
     model_6 = HannayBreslowModel()
+    model_6.set_melatonin_prc_params(params)
     model_6.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=6.5, melatonin_dosage=3.0,schedule=2) 
 
     # Calculate shift due to protocol
@@ -332,10 +334,11 @@ def run_HannayBreslow_PRC():
     # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
     phase_shift_6 = final_DLMO - baseline_DLMO # 6.5h, or 10.4h after DLMO
 
-
+    print("6.5 shift found") 
 
     #--------- Run the model with exogenous melatonin at 10.5h ---------------
     model_10 = HannayBreslowModel()
+    model_10.set_melatonin_prc_params(params)
     model_10.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10.5, melatonin_dosage=3.0,schedule=2)
 
     # Calculate shift due to protocol
@@ -354,10 +357,11 @@ def run_HannayBreslow_PRC():
     # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
     phase_shift_10 = final_DLMO - baseline_DLMO # 10.5h, or 14.4h after DLMO
     
-
+    print("10.5 shift found") 
 
     #--------- Run the model with exogenous melatonin at 14.5h ---------------
     model_14 = HannayBreslowModel()
+    model_14.set_melatonin_prc_params(params)
     model_14.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=14.5, melatonin_dosage=3.0,schedule=2)
 
     # Calculate shift due to protocol
@@ -376,10 +380,11 @@ def run_HannayBreslow_PRC():
     # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
     phase_shift_14 = final_DLMO - baseline_DLMO # 14.5h, or 6.4h before DLMO
 
-
+    print("14.5 shift found") 
 
     #--------- Run the model with exogenous melatonin at 18.5h ---------------
     model_18 = HannayBreslowModel()
+    model_18.set_melatonin_prc_params(params)
     model_18.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=18.5, melatonin_dosage=3.0,schedule=2)
 
     # Calculate shift due to protocol
@@ -398,10 +403,11 @@ def run_HannayBreslow_PRC():
     # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
     phase_shift_18 = final_DLMO - baseline_DLMO # 18.5h, or 2.4h before DLMO
     
-
+    print("18.5 shift found") 
 
     #--------- Run the model with exogenous melatonin at 22.5h ---------------
     model_22 = HannayBreslowModel()
+    model_22.set_melatonin_prc_params(params)
     model_22.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=22.5, melatonin_dosage=3.0,schedule=2)
 
     # Calculate shift due to protocol
@@ -420,7 +426,7 @@ def run_HannayBreslow_PRC():
     # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
     phase_shift_22 = final_DLMO - baseline_DLMO # 22.5h, or 1.4h after DLMO
     
-
+    print("22.5 shift found")     
 
     #---------- Make an array of all predicted phase shifts --------------
 
@@ -429,15 +435,19 @@ def run_HannayBreslow_PRC():
     # Subtract off the shift due to the protocol
     phase_shifts_corrected = (phase_shifts - phase_shift_placebo)
     
+    print(phase_shifts_corrected)
+    
     return phase_shifts_corrected
     
 
 
-def objective_func(data_vals):
+def objective_func(params, data_vals):
     try: 
-        phase_shifts = run_HannayBreslow_PRC()
+        phase_shifts = run_HannayBreslow_PRC(params)
+        #print(phase_shifts)
+        #print(data_vals)
         #print(phase_shifts - data_vals)
-        #print(abs(phase_shifts_corrected - data_vals))
+        #print(abs(phase_shifts - data_vals))
     
         error = np.mean(abs(phase_shifts - data_vals))
         print(error)
