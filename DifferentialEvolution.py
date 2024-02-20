@@ -10,22 +10,10 @@ Optimize the melatonin forcing parameters (B1, B2, theta_M1, theta_M2, epsilon)
 
 #------- Set Up ----------------
 
-import pandas as pd
 import numpy as np
 import scipy as sp
 from scipy.optimize import differential_evolution
-import time
 
-
-#------ Set bounds & ICs for the five parameters to be optimized ------------
-
-# B_1, B_2, theta_M1, theta_M2, epsilon
-opt_lower_bound = np.array([-1,-1,0,0,-0.5])
-opt_upper_bound = np.array([1,1,np.pi/2,np.pi/2,0.5])
-bounds = [(l,u) for l, u in zip(opt_lower_bound,opt_upper_bound)]
-
-#x0 = np.array([0,-.3,0,5*np.pi/12,0])
-x0 = np.array([0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069])
 
 #---------- Create an array of the data values -----------------
 
@@ -45,8 +33,6 @@ Burgess_2008_PRC_times = [14.5,18.5,22.5,2.5,6.5,10.5]
 
 data_vals = Burgess_2008_PRC
 
-
-#--------------- Model - Burgess 2008 PRC ----------------
 
 
 # ---------- Create Model Class -------------------
@@ -99,11 +85,11 @@ class HannayBreslowModel(object):
 
         ## Melatonin Forcing Parameters 
         # TO BE OPTIMIZED
-        self.B_1 = x0[0]
-        self.theta_M1 = x0[1]
-        self.B_2 = x0[2]
-        self.theta_M2 = x0[3]
-        self.epsilon = x0[4]
+        self.B_1 = x[0]#0.74545016
+        self.theta_M1 = x[1]#-0.05671999
+        self.B_2 = x[2]#0.76024892
+        self.theta_M2 = x[3]#-0.05994563
+        self.epsilon = x[4]#-0.18366069
         
        
     
@@ -282,7 +268,7 @@ class HannayBreslowModel(object):
 
 
    
-def run_HannayBreslow(self,t):
+def run_HannayBreslow(x):
     
     #--------- Run the model to find initial conditions --------------- 
     model_IC = HannayBreslowModel()
@@ -450,15 +436,29 @@ def run_HannayBreslow(self,t):
     # Subtract off the shift due to the protocol
     phase_shifts_corrected = (phase_shifts - phase_shift_placebo)
     
-    return phase_shifts_corrected
+    return abs(phase_shifts_corrected - data_vals)
 
+
+#x = [0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069]
+#anything = run_HannayBreslow(x)
 
 
 
 #------------- Run the differential evolution algorithm ----------
 
-now = time.time()
-optimized = differential_evolution(run_HannayBreslow, bounds,args=(data_vals,), popsize=15,maxiter=4,disp=True)
+#------ Set bounds & ICs for the five parameters to be optimized ------------
 
-print(time.time() - now)
+# B_1, B_2, theta_M1, theta_M2, epsilon
+opt_lower_bound = np.array([-1,-1,0,0,-0.5])
+opt_upper_bound = np.array([1,1,np.pi/2,np.pi/2,0.5])
+bounds = [(l,u) for l, u in zip(opt_lower_bound,opt_upper_bound)]
+
+#x0 = np.array([0,-.3,0,5*np.pi/12,0])
+#x0 = np.array([0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069])
+
+x = [0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069]
+
+optimized = differential_evolution(run_HannayBreslow(x), bounds, args=(data_vals,), popsize=15, maxiter=4, disp=True)
+
 print(optimized)
+
