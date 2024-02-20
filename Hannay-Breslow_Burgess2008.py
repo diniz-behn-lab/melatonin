@@ -67,11 +67,12 @@ class HannayBreslowModel(object):
 
         ## Melatonin Forcing Parameters 
         # Switched sign of all five 
-        self.B_1 = 0.74545016#-0.74545016 
-        self.theta_M1 = -0.05671999#0.05671999
-        self.B_2 = 0.76024892#-0.76024892
-        self.theta_M2 = -0.05994563#0.05994563
-        self.epsilon = -0.18366069#0.18366069
+        x = [0.98205316, -0.43430053,  0.62874808,  0.70361987, -0.1474383]
+        self.B_1 = x[0]#0.74545016#-0.74545016 
+        self.theta_M1 = x[1]#-0.05671999#0.05671999
+        self.B_2 = x[2]#0.76024892#-0.76024892
+        self.theta_M2 = x[3]#-0.05994563#0.05994563
+        self.epsilon = x[4]#-0.18366069#0.18366069
         
        
     
