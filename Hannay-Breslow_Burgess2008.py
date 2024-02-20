@@ -67,7 +67,7 @@ class HannayBreslowModel(object):
 
         ## Melatonin Forcing Parameters 
         # Switched sign of all five 
-        x = [0.98205316, -0.43430053,  0.62874808,  0.70361987, -0.1474383]
+        x = [0.99542337, -0.51069169,  0.14944396,  1.363063,   -0.33858827]
         self.B_1 = x[0]#0.74545016#-0.74545016 
         self.theta_M1 = x[1]#-0.05671999#0.05671999
         self.B_2 = x[2]#0.76024892#-0.76024892
