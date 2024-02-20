@@ -51,7 +51,7 @@ data_vals = Burgess_2008_PRC
 bounds = [(-0.1, 0.1), (-0.1, 0.1), (0, 0.1), (0, 0.1), (-0.1, 0.1)]
 params = np.array([0.74545016,-0.05671999,0.76024892,-0.05994563,-0.18366069])
 
-optimized = differential_evolution(objective_func(params, data_vals), bounds)#, args=(data_vals,), popsize=15, maxiter=4, disp=True)
+optimized = differential_evolution(objective_func, bounds)#, args=(data_vals,), popsize=15, maxiter=4, disp=True)
 
 # Print the best solution found
 print(optimized.x)
