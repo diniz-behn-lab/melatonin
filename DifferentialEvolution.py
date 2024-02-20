@@ -12,6 +12,7 @@ Optimize the melatonin forcing parameters (B1, B2, theta_M1, theta_M2, epsilon)
 
 from scipy.optimize import differential_evolution
 from run_HannayBreslow_Burgess2008_PRC import objective_func
+import time
 
 
 #---------- Create an array of the data values -----------------
@@ -34,13 +35,17 @@ data_vals = Burgess_2008_PRC
 
 
 #------------- Run the differential evolution algorithm ----------
+now = time.time()
 # To be optimized: [(B_1), (B_2), (theta_M1), (theta_M2), (epsilon)]
 
 # Set bounds for the five parameters to be optimized
 #bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
 bounds = [(-0.1, 0.1), (-0.1, 0.1), (0, 0.1), (0, 0.1), (-0.1, 0.1)]
 
-optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=15, maxiter=4, disp=True)
+optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=15, maxiter=1, disp=True)
+
+# Print how long the run took
+print(time.time() - now)
 
 # Print the best solution found
 print(optimized.x)
