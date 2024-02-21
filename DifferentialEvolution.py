@@ -43,7 +43,7 @@ now = time.time()
 bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
 #bounds = [(-0.1, 0.1), (-0.1, 0.1), (0, 0.1), (0, 0.1), (-0.1, 0.1)]
 
-optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=15, maxiter=8, disp=True)
+optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=15, maxiter=16, disp=True)
 
 # Print how long (mins) the run took
 print((time.time() - now)/60) 
