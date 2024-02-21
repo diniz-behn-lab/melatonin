@@ -66,11 +66,11 @@ class HannayBreslowModel(object):
         self.G = 33.75
 
         ## Melatonin Forcing Parameters
-        #x = [-0.74545016, 0.05671999, -0.76024892, 0.05994563, 0.18366069]
+        x = [-0.74545016, 0.05671999, -0.76024892, 0.05994563, 0.18366069]
         # Switched sign of all five 
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         #x = [0.99700223, -0.72002396,  0.31397044,  0.19042471, -0.1413401] # error = 0.4028985508333352
-        x = [ 0.99879503, -0.68781528,  0.07773659,  0.13352024, -0.16499148] # error = 0.3804347828333324
+        #x = [ 0.99879503, -0.68781528,  0.07773659,  0.13352024, -0.16499148] # error = 0.3804347828333324
         self.B_1 = x[0]#0.74545016#-0.74545016 
         self.theta_M1 = x[1]#-0.05671999#0.05671999
         self.B_2 = x[2]#0.76024892#-0.76024892
@@ -174,9 +174,8 @@ class HannayBreslowModel(object):
 
 # Timing of melatonin on and off
     def circ_response(self,psi):
-        dlmo_phase = 5*np.pi/12
+        dlmo_phase = 5*np.pi/12 # DLMO Phase when working with Hannay model
         psi = np.mod(psi - dlmo_phase,2*np.pi)
-        #psi = np.mod(psi,2*np.pi)
 
         if psi > self.psi_off and psi <= self.psi_on:
             return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
@@ -278,6 +277,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Run Burgess 2008 placebo protocol
 model_placebo = HannayBreslowModel()
 model_placebo.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+
 
 # Calculate shift due to protocol
 # Baseline day 
