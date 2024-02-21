@@ -54,8 +54,11 @@ class HannayBreslowModel(object):
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
         self.r = 15.36/3600 # CHANGED, converting secs to hrs
 
-        self.psi_on = 6.113
-        self.psi_off = 4.352
+        self.psi_on = 1.0472 #6.113 CHANGED 
+        self.psi_off = 3.92699 #4.352 CHANGED
+        
+        #self.psi_on = 6.113 #1.0472 #6.113 CHANGED 
+        #self.psi_off = 4.352 #3.92699 #4.352 CHANGED
 
         self.M_max = 0.019513
         self.H_sat = 861
@@ -208,8 +211,8 @@ class HannayBreslowModel(object):
 
 # Set the light schedule (timings and intensities)
     def light(self,t):
-        full_light = 1000
-        dim_light = 300 # reduced light
+        full_light = 0 #1000
+        dim_light = 0 #300 # reduced light
         wake_time = 7
         sleep_time = 23
         sun_up = 8
@@ -249,8 +252,10 @@ class HannayBreslowModel(object):
         psi = np.mod(psi - dlmo_phase,2*np.pi)
 
         if psi > self.psi_off and psi <= self.psi_on:
+            print("Pineal on")
             return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         else:
+            print("Pineal off")
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
 
 
@@ -356,7 +361,7 @@ plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
 
-'''
+
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L, zoomed)
 plt.plot(model.ts[120:180],model.results[120:180,3],lw=2)
 plt.plot(model.ts[120:180],model.results[120:180,4],lw=2)
@@ -432,4 +437,3 @@ plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
-'''
