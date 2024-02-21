@@ -83,8 +83,37 @@ for t in time:
         BurgessUltradian_lightschedule.append(full_light)
 
         
-plt.plot(time[0:40],BurgessUltradian_lightschedule[0:40])
+#plt.plot(time[0:40],BurgessUltradian_lightschedule[0:40])
+plt.plot(time,BurgessUltradian_lightschedule)
 plt.title("Burgess 2008 Ultradian Light:Dark Schedule (2.5:1.5)")
+#plt.axvline(1)
+#plt.axvline(2.5)
+#plt.axvline(5)
+#plt.axvline(6.5)
+plt.show()
+
+#------------------- Burgess 2008 5 Day Protocol ------------
+
+j = 5 # Number of days to be plotted
+
+n = j*24
+
+BurgessProtocol_lightschedule = list()
+time = np.linspace(0,n,97)
+
+for t in time:
+    full_light = 150
+    
+    if 24 <= t <= 72:
+        if 1 <= np.mod(t,4) <= 2.5 :
+            BurgessProtocol_lightschedule.append(0)
+        else:
+            BurgessProtocol_lightschedule.append(full_light)
+    else:
+        BurgessProtocol_lightschedule.append(5)
+        
+plt.plot(time,BurgessProtocol_lightschedule)
+plt.title("Burgess 2008 Protocol Light:Dark Schedule")
 #plt.axvline(1)
 #plt.axvline(2.5)
 #plt.axvline(5)
