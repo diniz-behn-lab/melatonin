@@ -208,25 +208,28 @@ class HannayBreslowModel(object):
     
 
 # Set the light schedule (timings and intensities)
-    def light(self,t):
-        full_light = 1000
-        dim_light = 300 # reduced light
-        wake_time = 7
-        sleep_time = 23
-        sun_up = 8
-        sun_down = 19
+    def light(self,t,schedule):
+        
+        if schedule == 1: # standard 16:8 schedule 
+            full_light = 1000
+            dim_light = 300
+            wake_time = 7
+            sleep_time = 23
+            sun_up = 8
+            sun_down = 19
+            
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
-        is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-        sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-
-        return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        else: # Dim light environment
+            return 5
 
 
 # Define the alpha(L) function 
-    def alpha0(self,t):
+    def alpha0(self,t,schedule):
         """A helper function for modeling the light input processing"""
-        return(self.alpha_0*pow(self.light(t), self.p)/(pow(self.light(t), self.p)+self.I_0));
-
+        return(self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0));
     '''
 # Melatonin dynamics from Breslow model
     def m_process(self,u):
@@ -268,7 +271,7 @@ class HannayBreslowModel(object):
     
 
 # Defining the system of ODEs (6-dimensional system)
-    def ODESystem(self,t,y,melatonin_timing,melatonin_dosage):
+    def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
         """
         This defines the ode system for the single population model and 
         returns dydt numpy array.
@@ -281,7 +284,7 @@ class HannayBreslowModel(object):
         H3 = y[5]
 
         # Light interaction with pacemaker
-        Bhat = self.G*(1.0-n)*self.alpha0(t)
+        Bhat = self.G*(1.0-n)*self.alpha0(t,schedule)
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
         
@@ -299,7 +302,7 @@ class HannayBreslowModel(object):
 
         dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
         dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
-        dydt[2] = 60.0*(self.alpha0(t)*(1.0-n)-(self.delta*n)) # dn/dt
+        dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[1])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
@@ -309,7 +312,7 @@ class HannayBreslowModel(object):
 
 
 
-    def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0],melatonin_timing = None,melatonin_dosage=None):
+    def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0],melatonin_timing = None,melatonin_dosage=None, schedule = 1):
         """ 
         Integrate the model forward in time.
             tend: float giving the final time to integrate to
@@ -328,7 +331,7 @@ class HannayBreslowModel(object):
         self.ts = self.ts[self.ts <= tend]
         self.ts = self.ts[self.ts >= tstart]
         
-        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau', args=(melatonin_timing,melatonin_dosage,))
+        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau', args=(melatonin_timing,melatonin_dosage,schedule,))
         self.results = np.transpose(r_variable.y)
 
         return
@@ -340,11 +343,11 @@ class HannayBreslowModel(object):
 #--------- Run the Model ---------------
 
 model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(24*30) # use the integrateModel method with the object model
+model.integrateModel(24*30,schedule=1) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
