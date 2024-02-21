@@ -54,8 +54,8 @@ class HannayBreslowModel(object):
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
         self.r = 15.36/3600 # CHANGED, converting secs to hrs
         
-        self.psi_on = 1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
-        self.psi_off = 3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
+        self.psi_on = (23*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
+        self.psi_off = (4*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
 
         self.M_max = 0.019513
         self.H_sat = 861
@@ -179,7 +179,6 @@ class HannayBreslowModel(object):
         if melatonin_timing == None:
             return 0 #set exogenous melatonin to zero
         else: 
-            print(t)
             if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
                 sigma = np.sqrt(0.002)
                 mu = melatonin_timing+0.1
@@ -223,7 +222,7 @@ class HannayBreslowModel(object):
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: # Dim light environment
-            return 5
+            return 0
 
 
 # Define the alpha(L) function 
@@ -347,11 +346,11 @@ model.integrateModel(24*30,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500) # with Guassian
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500) # with Guassian
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=0.2)
 
 
@@ -372,7 +371,7 @@ plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
 
-'''
+
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L, zoomed)
 plt.plot(model.ts[120:180],model.results[120:180,3],lw=2)
 plt.plot(model.ts[120:180],model.results[120:180,4],lw=2)
@@ -385,7 +384,7 @@ plt.title("Melatonin Concentrations")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
-'''
+
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
