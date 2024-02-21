@@ -99,12 +99,22 @@ j = 5 # Number of days to be plotted
 n = j*24
 
 BurgessProtocol_lightschedule = list()
-time = np.linspace(0,n,97)
+time = np.linspace(0,n,100)
 
 for t in time:
     full_light = 150
     
-    if 24 <= t <= 72:
+    if 24 <= t < 48:
+        if 1 <= np.mod(t,4) <= 2.5 :
+            BurgessProtocol_lightschedule.append(0)
+        else:
+            BurgessProtocol_lightschedule.append(full_light)
+    if 48 <= t < 72:
+        if 1 <= np.mod(t,4) <= 2.5 :
+            BurgessProtocol_lightschedule.append(0)
+        else:
+            BurgessProtocol_lightschedule.append(full_light)
+    if 72 <= t < 96:
         if 1 <= np.mod(t,4) <= 2.5 :
             BurgessProtocol_lightschedule.append(0)
         else:
