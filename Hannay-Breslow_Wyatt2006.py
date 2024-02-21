@@ -71,14 +71,6 @@ class HannayBreslowModel(object):
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
         
-        # Converting mg dosage to pmol/L
-        r2 = self.beta_CP
-        r3 = self.beta_AP
-        max_ratio = (r3/(r2-r3))*(np.power(r2/r3,-r3/(r2-r3))-np.power(r2/r3,-r2/(r2-r3)))
-        mid_dose = (0.1+0.3)/2
-        dose_ratio = 200/mid_dose
-        self.aborption_conversion = dose_ratio/max_ratio
-        
        
     
 # Set the exogenous melatonin administration schedule VERSION 5
@@ -250,8 +242,8 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=24500,schedule=2) #reproduces 0.3mg dosage
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000,schedule=2) #reproduces 5.0mg dosage
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=24500,schedule=2) #reproduces 0.3mg dosage
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000,schedule=2) #reproduces 5.0mg dosage
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=145000,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage
 
 
@@ -276,14 +268,13 @@ plt.show()
 #plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts[210:280],model.results[210:280,4],lw=2)
 #plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=23.1)
-#plt.axvline(x=6)
-#plt.axvline(x=4)
-#plt.axhline(300)
+plt.axvline(x=21.5)
+plt.axvline(x=23.5)
+plt.axhline(8000)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Blood Plasma Melatonin Concentration (pmol/L)")
-plt.legend(["Pineal","Plasma", "Exogenous"])
+plt.legend(["Plasma"])
 plt.show()
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
