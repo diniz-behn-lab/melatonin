@@ -37,7 +37,7 @@ class HannayBreslowModel(object):
         self.r = 15.36/3600 # CHANGED, converting secs to hrs
         
         self.psi_on = 1.0472 #6.113  
-        self.psi_off = 3.92699 #4.352
+        self.psi_off = 2.87979327 ##3.92699 #4.352
         
         #self.psi_on = (4*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
         #self.psi_off = (15*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
@@ -75,8 +75,7 @@ class HannayBreslowModel(object):
         
         
         # Just for plotting 
-        self.plot_t = np.linspace(0, 24, 1516)
-        self.plot_t_2 = np.linspace(0, 24, 4548)
+        self.plot_t = np.linspace(0, 24, 1177)
         
     
         
@@ -131,7 +130,7 @@ class HannayBreslowModel(object):
             full_light = 1000
             dim_light = 300
             wake_time = 7
-            sleep_time = 15
+            sleep_time = 23
             sun_up = 8
             sun_down = 19
             
@@ -139,6 +138,17 @@ class HannayBreslowModel(object):
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
             light = is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        if schedule == 2: # standard 16:8 schedule 
+            full_light = 1000
+            dim_light = 300
+            wake_time = 7
+            sleep_time = 15
+
+            if wake_time < np.mod(t,24) < sleep_time:
+                light = full_light
+            else:
+                light = 0
+ 
         else: # Constant light environment
             light = 0
         
@@ -159,12 +169,22 @@ class HannayBreslowModel(object):
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
         #S = not(H1 < 0.001 and tmp < 0)
-        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
-        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
+        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
         
         # Melatonin production by the pineal
         dlmo_phase = 5*np.pi/12
         psi = np.mod(y[1] - dlmo_phase,2*np.pi)
+        
+        '''   
+        if psi > self.psi_off and psi <= self.psi_on:
+            #print("Pineal off")
+            pineal_production = self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+        else:
+            #print("Pineal on")
+            pineal_production = self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
+        '''
+        
         
         if self.psi_on < psi < self.psi_off:
             #print("Pineal on")
@@ -174,18 +194,20 @@ class HannayBreslowModel(object):
             pineal_production = self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         
         
-        #self.AofPhi_list.append(self.circ_response(y[1]))
-        #self.Bhat_list.append(Bhat)
-        #self.tmp_list.append(tmp)
-        #self.S_list.append(S)
-        #self.alpha_list.append(self.alpha0(t,schedule))
+        
+        self.AofPhi_list.append(pineal_production)
+        self.Bhat_list.append(Bhat)
+        self.tmp_list.append(tmp)
+        self.S_list.append(S)
+        self.alpha_list.append(alpha)
+        self.light_list.append(light)
         
         
         dydt=np.zeros(6)
 
-        dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
-        dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
-        dydt[2] = 60.0*alpha*(1.0-n)-(self.delta*n) # dn/dt
+        dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp #+ MelAmp # dR/dt
+        dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase #+ MelPhase # dpsi/dt
+        dydt[2] = 60*(alpha*(1.0-n)-(self.delta*n)) # dn/dt 
 
         dydt[3] = -self.beta_IP*H1 + (pineal_production*tmp*S) # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
@@ -206,12 +228,12 @@ class HannayBreslowModel(object):
         Writes the integration results into the scipy array self.results.
         Returns the circadian phase (in hours) at the ending time for the system.
         """
-        #self.AofPhi_list = []
-        #self.Bhat_list = []
-        #self.tmp_list = []
-        #self.S_list = []
-        #self.alpha_list = []
-        #self.light_list = []
+        self.AofPhi_list = []
+        self.Bhat_list = []
+        self.tmp_list = []
+        self.S_list = []
+        self.alpha_list = []
+        self.light_list = []
         
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
@@ -236,7 +258,7 @@ model.integrateModel(24*30,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
@@ -246,14 +268,14 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 
 
 #--------- Plot Model Output -------------------
-
+'''
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
-plt.plot(model.ts,model.results[:,3],lw=2)
-plt.plot(model.ts,model.results[:,4],lw=2)
-plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=21.4)
-plt.axvline(x=7)
-plt.axvline(x=8.3)
+plt.plot(model.ts[-240:],model.results[-240:,3],lw=2)
+plt.plot(model.ts[-240:],model.results[-240:,4],lw=2)
+plt.plot(model.ts[-240:],model.results[-240:,5],lw=2)
+#plt.axvline(x=21.4)
+#plt.axvline(x=7)
+#plt.axvline(x=8.3)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Melatonin Concentrations (pmol/L)")
@@ -262,6 +284,21 @@ plt.show()
 
 '''
 
+# Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
+plt.plot(model.ts,model.results[:,3],lw=2)
+plt.plot(model.ts,model.results[:,4],lw=2)
+plt.plot(model.ts,model.results[:,5],lw=2)
+#plt.axvline(x=21.4)
+#plt.axvline(x=7)
+#plt.axvline(x=8.3)
+plt.axvline(x=10)
+plt.xlabel("Time (hours)")
+plt.ylabel("Melatonin Concentration (pmol/L)")
+plt.title("Melatonin Concentrations (pmol/L)")
+plt.legend(["Pineal","Plasma", "Exogenous"])
+plt.show()
+
+'''
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L, zoomed)
 plt.plot(model.ts[120:180],model.results[120:180,3],lw=2)
 plt.plot(model.ts[120:180],model.results[120:180,4],lw=2)
@@ -315,6 +352,8 @@ plt.title("Melatonin Concentrations at DLMO (4pg/mL) After")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
+'''
+
 # Plotting R
 plt.plot(model.ts,model.results[:,0],lw=2)
 plt.xlabel("Time (hours)")
@@ -323,9 +362,9 @@ plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
 
 
-
 # Plotting psi
 plt.plot(model.ts,model.results[:,1],lw=2)
+plt.axvline(x=10)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
@@ -333,13 +372,18 @@ plt.show()
 
 # Plotting psi mod 2pi
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),lw=2)
+plt.axvline(x=10)
+plt.axhline(1.0472)
+plt.axhline(3.92699)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
+
 # Plotting n
 plt.plot(model.ts,model.results[:,2],lw=2)
+plt.axvline(x=10)
 #plt.axvline(x=7)
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
@@ -348,8 +392,7 @@ plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
 
-
-
+'''
 # Plotting A(phi)
 #plt.plot(model.ts, model.AofPhi_list[-240:])
 plt.plot(model.plot_t, model.AofPhi_list)
@@ -382,9 +425,9 @@ plt.show()
 
 # Plotting light(t)
 #plt.plot(model.ts, model.Bhat_list[-240:])
-plt.plot(model.plot_t_2, model.light_list)
+plt.plot(model.plot_t, model.light_list)
 plt.title("light")
 plt.show()
 
-''' 
+'''
 
