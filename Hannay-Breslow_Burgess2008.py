@@ -38,8 +38,11 @@ class HannayBreslowModel(object):
         self.delta_M = 600/3600 # converting secs to hrs
         self.r = 15.36/3600 # converting secs to hrs
 
-        self.psi_on = (23*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
-        self.psi_off = (4*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
+        self.psi_on = 6.113  
+        self.psi_off = 4.352 
+
+        #self.psi_on = (23*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
+        #self.psi_off = (4*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
 
         self.M_max = 0.019513
         self.H_sat = 861
