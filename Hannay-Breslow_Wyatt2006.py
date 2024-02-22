@@ -157,13 +157,19 @@ class HannayBreslowModel(object):
     def circ_response(self,psi):
         dlmo_phase = 5*np.pi/12
         psi = np.mod(psi - dlmo_phase,2*np.pi)
-        #psi = np.mod(psi,2*np.pi)
-
+        
+        if self.psi_on < psi < self.psi_off:
+            #print("Pineal on")
+            return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
+        else:
+            #print("Pineal off")
+            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+        '''
         if psi > self.psi_off and psi <= self.psi_on:
             return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         else:
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
-
+        '''
 
 # Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
@@ -242,11 +248,11 @@ model.integrateModel(24*50,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run Wyatt 2006 baseline days
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=24500,schedule=2) #reproduces 0.3mg dosage
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000,schedule=2) #reproduces 5.0mg dosage
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000,schedule=2) #reproduces 5.0mg dosage
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=145000,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage
 
 
