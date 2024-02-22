@@ -138,11 +138,11 @@ class HannayBreslowModel(object):
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
             light = is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-        if schedule == 2: # standard 16:8 schedule 
+        elif schedule == 2: # standard 16:8 schedule 
             full_light = 1000
             dim_light = 300
             wake_time = 7
-            sleep_time = 15
+            sleep_time = 18
 
             if wake_time < np.mod(t,24) < sleep_time:
                 light = full_light
@@ -191,7 +191,8 @@ class HannayBreslowModel(object):
             pineal_production = self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
         else:
             #print("Pineal off")
-            pineal_production = self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+            # CHANGED added a factor of 1/360 to compensate for the higher "a" value 
+            pineal_production = (1/360)*self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         
         
         
@@ -254,7 +255,7 @@ class HannayBreslowModel(object):
 #--------- Run the Model ---------------
 
 model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(24*30,schedule=1) # use the integrateModel method with the object model
+model.integrateModel(24*30,schedule=2) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
