@@ -180,11 +180,18 @@ class HannayBreslowModel(object):
         dlmo_phase = 5*np.pi/12 # DLMO Phase when working with Hannay model
         psi = np.mod(psi - dlmo_phase,2*np.pi)
 
+        if self.psi_on < psi < self.psi_off:
+            #print("Pineal on")
+            return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
+        else:
+            #print("Pineal off")
+            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+        '''
         if psi > self.psi_off and psi <= self.psi_on:
             return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         else:
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
-
+        '''
 
 # Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
