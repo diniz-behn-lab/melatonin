@@ -313,4 +313,4 @@ for t in range(0,len(psi)):
 #---------- Plot A(psi) ------------
 
 plt.plot(psi,A_of_psi)
-plt.title("Pineal GLand Activation")
+plt.title("Pineal Gland Activation")
