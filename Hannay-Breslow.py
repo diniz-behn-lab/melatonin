@@ -41,10 +41,6 @@ class HannayBreslowModel(object):
 # Initialize the class
     def __init__(self):
         self.set_params() # setting parameters every time an object of the class is created
-        self.AofPhi_list = []
-        self.tmp_list = []
-        self.S_list = []
-        self.Bhat_list = []
 
 # Set parameter values 
     def set_params(self):
@@ -93,6 +89,11 @@ class HannayBreslowModel(object):
         self.B_2 = -0.76024892
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
+        
+        
+        # Just for plotting 
+        self.plot_t = np.linspace(0, 24, 1516)
+        self.plot_t_2 = np.linspace(0, 24, 4548)
         
         
        
@@ -234,6 +235,9 @@ class HannayBreslowModel(object):
 # Define the alpha(L) function 
     def alpha0(self,t,schedule):
         """A helper function for modeling the light input processing"""
+        
+        self.light_list.append(self.light(t,schedule))
+        
         return(self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0));
     '''
 # Melatonin dynamics from Breslow model
@@ -309,6 +313,7 @@ class HannayBreslowModel(object):
         self.Bhat_list.append(Bhat)
         self.tmp_list.append(tmp)
         self.S_list.append(S)
+        self.alpha_list.append(self.alpha0(t,schedule))
         
         
         dydt=np.zeros(6)
@@ -340,6 +345,8 @@ class HannayBreslowModel(object):
         self.Bhat_list = []
         self.tmp_list = []
         self.S_list = []
+        self.alpha_list = []
+        self.light_list = []
         
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
@@ -476,22 +483,41 @@ plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
+
+
+
 # Plotting A(phi)
-plt.plot(model.ts, model.AofPhi_list[-240:])
+#plt.plot(model.ts, model.AofPhi_list[-240:])
+plt.plot(model.plot_t, model.AofPhi_list)
 plt.title("Pineal Activation, A(phi)")
 plt.show()
 
 # Plotting tmp 
-plt.plot(model.ts, model.tmp_list[-240:])
+#plt.plot(model.ts, model.tmp_list[-240:])
+plt.plot(model.plot_t, model.tmp_list)
 plt.title("Light Suppression, (1-mB)")
 plt.show()
 
 # Plotting S 
-plt.plot(model.ts, model.S_list[-240:])
+#plt.plot(model.ts, model.S_list[-240:])
+plt.plot(model.plot_t, model.S_list)
 plt.title("Switch")
 plt.show()
 
 # Plotting Bhat
-plt.plot(model.ts, model.Bhat_list[-240:])
+#plt.plot(model.ts, model.Bhat_list[-240:])
+plt.plot(model.plot_t, model.Bhat_list)
 plt.title("Bhat")
+plt.show()
+
+# Plotting alpha_0
+#plt.plot(model.ts, model.Bhat_list[-240:])
+plt.plot(model.plot_t, model.alpha_list)
+plt.title("alpha_0")
+plt.show()
+
+# Plotting light(t)
+#plt.plot(model.ts, model.Bhat_list[-240:])
+plt.plot(model.plot_t_2, model.light_list)
+plt.title("light")
 plt.show()
