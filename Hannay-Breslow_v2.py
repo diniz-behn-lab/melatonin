@@ -78,11 +78,80 @@ class HannayBreslowModel(object):
         self.plot_t = np.linspace(0, 24, 1516)
         self.plot_t_2 = np.linspace(0, 24, 4548)
         
+    
+        
+# Set the exogenous melatonin administration schedule VERSION 5
+    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
+        if melatonin_timing == None:
+            return 0 #set exogenous melatonin to zero
+        else: 
+            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
+                sigma = np.sqrt(0.002)
+                mu = melatonin_timing+0.1
+
+                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
+
+                x = np.arange(0, 1, 0.01)
+                melatonin_values = self.max_value(x, sigma)
+                max_value = max(melatonin_values)
+                print(max_value)
+            
+                normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+                dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
+            
+                return dose_ex_mel        
+            else: 
+                return 0
+        
+    
+# Generate the curve for a 24h melatonin schedule so that the max value can be determined      
+    def max_value(self, time, sigma):
+        mu = 1/2
+        Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(time-mu,2))/(2*pow(sigma,2)))
+        return Guassian
 
     
 
+# Set the light schedule (timings and intensities)
+    def light(self,t,schedule):
+        
+        if schedule == 1: # standard 16:8 schedule 
+            full_light = 1000
+            dim_light = 300
+            wake_time = 7
+            sleep_time = 15
+            sun_up = 8
+            sun_down = 19
+            
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        else: # Constant light environment
+            return 0
 
 
+# Timing of melatonin on and off
+    def circ_response(self,psi):
+        dlmo_phase = 5*np.pi/12
+        psi = np.mod(psi - dlmo_phase,2*np.pi)
+        
+        if self.psi_on < psi < self.psi_off:
+            #print("Pineal on")
+            return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
+        else:
+            #print("Pineal off")
+            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+
+    '''
+        if psi > self.psi_off and psi <= self.psi_on:
+            print("Pineal off")
+            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+        else:
+            print("Pineal on")
+            return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
+    '''
+    
     
 
 # Defining the system of ODEs (6-dimensional system)
@@ -98,70 +167,10 @@ class HannayBreslowModel(object):
         H2 = y[4]
         H3 = y[5]
         
-        # Set the exogenous melatonin administration schedule
-        if melatonin_timing == None:
-            ex_melatonin = 0
-            return ex_melatonin #set exogenous melatonin to zero
-        else: 
-            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
-                sigma = np.sqrt(0.002)
-                mu = melatonin_timing+0.1
-
-                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
-
-                x = np.arange(0, 1, 0.01)
-                mu = 1/2
-                Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2)))
-                melatonin_values = Guassian
-                max_value = max(melatonin_values)
-                print(max_value)
-            
-                normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
-                dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
-            
-                return dose_ex_mel        
-            else: 
-                return 0
-        
-        # Set the light schedule (timings and intensities)    
-        if schedule == 1: # standard 16:8 schedule 
-            full_light = 1000
-            dim_light = 300
-            wake_time = 7
-            sleep_time = 15
-            sun_up = 8
-            sun_down = 19
-                
-            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-
-            light = is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-            
-            return light
-        else: # Constant light environment
-            light = 0
-            return light
-        
-        # Define the alpha(L) function 
-        L = (self.alpha_0*pow(light, self.p)/(pow(light, self.p)+self.I_0));
-        
-        # Timing of melatonin on and off
-        dlmo_phase = 5*np.pi/12
-        psi = np.mod(y[1] - dlmo_phase,2*np.pi)
-                
-        if self.psi_on < psi < self.psi_off:
-            #print("Pineal on")
-            pineal_input = self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
-            return pineal_input
-        else:
-            #print("Pineal off")
-            pineal_input = self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
-            return pineal_input
-
-            
+        alpha = (self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0))
 
         # Light interaction with pacemaker
-        Bhat = self.G*(1.0-n)*L
+        Bhat = self.G*(1.0-n)*alpha
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
         
@@ -188,11 +197,11 @@ class HannayBreslowModel(object):
 
         dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
         dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
-        dydt[2] = 60.0*(L*(1.0-n)-(self.delta*n)) # dn/dt
+        dydt[2] = 60.0*alpha*(1.0-n)-(self.delta*n) # dn/dt
 
-        dydt[3] = -self.beta_IP*H1 + pineal_input*tmp*S # dH1/dt
+        dydt[3] = -self.beta_IP*H1 + self.circ_response(y[1])*tmp*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
-        dydt[5] = -self.beta_AP*H3 + ex_melatonin # dH3/dt
+        dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t,melatonin_timing,melatonin_dosage) # dH3/dt
 
         return(dydt)
 
@@ -209,12 +218,12 @@ class HannayBreslowModel(object):
         Writes the integration results into the scipy array self.results.
         Returns the circadian phase (in hours) at the ending time for the system.
         """
-        #self.AofPhi_list = []
-        #self.Bhat_list = []
-        #self.tmp_list = []
-        #self.S_list = []
-        #self.alpha_list = []
-        #self.light_list = []
+        self.AofPhi_list = []
+        self.Bhat_list = []
+        self.tmp_list = []
+        self.S_list = []
+        self.alpha_list = []
+        self.light_list = []
         
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
@@ -229,7 +238,6 @@ class HannayBreslowModel(object):
 
         return
 #-------- end of HannayBreslowModel class ---------
-
 
 
 
@@ -264,7 +272,7 @@ plt.title("Melatonin Concentrations (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
-
+'''
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L, zoomed)
 plt.plot(model.ts[120:180],model.results[120:180,3],lw=2)
@@ -295,7 +303,7 @@ plt.title("Melatonin Concentrations (pg/mL)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
-'''
+
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL, zoomed)
 plt.plot(model.ts[220:250],model.results[220:250,3]/4.3,lw=2)
@@ -326,7 +334,7 @@ plt.ylabel("R, Collective Amplitude")
 plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
 
-'''
+
 
 # Plotting psi
 plt.plot(model.ts,model.results[:,1],lw=2)
@@ -389,3 +397,6 @@ plt.show()
 plt.plot(model.plot_t_2, model.light_list)
 plt.title("light")
 plt.show()
+
+''' 
+
