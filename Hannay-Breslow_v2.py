@@ -129,28 +129,6 @@ class HannayBreslowModel(object):
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: # Constant light environment
             return 0
-
-
-# Timing of melatonin on and off
-    def circ_response(self,psi):
-        dlmo_phase = 5*np.pi/12
-        psi = np.mod(psi - dlmo_phase,2*np.pi)
-        
-        if self.psi_on < psi < self.psi_off:
-            #print("Pineal on")
-            return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
-        else:
-            #print("Pineal off")
-            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
-
-    '''
-        if psi > self.psi_off and psi <= self.psi_on:
-            print("Pineal off")
-            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
-        else:
-            print("Pineal on")
-            return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
-    '''
     
     
 
@@ -167,6 +145,8 @@ class HannayBreslowModel(object):
         H2 = y[4]
         H3 = y[5]
         
+        
+        # Light processing alpha equation
         alpha = (self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0))
 
         # Light interaction with pacemaker
@@ -182,8 +162,20 @@ class HannayBreslowModel(object):
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
         #S = not(H1 < 0.001 and tmp < 0)
-        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
-        S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
+        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
+        
+        # Melatonin production by the pineal
+        dlmo_phase = 5*np.pi/12
+        psi = np.mod(y[1] - dlmo_phase,2*np.pi)
+        
+        if self.psi_on < psi < self.psi_off:
+            #print("Pineal on")
+            pineal_production = self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
+        else:
+            #print("Pineal off")
+            pineal_production = self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+            #print(pineal_production)
         
         
         #self.AofPhi_list.append(self.circ_response(y[1]))
@@ -199,7 +191,7 @@ class HannayBreslowModel(object):
         dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
         dydt[2] = 60.0*alpha*(1.0-n)-(self.delta*n) # dn/dt
 
-        dydt[3] = -self.beta_IP*H1 + self.circ_response(y[1])*tmp*S # dH1/dt
+        dydt[3] = -self.beta_IP*H1 + (pineal_production*tmp*S) # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
         dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t,melatonin_timing,melatonin_dosage) # dH3/dt
 
@@ -218,12 +210,12 @@ class HannayBreslowModel(object):
         Writes the integration results into the scipy array self.results.
         Returns the circadian phase (in hours) at the ending time for the system.
         """
-        self.AofPhi_list = []
-        self.Bhat_list = []
-        self.tmp_list = []
-        self.S_list = []
-        self.alpha_list = []
-        self.light_list = []
+        #self.AofPhi_list = []
+        #self.Bhat_list = []
+        #self.tmp_list = []
+        #self.S_list = []
+        #self.alpha_list = []
+        #self.light_list = []
         
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
