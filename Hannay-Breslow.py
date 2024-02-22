@@ -53,11 +53,8 @@ class HannayBreslowModel(object):
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
         self.r = 15.36/3600 # CHANGED, converting secs to hrs
         
-        self.psi_on = 1.0472 #6.113  
-        self.psi_off = 3.92699 #4.352
-        
-        #self.psi_on = (4*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
-        #self.psi_off = (15*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
+        self.psi_on = 1.0472 #6.113 # CHANGED from Breslow 
+        self.psi_off = 3.92699 #4.352 # CHANGED from Breslow
 
         self.M_max = 0.019513
         self.H_sat = 861
@@ -89,11 +86,6 @@ class HannayBreslowModel(object):
         self.B_2 = -0.76024892
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
-        
-        
-        # Just for plotting 
-        self.plot_t = np.linspace(0, 24, 1516)
-        self.plot_t_2 = np.linspace(0, 24, 4548)
         
         
        
@@ -220,7 +212,7 @@ class HannayBreslowModel(object):
             full_light = 1000
             dim_light = 300
             wake_time = 7
-            sleep_time = 15
+            sleep_time = 23
             sun_up = 8
             sun_down = 19
             
@@ -236,9 +228,8 @@ class HannayBreslowModel(object):
     def alpha0(self,t,schedule):
         """A helper function for modeling the light input processing"""
         
-        self.light_list.append(self.light(t,schedule))
-        
         return(self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0));
+    
     '''
 # Melatonin dynamics from Breslow model
     def m_process(self,u):
@@ -266,7 +257,7 @@ class HannayBreslowModel(object):
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
         else:
             #print("Pineal off")
-            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+            return (1/360)*self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
 
     '''
         if psi > self.psi_off and psi <= self.psi_on:
@@ -305,21 +296,14 @@ class HannayBreslowModel(object):
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
         #S = not(H1 < 0.001 and tmp < 0)
-        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
-        S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
-        
-        
-        self.AofPhi_list.append(self.circ_response(y[1]))
-        self.Bhat_list.append(Bhat)
-        self.tmp_list.append(tmp)
-        self.S_list.append(S)
-        self.alpha_list.append(self.alpha0(t,schedule))
+        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
         
         
         dydt=np.zeros(6)
 
-        dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
-        dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
+        dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp #+ MelAmp # dR/dt
+        dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase #+ MelPhase # dpsi/dt
         dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[1])*tmp*S # dH1/dt
@@ -341,12 +325,6 @@ class HannayBreslowModel(object):
         Writes the integration results into the scipy array self.results.
         Returns the circadian phase (in hours) at the ending time for the system.
         """
-        self.AofPhi_list = []
-        self.Bhat_list = []
-        self.tmp_list = []
-        self.S_list = []
-        self.alpha_list = []
-        self.light_list = []
         
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
