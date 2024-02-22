@@ -41,7 +41,10 @@ class HannayBreslowModel(object):
 # Initialize the class
     def __init__(self):
         self.set_params() # setting parameters every time an object of the class is created
-
+        self.AofPhi_list = []
+        self.tmp_list = []
+        self.S_list = []
+        self.Bhat_list = []
 
 # Set parameter values 
     def set_params(self):
@@ -298,7 +301,15 @@ class HannayBreslowModel(object):
 
         tmp = 1 - self.m*Bhat # This m might need to be altered
         #S = not(H1 < 0.001 and tmp < 0)
-        S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
+        
+        
+        self.AofPhi_list.append(self.circ_response(y[1]))
+        self.Bhat_list.append(Bhat)
+        self.tmp_list.append(tmp)
+        self.S_list.append(S)
+        
         
         dydt=np.zeros(6)
 
@@ -325,6 +336,11 @@ class HannayBreslowModel(object):
         Writes the integration results into the scipy array self.results.
         Returns the circadian phase (in hours) at the ending time for the system.
         """
+        self.AofPhi_list = []
+        self.Bhat_list = []
+        self.tmp_list = []
+        self.S_list = []
+        
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
         initial[1] = np.mod(initial[1], 2*sp.pi) #start the initial phase between 0 and 2pi
@@ -460,3 +476,22 @@ plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
+# Plotting A(phi)
+plt.plot(model.ts, model.AofPhi_list[-240:])
+plt.title("Pineal Activation, A(phi)")
+plt.show()
+
+# Plotting tmp 
+plt.plot(model.ts, model.tmp_list[-240:])
+plt.title("Light Suppression, (1-mB)")
+plt.show()
+
+# Plotting S 
+plt.plot(model.ts, model.S_list[-240:])
+plt.title("Switch")
+plt.show()
+
+# Plotting Bhat
+plt.plot(model.ts, model.Bhat_list[-240:])
+plt.title("Bhat")
+plt.show()
