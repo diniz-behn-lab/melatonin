@@ -112,26 +112,6 @@ class HannayBreslowModel(object):
 
     
 
-# Set the light schedule (timings and intensities)
-    def light(self,t,schedule):
-        
-        if schedule == 1: # standard 16:8 schedule 
-            full_light = 1000
-            dim_light = 300
-            wake_time = 7
-            sleep_time = 15
-            sun_up = 8
-            sun_down = 19
-            
-            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-
-            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-        else: # Constant light environment
-            return 0
-    
-    
-
 # Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
         """
@@ -146,8 +126,25 @@ class HannayBreslowModel(object):
         H3 = y[5]
         
         
+        # Set the light schedule (timings and intensities)
+        if schedule == 1: # standard 16:8 schedule 
+            full_light = 1000
+            dim_light = 300
+            wake_time = 7
+            sleep_time = 15
+            sun_up = 8
+            sun_down = 19
+            
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+            light = is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        else: # Constant light environment
+            light = 0
+        
+        
         # Light processing alpha equation
-        alpha = (self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0))
+        alpha = (self.alpha_0*pow(light, self.p)/(pow(light, self.p)+self.I_0))
 
         # Light interaction with pacemaker
         Bhat = self.G*(1.0-n)*alpha
@@ -175,7 +172,6 @@ class HannayBreslowModel(object):
         else:
             #print("Pineal off")
             pineal_production = self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
-            #print(pineal_production)
         
         
         #self.AofPhi_list.append(self.circ_response(y[1]))
