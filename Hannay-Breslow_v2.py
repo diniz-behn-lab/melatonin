@@ -4,7 +4,13 @@ Created on Thu Feb 22 14:22:46 2024
 
 @author: sstowe
 
-Version 2 - only one definition for model equations
+Version 2 
+
+Created because I needed a code to mess around in when the model was not working as expected 
+
+Only one definition for model equations (except exogenous melatonin, never messed with running those simulations here)
+
+
 """
 
 #-------- Set Up -------------------------------
@@ -38,9 +44,6 @@ class HannayBreslowModel(object):
         
         self.psi_on = 1.0472 #6.113  
         self.psi_off = 2.87979327 ##3.92699 #4.352
-        
-        #self.psi_on = (4*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
-        #self.psi_off = (15*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
 
         self.M_max = 0.019513
         self.H_sat = 861
@@ -72,10 +75,6 @@ class HannayBreslowModel(object):
         self.B_2 = -0.76024892
         self.theta_M2 = 0.05994563
         self.epsilon = 0.18366069
-        
-        
-        # Just for plotting 
-        self.plot_t = np.linspace(0, 24, 1177)
         
     
         
@@ -255,11 +254,11 @@ class HannayBreslowModel(object):
 #--------- Run the Model ---------------
 
 model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(24*30,schedule=2) # use the integrateModel method with the object model
+model.integrateModel(24*30,schedule=1) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
