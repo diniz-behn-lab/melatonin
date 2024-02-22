@@ -50,12 +50,12 @@ class HannayBreslowModel(object):
         self.beta_CP = 3.35e-4*60*60 # converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 6*60#4*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
+        self.a = 6*60 #4*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
         self.r = 15.36/3600 # CHANGED, converting secs to hrs
         
-        self.psi_on = (23*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
-        self.psi_off = (4*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
+        self.psi_on = (4*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
+        self.psi_off = (15*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
 
         self.M_max = 0.019513
         self.H_sat = 861
@@ -221,7 +221,7 @@ class HannayBreslowModel(object):
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-        else: # Dim light environment
+        else: # Constant light environment
             return 0
 
 
