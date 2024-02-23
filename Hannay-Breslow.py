@@ -128,7 +128,7 @@ class HannayBreslowModel(object):
             full_light = 1000
             dim_light = 300
             wake_time = 7
-            sleep_time = 15 
+            sleep_time = 15#23 
             sun_up = 8
             sun_down = 19
             
