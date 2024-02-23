@@ -189,7 +189,7 @@ class HannayBreslowModel(object):
             #print("Pineal on")
             pineal_production = self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
         else:
-            #print("Pineal off")
+            #print("Pineal off") 
             # CHANGED added a factor of 1/360 to compensate for the higher "a" value 
             pineal_production = (1/360)*self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         
