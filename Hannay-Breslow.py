@@ -201,6 +201,9 @@ class HannayBreslowModel(object):
 
         # Light interaction with pacemaker
         Bhat = self.G*(1.0-n)*self.alpha0(t,schedule)
+        
+        self.Bhat_list.append(Bhat)
+        
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
         
@@ -214,7 +217,6 @@ class HannayBreslowModel(object):
         #S = not(H1 < 0.001 and tmp < 0)
         S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
         #S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
-        
         
         dydt=np.zeros(6)
 
@@ -242,6 +244,8 @@ class HannayBreslowModel(object):
         Writes the integration results into the scipy array self.results.
         Returns the circadian phase (in hours) at the ending time for the system.
         """
+
+        self.Bhat_list = []
 
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
