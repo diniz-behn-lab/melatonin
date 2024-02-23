@@ -170,9 +170,11 @@ class HannayBreslowModel(object):
         
         if self.psi_on < psi < self.psi_off:
             #print("Pineal on")
+            #print(psi)
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
         else:
             #print("Pineal off") 
+            #print(psi)
             return (1/360)*self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
 
     '''
@@ -271,7 +273,7 @@ model.integrateModel(24*30,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) # run the model from entrained ICs
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
@@ -286,10 +288,9 @@ model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=21.4)
 plt.axvline(x=7)
-plt.axvline(x=8.3)
-plt.axvline(x=12)
+plt.axvline(x=23)
+#plt.axvline(x=12)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Melatonin Concentrations (pmol/L)")
@@ -370,6 +371,10 @@ plt.show()
 
 # Plotting psi mod 2pi
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),lw=2)
+plt.axhline(1.04719755)
+plt.axhline(3.92699)
+plt.axvline(x=7)
+plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
