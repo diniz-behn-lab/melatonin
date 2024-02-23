@@ -128,7 +128,7 @@ class HannayBreslowModel(object):
             full_light = 1000
             dim_light = 300
             wake_time = 7
-            sleep_time = 15#23 
+            sleep_time = 15#23
             sun_up = 8
             sun_down = 19
             
@@ -172,7 +172,7 @@ class HannayBreslowModel(object):
             #print("Pineal on")
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
         else:
-            #print("Pineal off")
+            #print("Pineal off") 
             return (1/360)*self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
 
     '''
