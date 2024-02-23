@@ -226,6 +226,7 @@ class HannayBreslowModel(object):
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
         dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t,melatonin_timing,melatonin_dosage) # dH3/dt
 
+
         return(dydt)
 
 
@@ -241,7 +242,7 @@ class HannayBreslowModel(object):
         Writes the integration results into the scipy array self.results.
         Returns the circadian phase (in hours) at the ending time for the system.
         """
-        
+
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
         initial[1] = np.mod(initial[1], 2*sp.pi) #start the initial phase between 0 and 2pi
@@ -266,7 +267,7 @@ model.integrateModel(24*30,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
