@@ -25,28 +25,24 @@ class HannayBreslowModel(object):
     def __init__(self):
         self.set_params() # setting parameters every time an object of the class is created
 
-
 # Set parameter values 
     def set_params(self):
         ## Breslow Model
-        self.beta_IP = 7.83e-4*60*60 #converting 1/sec to 1/hr
-        self.beta_CP = 3.35e-4*60*60 #converting 1/sec to 1/hr
+        self.beta_IP = 7.83e-4*60*60 # converting 1/sec to 1/hr
+        self.beta_CP = 3.35e-4*60*60 # converting 1/sec to 1/hr
         self.beta_AP = 1.62e-4*60*60 #converting 1/sec to 1/hr
 
-        self.a = 6.25*60 # CHANGED 1.0442e-3, the tiny value is from Breslow 
-        self.delta_M = 600/3600 # converting secs to hrs
-        self.r = 15.36/3600 # converting secs to hrs
-
-        self.psi_on = (23*np.pi/12) #1.0472 #2.44346095 #2.61799 #1.0472 #6.113 CHANGED 
-        self.psi_off = (4*np.pi/12) #3.92699 #3.57792497 #3.40339204 #4.352 CHANGED
-
-        #self.psi_on = 6.113
-        #self.psi_off = 4.352
+        self.a = 6*60 #4*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
+        self.delta_M = 600/3600 # CHANGED, converting secs to hrs
+        self.r = 15.36/3600 # CHANGED, converting secs to hrs
+        
+        self.psi_on = 1.04719755 #6.113 # CHANGED from Breslow 
+        self.psi_off = 3.92699 #4.352 # CHANGED from Breslow
 
         self.M_max = 0.019513
         self.H_sat = 861
         self.sigma_M = 50
-        self.m = 7*60 
+        self.m = 7*60 # CHANGED, converting 1/sec to 1/min 
 
         ## Hannay Model
         self.D = 0
@@ -68,7 +64,7 @@ class HannayBreslowModel(object):
         self.G = 33.75
 
         ## Melatonin Forcing Parameters
-        self.B_1 = -0.74545016 
+        self.B_1 = -0.74545016
         self.theta_M1 = 0.05671999
         self.B_2 = -0.76024892
         self.theta_M2 = 0.05994563
@@ -78,11 +74,10 @@ class HannayBreslowModel(object):
     
 # Set the exogenous melatonin administration schedule VERSION 5
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
-        
         if melatonin_timing == None:
             return 0 #set exogenous melatonin to zero
         else: 
-            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
+            if melatonin_timing-0.2 <= t <= melatonin_timing+0.3:
                 sigma = np.sqrt(0.002)
                 mu = melatonin_timing+0.1
 
@@ -91,7 +86,6 @@ class HannayBreslowModel(object):
                 x = np.arange(0, 1, 0.01)
                 melatonin_values = self.max_value(x, sigma)
                 max_value = max(melatonin_values)
-                #print(max_value)
             
                 normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
                 dose_ex_mel = (melatonin_dosage)*normalize_ex_mel # multiply by the dosage so the max = dosage
@@ -105,7 +99,9 @@ class HannayBreslowModel(object):
     def max_value(self, time, sigma):
         mu = 1/2
         Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(time-mu,2))/(2*pow(sigma,2)))
-        return Guassian    
+        return Guassian
+    
+    
 
 # Set the light schedule (timings and intensities)
     def light(self,t,schedule):
@@ -136,22 +132,6 @@ class HannayBreslowModel(object):
         """A helper function for modeling the light input processing"""
         return(self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0));
 
-    '''
-# Melatonin dynamics from Breslow model
-    def m_process(self,u):
-        H2 = max(u[4],0)
-        H2_conc = H2*861/200 # Convert from pg/L to pmol/L
-        try:
-            if H2_conc > 861*10:
-                output = self.M_max
-            else:
-                output = self.M_max/(1 + np.exp((self.H_sat - H2_conc)/self.sigma_M))
-        except:
-            print("Slow the heck down there")
-            output = self.M_max/(1 + np.exp((self.H_sat - H2_conc)/self.sigma_M))
-        return output
-    '''
-
 
 # Timing of melatonin on and off
     def circ_response(self,psi):
@@ -163,13 +143,17 @@ class HannayBreslowModel(object):
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
         else:
             #print("Pineal off")
-            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
-        '''
+            return (1/360)*self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
+
+    '''
         if psi > self.psi_off and psi <= self.psi_on:
+            print("Pineal off")
             return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
         else:
+            print("Pineal on")
             return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
-        '''
+    '''
+    
 
 # Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
@@ -198,11 +182,13 @@ class HannayBreslowModel(object):
         tmp = 1 - self.m*Bhat # This m might need to be altered
         #S = not(H1 < 0.001 and tmp < 0)
         S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
+        #S = np.piecewise(tmp, [tmp >= 0, tmp < 0], [1, 0])
+        
         
         dydt=np.zeros(6)
 
-        dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
-        dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
+        dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp #+ MelAmp # dR/dt
+        dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase #+ MelPhase # dpsi/dt
         dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
 
         dydt[3] = -self.beta_IP*H1 + self.circ_response(y[1])*tmp*S # dH1/dt
@@ -224,6 +210,7 @@ class HannayBreslowModel(object):
         Writes the integration results into the scipy array self.results.
         Returns the circadian phase (in hours) at the ending time for the system.
         """
+        
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
         initial[1] = np.mod(initial[1], 2*sp.pi) #start the initial phase between 0 and 2pi
@@ -240,19 +227,18 @@ class HannayBreslowModel(object):
 
 
 
-
 #--------- Run the Model ---------------
 
 model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(24*50,schedule=1) # use the integrateModel method with the object model
+model.integrateModel(24*30,schedule=1) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run Wyatt 2006 baseline days
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=24500,schedule=2) #reproduces 0.3mg dosage
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000,schedule=2) #reproduces 5.0mg dosage
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=295000,schedule=2) #reproduces 5.0mg dosage
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=145000,schedule=2) #reproduces 2mg (simulated, Breslow 2013) dosage
 
 
