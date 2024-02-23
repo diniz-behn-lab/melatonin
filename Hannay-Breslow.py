@@ -252,7 +252,7 @@ class HannayBreslowModel(object):
         dt = 0.1
         self.ts = np.arange(tstart,tend,dt)
         initial[1] = np.mod(initial[1], 2*sp.pi) #start the initial phase between 0 and 2pi
-
+    
         # Sanitize input: sometimes np.arange witll output values outside of the range of tstart -> tend
         self.ts = self.ts[self.ts <= tend]
         self.ts = self.ts[self.ts >= tstart]
