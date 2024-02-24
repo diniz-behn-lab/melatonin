@@ -51,7 +51,7 @@ class HannayBreslowModel(object):
 
         self.a = 6*60 #4*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
         self.delta_M = 600/3600 # CHANGED, converting secs to hrs
-        self.r = 15.36/3600 # CHANGED, converting secs to hrs
+        self.r = 15.36#/3600 # CHANGED, converting secs to hrs
         
         self.psi_on = 1.04719755 #6.113 # CHANGED from Breslow 
         self.psi_off = 3.92699 #4.352 # CHANGED from Breslow
@@ -128,7 +128,7 @@ class HannayBreslowModel(object):
             full_light = 1000
             dim_light = 300
             wake_time = 7
-            sleep_time = 15#23
+            sleep_time = 23
             sun_up = 8
             sun_down = 19
             
@@ -370,7 +370,7 @@ plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting psi mod 2pi
-plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),lw=2)
+plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'o')#lw=2)
 plt.axhline(1.04719755)
 plt.axhline(3.92699)
 plt.axvline(x=7)
@@ -381,7 +381,7 @@ plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting n
-plt.plot(model.ts,model.results[:,2],lw=2)
+plt.plot(model.ts,model.results[:,2],'o')#lw=2)
 #plt.axvline(x=7)
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
