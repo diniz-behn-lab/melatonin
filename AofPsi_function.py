@@ -283,8 +283,8 @@ for t in range(0,len(psi)):
 
 #---------- Plot A(psi) ------------
 
-plt.plot(psi,A_of_psi)
-plt.title("Pineal GLand Activation")
+#plt.plot(psi,A_of_psi)
+#plt.title("Pineal GLand Activation")
 
 
 
@@ -312,5 +312,5 @@ for t in range(0,len(psi)):
 
 #---------- Plot A(psi) ------------
 
-plt.plot(psi,A_of_psi)
+plt.plot(np.mod(psi,2*np.pi),A_of_psi)
 plt.title("Pineal Gland Activation")
