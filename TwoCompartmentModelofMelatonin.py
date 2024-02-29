@@ -53,9 +53,15 @@ class TwoCompartmentMelatonin(object):
         H2 = y[1]
 
         dydt=np.zeros(2)
+        
+        if self.t_on <= t < self.t_off :
+            A = self.a*((1 - np.exp(-self.lamb*(t- self.t_on)))/(1 - np.exp(-self.lamb*(self.t_off - self.t_on))))
+        else:
+            A = self.a*np.exp(-self.alpha*(t -self.t_off))
+            
 
-        dydt[0] =
-        dydt[1] = 
+        dydt[0] = -self.beta_IP*H1 + A
+        dydt[1] = self.beta_IP*H1 - self.beta_CP*H2
 
         return(dydt)
 
@@ -96,11 +102,6 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
 model.integrateModel(24*1,tstart=0.0,initial=IC) # run the model from entrained ICs
-
-#Uncomment this one to run it with exogenous melatonin 
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=2500) # with pulse function
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=20.0, melatonin_dosage=7500,schedule=2) # with Guassian
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=0.2)
 
 
 
