@@ -31,15 +31,15 @@ class TwoCompartmentMelatonin(object):
 # Set parameter values 
     def set_params(self):
         ## Breslow Model
-        self.beta_IP = 0.047*60 # St. Hilaire 2007
-        self.beta_CP = 0.025*60 # St. Hilaire 2007
+        self.beta_IP = 0.047 # St. Hilaire 2007
+        self.beta_CP = 0.025 # St. Hilaire 2007
 
         self.a = 4.84 # St. Hilaire 2007
-        self.lamb = 0.588 # St. Hilaire 2007
-        self.alpha = 0.067 # St. Hilaire 2007
+        self.lamb = 0.588/60 # St. Hilaire 2007
+        self.alpha = 0.067/60 # St. Hilaire 2007
         
-        self.t_on = 21.56 # Brown 1997
-        self.t_off = 5.54 # Brown 1997
+        self.t_on = 21.56*60 #Brown 1997
+        self.t_off = 5.54*60 # Brown 1997
         
         
         
@@ -57,21 +57,13 @@ class TwoCompartmentMelatonin(object):
         
         print(t)
         
-        if self.t_off <= np.mod(t,24) < self.t_on :
+        if self.t_off <= np.mod(t,1440) < self.t_on :
             print("bottom, exponential deacy")
             A = self.a*np.exp(-self.alpha*(t -self.t_off))
         else:
             print("top, exponential rise")
             A = self.a*((1 - np.exp(-self.lamb*(t- self.t_on)))/(1 - np.exp(-self.lamb*(self.t_off - self.t_on))))
         
-        '''
-        if self.t_on <= np.mod(t,24) < self.t_off :
-            print("top")
-            A = self.a*((1 - np.exp(-self.lamb*(t- self.t_on)))/(1 - np.exp(-self.lamb*(self.t_off - self.t_on))))
-        else:
-            print("bottom")
-            A = self.a*np.exp(-self.alpha*(t -self.t_off))
-        '''
         print(A)
     
         dydt[0] = -self.beta_IP*H1 + A
@@ -115,7 +107,7 @@ model.integrateModel(24*30) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*2,tstart=0.0,initial=IC) # run the model from entrained ICs
+model.integrateModel(24*60,tstart=0.0,initial=IC) # run the model from entrained ICs
 
 
 
