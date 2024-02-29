@@ -59,10 +59,12 @@ class TwoCompartmentMelatonin(object):
         
         if self.t_off <= np.mod(t,1440) < self.t_on :
             print("bottom, exponential deacy")
-            A = self.a*np.exp(-self.alpha*(t -self.t_off))
+            A = self.a*np.exp(-self.alpha*(np.mod(t,1440) -self.t_off))
+            
         else:
             print("top, exponential rise")
-            A = self.a*((1 - np.exp(-self.lamb*(t- self.t_on)))/(1 - np.exp(-self.lamb*(self.t_off - self.t_on))))
+            A = self.a*((1 - np.exp(-self.lamb*(np.mod(t,1440)- self.t_on)))/(1 - np.exp(-self.lamb*(self.t_off - self.t_on))))
+            
         
         print(A)
     
@@ -107,7 +109,7 @@ model.integrateModel(24*30) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*60,tstart=0.0,initial=IC) # run the model from entrained ICs
+model.integrateModel(24*60*2,tstart=0.0,initial=IC) # run the model from entrained ICs
 
 
 
