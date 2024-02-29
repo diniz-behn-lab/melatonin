@@ -31,14 +31,15 @@ class TwoCompartmentMelatonin(object):
 # Set parameter values 
     def set_params(self):
         ## Breslow Model
-        self.beta_IP = 7.83e-4*60*60 # converting 1/sec to 1/hr
-        self.beta_CP = 3.35e-4*60*60 # converting 1/sec to 1/hr
+        self.beta_IP = 0.047*60 # St. Hilaire 2007
+        self.beta_CP = 0.025*60 # St. Hilaire 2007
 
-        self.a = 6*60 #4*60 #1.0442e-3 # CHANGED, the tiny value is from Breslow
-        self.lamb = 600/3600 # CHANGED, converting secs to hrs
+        self.a = 4.84 # St. Hilaire 2007
+        self.lamb = 0.588 # St. Hilaire 2007
+        self.alpha = 0.067 # St. Hilaire 2007
         
-        self.t_on = 1.04719755 #6.113 # CHANGED from Breslow 
-        self.t_off = 3.92699 #4.352 # CHANGED from Breslow
+        self.t_on = 21.56 # Brown 1997
+        self.t_off = 5.54 # Brown 1997
         
         
         
@@ -54,12 +55,25 @@ class TwoCompartmentMelatonin(object):
 
         dydt=np.zeros(2)
         
-        if self.t_on <= t < self.t_off :
+        print(t)
+        
+        if self.t_off <= np.mod(t,24) < self.t_on :
+            print("bottom, exponential deacy")
+            A = self.a*np.exp(-self.alpha*(t -self.t_off))
+        else:
+            print("top, exponential rise")
+            A = self.a*((1 - np.exp(-self.lamb*(t- self.t_on)))/(1 - np.exp(-self.lamb*(self.t_off - self.t_on))))
+        
+        '''
+        if self.t_on <= np.mod(t,24) < self.t_off :
+            print("top")
             A = self.a*((1 - np.exp(-self.lamb*(t- self.t_on)))/(1 - np.exp(-self.lamb*(self.t_off - self.t_on))))
         else:
+            print("bottom")
             A = self.a*np.exp(-self.alpha*(t -self.t_off))
-            
-
+        '''
+        print(A)
+    
         dydt[0] = -self.beta_IP*H1 + A
         dydt[1] = self.beta_IP*H1 - self.beta_CP*H2
 
@@ -101,7 +115,7 @@ model.integrateModel(24*30) # use the integrateModel method with the object mode
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC) # run the model from entrained ICs
+model.integrateModel(24*2,tstart=0.0,initial=IC) # run the model from entrained ICs
 
 
 
