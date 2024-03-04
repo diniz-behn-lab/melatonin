@@ -34,7 +34,7 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = 4*60 # pmol/L/sec, I determined
+        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
@@ -218,10 +218,10 @@ model.integrateModel(10*24,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-#model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
+model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500,schedule=2)
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500,schedule=2)
 
 #--------- Plot Model Output -------------------
 
