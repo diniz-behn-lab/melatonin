@@ -35,7 +35,7 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.1)*60*60 #(0.0675)*60*60 # CHANGED, pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
@@ -220,14 +220,18 @@ class HannayBreslowModel(object):
 #--------- Run the Model ---------------
 
 model = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(10*24,schedule=1) # use the integrateModel method with the object model
+model.integrateModel(24*30,schedule=1) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
-#Uncomment this one to run it without exogenous melatonin
-model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
+#Uncomment this one to run Wyatt 2006 baseline days
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
-#Uncomment this one to run it with exogenous melatonin
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500,schedule=2)
+#Uncomment this one to run it with exogenous melatonin, given 30mins before sleep episode 
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=20000,schedule=2) #reproduces 0.3mg dosage
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=21.5, melatonin_dosage=285000,schedule=2) #reproduces 5.0mg dosage
+
+
+
 
 #--------- Plot Model Output -------------------
 
@@ -235,33 +239,51 @@ model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-#plt.axvline(x=7)
-#plt.axvline(x=23)
-#plt.axvline(x=12)
-plt.axhline(200)
+#plt.axvline(x=22)
+#plt.axvline(x=6)
+#plt.axvline(x=4)
+#plt.axhline(300)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
-plt.title("Melatonin Concentrations (pmol/L)")
+plt.title("Time Trace of Melatonin Concentrations (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
+# Plotting H1, H2, and H3 (melatonin concentrations, pmol/L, zoomed)
+plt.plot(model.ts[180:250],model.results[180:250,3],lw=2)
+plt.plot(model.ts[180:250],model.results[180:250,4],lw=2)
+plt.plot(model.ts[180:250],model.results[180:250,5],lw=2)
+plt.axhline(8000)
+plt.axvline(21.5)
+plt.xlabel("Time (hours)")
+plt.ylabel("Melatonin Concentration (pmol/L)")
+plt.title("Time Trace of Melatonin Concentrations")
+plt.legend(["Pineal","Plasma", "Exogenous"])
+plt.show()
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-plt.axvline(x=21.4)
-#plt.axvline(x=7)
-plt.axvline(x=8.3)
-plt.axhline(4*10)
+plt.axhline(4)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Melatonin Concentrations (pg/mL)")
+plt.title("Time Trace of Melatonin Concentrations (pg/mL)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
-
+# Plotting H1, H2, and H3 (melatonin concentrations, pg/mL, zoomed)
+plt.plot(model.ts[180:250],model.results[180:250,3]/4.3,lw=2)
+plt.plot(model.ts[180:250],model.results[180:250,4]/4.3,lw=2)
+plt.plot(model.ts[180:250],model.results[180:250,5]/4.3,lw=2)
+plt.axhline(4)
+plt.axvline(21.5)
+plt.xlabel("Time (hours)")
+plt.ylabel("Melatonin Concentration (pg/mL)")
+plt.title("Time Trace of Melatonin Concentrations at DLMO (4pg/mL)")
+plt.legend(["Pineal","Plasma", "Exogenous"])
+plt.show()
 
 # Plotting R
 plt.plot(model.ts,model.results[:,0],lw=2)
@@ -269,7 +291,6 @@ plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
-
 
 # Plotting psi
 plt.plot(model.ts,model.results[:,1],lw=2)
@@ -279,11 +300,7 @@ plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting psi mod 2pi
-plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'o')#lw=2)
-plt.axhline(1.04719755)
-plt.axhline(3.92699)
-plt.axvline(x=7)
-plt.axvline(x=23)
+plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
@@ -297,3 +314,4 @@ plt.xlabel("Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
+
