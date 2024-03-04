@@ -28,17 +28,15 @@ class TwoCompartmentMelatonin(object):
 
 # Set parameter values 
     def set_params(self):
-        ## Breslow Model
-        self.beta_IP = 0.047 # St. Hilaire 2007
-        self.beta_CP = 0.025 # St. Hilaire 2007
+        self.beta_IP = 7.83e-4*60*60 # converting 1/sec to 1/hr
+        self.beta_CP = 3.35e-4*60*60 # converting 1/sec to 1/hr
 
-        self.a = 0.01*60
-        self.delta_M = 600/60
-        self.r = 200/60
+        self.a = 4*60 # pmol/L/sec
+        self.delta_M = 600 # sec
+        self.r = 500 # sec
         
-        self.psi_on = 1.0472
-        self.psi_off = 3.92699
-        
+        self.psi_on = 1.0472 # radians 
+        self.psi_off = 3.92699 # radians 
         
         
 
@@ -54,10 +52,9 @@ class TwoCompartmentMelatonin(object):
         dydt=np.zeros(2)
         
         if (np.mod(psi,2*np.pi) > self.psi_on) and (np.mod(psi,2*np.pi) < self.psi_off): 
-            A = self.a*((1 - np.exp(-self.delta_M*np.mod(psi - self.psi_on,2*np.pi))/1 - np.exp(-delta*np.mod(self.psi_off - self.psi_on,2*np.pi))));
+            A = self.a*((1 - np.exp(-self.delta_M*np.mod(psi - self.psi_on,2*np.pi))/1 - np.exp(-self.delta_M*np.mod(self.psi_off - self.psi_on,2*np.pi))));
         else: 
-            A = a*(np.exp(-r*np.mod(psi[i] - psi_off,2*np.pi)))
-            A_function.append(A)
+            A = self.a*(np.exp(-self.r*np.mod(psi - self.psi_off,2*np.pi)))
     
     
         dydt[0] = -self.beta_IP*H1 + A
@@ -97,11 +94,11 @@ class TwoCompartmentMelatonin(object):
 #--------- Run the Model ---------------
 
 model = TwoCompartmentMelatonin() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(24*30) # use the integrateModel method with the object model
+model.integrateModel(10*2*np.pi) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(24*60*2,tstart=0.0,initial=IC) # run the model from entrained ICs
+model.integrateModel(2*2*np.pi,tstart=0.0,initial=IC) # run the model from entrained ICs
 
 
 
