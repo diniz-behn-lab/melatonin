@@ -88,10 +88,53 @@ class HannayBreslowModel(object):
         
         return(self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0));
     
+
+# Set the exogenous melatonin administration schedule
+    def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
+        
+        if melatonin_timing == None:
+            return 0 # set exogenous melatonin to zero
+        else: 
+            t = np.mod(t,24)
+            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
+                sigma = np.sqrt(0.002)
+                mu = melatonin_timing+0.1
+
+                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
+
+                x = np.arange(0, 1, 0.01)
+                melatonin_values = self.max_value(x, sigma)
+                max_value = max(melatonin_values)
+                #print(max_value)
+                
+                converted_dose = self.mg_conversion(melatonin_dosage)
+                #print(converted_dose)
+            
+                normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+                dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
+            
+                return dose_ex_mel        
+            else: 
+                return 0
+    
+# Generate the curve for a 24h melatonin schedule so that the max value can be determined      
+    def max_value(self, time, sigma):
+        mu = 1/2
+        Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(time-mu,2))/(2*pow(sigma,2)))
+        return Guassian    
+
+# Convert mg dose to value to be used in the Guassian dosing curve
+    def mg_conversion(self, melatonin_dosage):
+        x_line = melatonin_dosage
+        #y_line = (56686*x_line) + 16897 # with 2.0mg dose (3pts fit)
+        #y_line = (57553*x_line) + 7234 # without 2.0mg dose (2pts fit)
+        y_line = melatonin_dosage
+        return y_line
+
         
 
 # Defining the system of ODEs (2-dimensional system)
-    def ODESystem(self,t,y,schedule):
+    def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
         """
         This defines the ode system for the single population model and 
         returns dydt numpy array.
@@ -133,15 +176,15 @@ class HannayBreslowModel(object):
         dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase # dpsi/dt 
         dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
         
-        dydt[3] = -self.beta_IP*H1 + A*(1 - self.m*Bhat)*S
-        dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3
-        dydt[5] = -self.beta_AP*H3
+        dydt[3] = -self.beta_IP*H1 + A*(1 - self.m*Bhat)*S # dH1/dt
+        dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
+        dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t,melatonin_timing,melatonin_dosage) # dH3/dt
 
         return(dydt)
 
 
 
-    def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0], schedule = 1):
+    def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0], melatonin_timing = None, melatonin_dosage=None, schedule = 1):
         """ 
         Integrate the model forward in time.
             tend: float giving the final time to integrate to
@@ -159,7 +202,7 @@ class HannayBreslowModel(object):
         self.ts = self.ts[self.ts <= tend]
         self.ts = self.ts[self.ts >= tstart]
         
-        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau', args=(schedule,))
+        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau', args=(melatonin_timing,melatonin_dosage,schedule,))
         self.results = np.transpose(r_variable.y)
 
         return
@@ -175,9 +218,10 @@ model.integrateModel(10*24,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
+#model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
 
-
+#Uncomment this one to run it with exogenous melatonin
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500,schedule=2)
 
 #--------- Plot Model Output -------------------
 
@@ -188,6 +232,7 @@ plt.plot(model.ts,model.results[:,5],lw=2)
 #plt.axvline(x=7)
 #plt.axvline(x=23)
 #plt.axvline(x=12)
+plt.axhline(200)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Melatonin Concentrations (pmol/L)")
