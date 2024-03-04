@@ -107,7 +107,6 @@ class HannayBreslowModel(object):
         
         # Pineal activation/deactivation 
         psi = t*(np.pi/12) + (8*np.pi/12) # Convert hours to radians, shift to align with Hannay's convention 
-        
         if (np.mod(psi,2*np.pi) > self.psi_on) and (np.mod(psi,2*np.pi) < self.psi_off): 
             A = self.a*((1 - np.exp(-self.delta_M*np.mod(psi - self.psi_on,2*np.pi))/1 - np.exp(-self.delta_M*np.mod(self.psi_off - self.psi_on,2*np.pi))));
         else: 
@@ -176,7 +175,7 @@ model.integrateModel(10*24,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=1) # run the model from entrained ICs
+model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
 
 
 
@@ -201,10 +200,10 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-#plt.axvline(x=21.4)
+plt.axvline(x=21.4)
 #plt.axvline(x=7)
-#plt.axvline(x=8.3)
-#plt.axhline(4*10)
+plt.axvline(x=8.3)
+plt.axhline(4*10)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Melatonin Concentrations (pg/mL)")
