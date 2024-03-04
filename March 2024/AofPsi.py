@@ -55,7 +55,7 @@ r = 200/60
 
 for i in range(0,len(psi)):
     if (np.mod(psi[i],2*np.pi) > psi_on) and (np.mod(psi[i],2*np.pi) < psi_off): 
-        A = a*((1 - np.exp(-delta*np.mod(psi[i] - psi_on,2*np.pi))/1 - np.exp(-delta*np.mod(psi_off - psi_on,2*np.pi))));
+        A = a*((1 - np.exp(-delta_M*np.mod(psi[i] - psi_on,2*np.pi))/1 - np.exp(-delta_M*np.mod(psi_off - psi_on,2*np.pi))));
         A_function.append(A)
     else: 
         A = a*(np.exp(-r*np.mod(psi[i] - psi_off,2*np.pi)))
