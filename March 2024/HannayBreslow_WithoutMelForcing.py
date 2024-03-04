@@ -4,6 +4,7 @@ Created on Mon Mar  4 12:45:54 2024
 
 @author: sstowe
 
+Hannay-Breslow model without melatonin forcing equations included (parameters have not been fit yet)
 
 """
 
