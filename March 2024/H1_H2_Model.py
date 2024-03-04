@@ -41,7 +41,7 @@ class TwoCompartmentMelatonin(object):
         
 
 # Defining the system of ODEs (2-dimensional system)
-    def ODESystem(self,psi,y):
+    def ODESystem(self,t,y):
         """
         This defines the ode system for the single population model and 
         returns dydt numpy array.
@@ -50,6 +50,8 @@ class TwoCompartmentMelatonin(object):
         H2 = y[1]
 
         dydt=np.zeros(2)
+        
+        psi = t*(np.pi/12) + (8*np.pi/12) # Convert hours to radians, shift to align with Hannay's convention 
         
         if (np.mod(psi,2*np.pi) > self.psi_on) and (np.mod(psi,2*np.pi) < self.psi_off): 
             A = self.a*((1 - np.exp(-self.delta_M*np.mod(psi - self.psi_on,2*np.pi))/1 - np.exp(-self.delta_M*np.mod(self.psi_off - self.psi_on,2*np.pi))));
@@ -94,11 +96,11 @@ class TwoCompartmentMelatonin(object):
 #--------- Run the Model ---------------
 
 model = TwoCompartmentMelatonin() # defining model as a new object built with the HannayBreslowModel class 
-model.integrateModel(10*2*np.pi) # use the integrateModel method with the object model
+model.integrateModel(10*24) # use the integrateModel method with the object model
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-model.integrateModel(2*2*np.pi,tstart=0.0,initial=IC) # run the model from entrained ICs
+model.integrateModel(1*24,tstart=0.0,initial=IC) # run the model from entrained ICs
 
 
 
