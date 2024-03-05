@@ -34,6 +34,7 @@ class HannayBreslowModel(object):
         print("Parameter m is set")
         print(theta)
 
+
 # Set parameter values 
     def set_params(self):
         ## Breslow Model
@@ -51,6 +52,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
+        self.m = 5 #7 # 1/sec, I determined by fitting (roughly) to Zeitzer
         
         
         ## Hannay Model
@@ -74,7 +76,7 @@ class HannayBreslowModel(object):
         
         
 # Set the light schedule (timings and intensities)
-    def light(self,t,schedule):
+    def light(self,t,schedule,light_pulse):
         
         if schedule == 1: # standard 16:8 schedule 
             full_light = 1000
@@ -89,9 +91,19 @@ class HannayBreslowModel(object):
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         elif schedule == 2: # Constant conditions 
-            return 150
+            full_light = 150
+            dim_light = 150
+            wake_time = 7
+            sleep_time = 23
+            sun_up = 8
+            sun_down = 19
+            
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: 
-            bright_light = 450
+            bright_light = light_pulse
             dim_light = 10
             if 0 <= t < 24:
                 if t > np.mod(CBTmin-6.75,24):
@@ -106,15 +118,15 @@ class HannayBreslowModel(object):
 
 
 # Define the alpha(L) function 
-    def alpha0(self,t,schedule):
+    def alpha0(self,t,schedule,light_pulse):
         """A helper function for modeling the light input processing"""
         
-        return(self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0));
+        return(self.alpha_0*pow(self.light(t,schedule,light_pulse), self.p)/(pow(self.light(t,schedule,light_pulse), self.p)+self.I_0));
 
         
 
 # Defining the system of ODEs (2-dimensional system)
-    def ODESystem(self,t,y,schedule):
+    def ODESystem(self,t,y,schedule,light_pulse):
         """
         This defines the ode system for the single population model and 
         returns dydt numpy array.
@@ -137,7 +149,7 @@ class HannayBreslowModel(object):
     
     
         # Light interaction with pacemaker
-        Bhat = self.G*(1.0-n)*self.alpha0(t,schedule)
+        Bhat = self.G*(1.0-n)*self.alpha0(t,schedule,light_pulse)
     
         # Light forcing equations
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
@@ -153,7 +165,7 @@ class HannayBreslowModel(object):
         # ODE System  
         dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp # dR/dt
         dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase # dpsi/dt 
-        dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
+        dydt[2] = 60.0*(self.alpha0(t,schedule,light_pulse)*(1.0-n)-(self.delta*n)) # dn/dt
         
         dydt[3] = -self.beta_IP*H1 + A*(1 - self.m*Bhat)*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
@@ -163,7 +175,7 @@ class HannayBreslowModel(object):
 
 
 
-    def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0], schedule = 1):
+    def integrateModel(self, tend, tstart=0.0, initial=[1.0, 0.0, 0.0, 0.0, 0.0, 0.0], schedule = 1, light_pulse = 1000):
         """ 
         Integrate the model forward in time.
             tend: float giving the final time to integrate to
@@ -181,7 +193,7 @@ class HannayBreslowModel(object):
         self.ts = self.ts[self.ts <= tend]
         self.ts = self.ts[self.ts >= tstart]
         
-        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau', args=(schedule,))
+        r_variable = sp.integrate.solve_ivp(self.ODESystem,(tstart,tend), initial, t_eval=self.ts, method='Radau', args=(schedule,light_pulse,))
         self.results = np.transpose(r_variable.y)
 
         return
@@ -240,7 +252,7 @@ CBTmin = model_baseline.ts[CBTmin_index]
 
 # Run Zeitzer 2000 constant routine 
 model_light = HannayBreslowModel()
-model_light.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3) # run the model from baseline ICs
+model_light.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=30) # run the model from baseline ICs
 
 
 
@@ -307,4 +319,3 @@ plt.xlabel("Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
-

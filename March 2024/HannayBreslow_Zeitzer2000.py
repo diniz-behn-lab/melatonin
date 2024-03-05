@@ -87,7 +87,17 @@ class HannayBreslowModel(object):
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         elif schedule == 2: # Constant conditions 
-            return 150
+            full_light = 150
+            dim_light = 150
+            wake_time = 7
+            sleep_time = 23
+            sun_up = 8
+            sun_down = 19
+            
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: 
             bright_light = light_pulse
             dim_light = 10
@@ -238,7 +248,7 @@ CBTmin = model_baseline.ts[CBTmin_index]
 
 # Run Zeitzer 2000 constant routine 
 model_light = HannayBreslowModel()
-model_light.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=30) # run the model from baseline ICs
+model_light.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=400) # run the model from baseline ICs
 
 
 
