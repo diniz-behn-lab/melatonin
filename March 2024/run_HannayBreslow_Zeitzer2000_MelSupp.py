@@ -369,8 +369,13 @@ def objective_func(params,data_vals):
         print(params)
         melatonin_suppression = run_HannayBreslow_MelSupp(params)
         print(melatonin_suppression)
-    
-        error = np.mean(abs(melatonin_suppression - data_vals))
+        
+        a = np.array(melatonin_suppression)
+        b = np.array(data_vals)
+        
+        print(a - b)
+        
+        error = np.mean(abs(a - b))
         print(error)
     
         return error
