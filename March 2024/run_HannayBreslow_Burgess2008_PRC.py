@@ -159,18 +159,6 @@ class HannayBreslowModel(object):
  
 
 
-# Timing of melatonin on and off
-    def circ_response(self,psi):
-        dlmo_phase = 5*np.pi/12
-        psi = np.mod(psi - dlmo_phase,2*np.pi)
-        #psi = np.mod(psi,2*np.pi)
-
-        if psi > self.psi_off and psi <= self.psi_on:
-            return self.a * (1 - np.exp(-self.delta_M*np.mod(self.psi_on - psi,2*np.pi))) / (1 - np.exp(-self.delta_M*np.mod(self.psi_on - self.psi_off,2*np.pi)))
-        else:
-            return self.a*np.exp(-self.r*np.mod(self.psi_on - self.psi_off,2*np.pi))
-
-
 # Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
         """
@@ -183,29 +171,39 @@ class HannayBreslowModel(object):
         H1 = y[3]
         H2 = y[4]
         H3 = y[5]
+        
+        # Pineal activation/deactivation 
+        psi = Psi #t*(np.pi/12) + (8*np.pi/12) # Convert hours to radians, shift to align with Hannay's convention 
+        if (np.mod(psi,2*np.pi) > self.psi_on) and (np.mod(psi,2*np.pi) < self.psi_off): 
+            A = self.a*((1 - np.exp(-self.delta_M*np.mod(psi - self.psi_on,2*np.pi))/1 - np.exp(-self.delta_M*np.mod(self.psi_off - self.psi_on,2*np.pi))));
+        else: 
+            A = self.a*(np.exp(-self.r*np.mod(psi - self.psi_off,2*np.pi)))
 
         # Light interaction with pacemaker
         Bhat = self.G*(1.0-n)*self.alpha0(t,schedule)
+    
+        # Light forcing equations
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
-        
+    
         # Melatonin interaction with pacemaker
-        #Mhat = self.m_process(y)
         Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
         MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
-
-        tmp = 1 - self.m*Bhat # This m might need to be altered
-        #S = not(H1 < 0.001 and tmp < 0)
+    
+        # Switch pineal on and off in the presence of light 
+        tmp = 1 - self.m*Bhat
         S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
-        
+    
+    
         dydt=np.zeros(6)
-
-        dydt[0] = -1.0*(self.D + self.gamma)*R + (self.K/2.0)*np.cos(self.beta)*R*(1.0-pow(R,4.0)) + LightAmp + MelAmp # dR/dt
-        dydt[1] = self.omega_0 + (self.K/2.0)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt
+    
+        # ODE System  
+        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp + MelAmp# dR/dt
+        dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt 
         dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
-
-        dydt[3] = -self.beta_IP*H1 + self.circ_response(y[1])*tmp*S # dH1/dt
+        
+        dydt[3] = -self.beta_IP*H1 + A*(1 - self.m*Bhat)*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
         dydt[5] = -self.beta_AP*H3 + self.ex_melatonin(t,melatonin_timing,melatonin_dosage) # dH3/dt
 
@@ -251,7 +249,8 @@ def run_HannayBreslow_PRC(params):
     model_IC.integrateModel(24*50, schedule=1) # use the integrateModel method with the object model
     IC = model_IC.results[-1,:] # get initial conditions from entrained model
     '''
-    IC = ([0.832584, 2.0647, 0.470171, 116.73, 138.898, 0])
+    IC = ([0.832572, 2.06486, 0.47017, 117.613, 140.095, 0])
+
     
     #--------- Run the model under the placebo condition ---------------
     model_placebo = HannayBreslowModel()
