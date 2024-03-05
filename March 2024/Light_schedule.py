@@ -92,6 +92,7 @@ plt.title("Burgess 2008 Ultradian Light:Dark Schedule (2.5:1.5)")
 #plt.axvline(6.5)
 plt.show()
 
+'''
 #------------------- Burgess 2008 5 Day Protocol ------------
 
 j = 5 # Number of days to be plotted
@@ -126,6 +127,78 @@ plt.plot(time,BurgessProtocol_lightschedule)
 plt.title("Burgess 2008 Protocol Light:Dark Schedule")
 #plt.axvline(1)
 #plt.axvline(2.5)
+#plt.axvline(5)
+#plt.axvline(6.5)
+plt.show()
+
+'''
+
+# ---------- Zeitzer 9 Day Protocol ----------
+
+j = 9 
+
+n = j*24
+
+ZeitzerProtocol_lightschedule = list()
+CBTmin = 4
+
+for t in range(0,n): 
+    bright_light = 1000
+    dim_light = 150
+    dark = 0
+    
+    if 78 <= t < 96:
+        if np.mod(t,24) > np.mod(CBTmin - 6.75,24):
+            ZeitzerProtocol_lightschedule.append(bright_light)
+        else: 
+            ZeitzerProtocol_lightschedule.append(dim_light)    
+    if 96 <= t < 120:
+        if np.mod(t,24) < np.mod(CBTmin - 0.25,24):
+            ZeitzerProtocol_lightschedule.append(bright_light)
+        else:
+            ZeitzerProtocol_lightschedule.append(dim_light)
+    else:
+        ZeitzerProtocol_lightschedule.append(dim_light)
+    
+
+plt.plot(range(0,n),ZeitzerProtocol_lightschedule)
+plt.title("Zeitzer 2000 Protocol Light:Dark Schedule")
+plt.axvline(72)
+plt.axvline(100)
+#plt.axvline(5)
+#plt.axvline(6.5)
+plt.show()
+
+# ---------- Zeitzer 2 Days of Protocol ----------
+
+j = 2
+
+n = j*24
+
+ZeitzerProtocol_lightschedule = list()
+CBTmin = 4
+
+for t in range(0,n): 
+    bright_light = 1000
+    dim_light = 150
+    dark = 0
+    
+    if 0 <= t < 24:
+        if np.mod(t,24) > np.mod(CBTmin - 6.75,24):
+            ZeitzerProtocol_lightschedule.append(bright_light)
+        else: 
+            ZeitzerProtocol_lightschedule.append(dim_light)    
+    if 24 <= t < 48:
+        if np.mod(t,24) < np.mod(CBTmin - 0.25,24):
+            ZeitzerProtocol_lightschedule.append(bright_light)
+        else:
+            ZeitzerProtocol_lightschedule.append(dim_light)
+    
+
+plt.plot(range(0,n),ZeitzerProtocol_lightschedule)
+plt.title("Zeitzer 2000 Protocol Light:Dark Schedule")
+plt.axvline(28)
+#plt.axvline(1)
 #plt.axvline(5)
 #plt.axvline(6.5)
 plt.show()
