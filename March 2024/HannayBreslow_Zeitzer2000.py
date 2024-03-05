@@ -246,11 +246,15 @@ CBTmin = model_baseline.ts[CBTmin_index]
 
 #-------------- Run the model with a 6.5 h light exposure -----------
 
-# Run Zeitzer 2000 constant routine 
+# Run Zeitzer 2000 light pulse  
 model_light = HannayBreslowModel()
-model_light.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=400) # run the model from baseline ICs
+model_light.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=500) # run the model from baseline ICs
 
+# Calculate % suppression 
+before = model_light.results[30,4]
+during = model_light.results[270,4]
 
+percent_supp = (before - during)/before 
 
 
 #--------- Plot Model Output -------------------
@@ -264,8 +268,8 @@ model = model_light
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-#plt.axvline(x=2.5)
-#plt.axvline(x=26.5)
+#plt.axvline(x=3)
+#plt.axvline(x=27)
 #plt.axvline(x=50.5)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
