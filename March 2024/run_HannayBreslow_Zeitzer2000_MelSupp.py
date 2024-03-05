@@ -248,74 +248,174 @@ CBTmin = model_baseline.ts[CBTmin_index]
 
 
 
-#-------------- Run the model with a 6.5 h light exposure -----------
+def run_HannayBreslow_MelSupp(params):
 
-# Run Zeitzer 2000 constant routine 
-model_light = HannayBreslowModel()
-model_light.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=30) # run the model from baseline ICs
+    #-------------- Run the model with a 6.5 h light exposure (3 lux) -----------
 
+    # Run Zeitzer 2000 light pulse  
+    model_light_3 = HannayBreslowModel()
+    model_light_3.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=3) # run the model from baseline ICs
 
+    # Calculate % suppression 
+    before = model_light_3.results[30,4]
+    during = model_light_3.results[270,4]
 
+    percent_supp_3 = (before - during)/before 
 
-#--------- Plot Model Output -------------------
-
-# pick one to plot 
-#model = model_baseline
-model = model_light
-
-
-# Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
-plt.plot(model.ts,model.results[:,3],lw=2)
-plt.plot(model.ts,model.results[:,4],lw=2)
-plt.plot(model.ts,model.results[:,5],lw=2)
-#plt.axvline(x=2.5)
-#plt.axvline(x=26.5)
-#plt.axvline(x=50.5)
-plt.xlabel("Time (hours)")
-plt.ylabel("Melatonin Concentration (pmol/L)")
-plt.title("Time Trace of Melatonin Concentrations (pmol/L)")
-plt.legend(["Pineal","Plasma", "Exogenous"])
-plt.show()
+    print("3 lux suppression found") 
 
 
-# Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
-plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
-plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
-plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-#plt.axhline(DLMO_threshold)
-plt.xlabel("Time (hours)")
-plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Time Trace of Melatonin Concentrations (pg/mL)")
-plt.legend(["Pineal","Plasma", "Exogenous"])
-plt.show()
+    #-------------- Run the model with a 6.5 h light exposure (10 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_10 = HannayBreslowModel()
+    model_light_10.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=10) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_10.results[30,4]
+    during = model_light_10.results[270,4]
+    
+    percent_supp_10 = (before - during)/before 
+    
+    print("10 lux suppression found") 
+    
+
+    #-------------- Run the model with a 6.5 h light exposure (50 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_50 = HannayBreslowModel()
+    model_light_50.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=50) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_50.results[30,4]
+    during = model_light_50.results[270,4]
+    
+    percent_supp_50 = (before - during)/before 
+    
+    print("50 lux suppression found") 
+    
+    
+    #-------------- Run the model with a 6.5 h light exposure (60 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_60 = HannayBreslowModel()
+    model_light_60.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=60) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_60.results[30,4]
+    during = model_light_60.results[270,4]
+    
+    percent_supp_60 = (before - during)/before 
+    
+    print("60 lux suppression found") 
+    
+    
+    #-------------- Run the model with a 6.5 h light exposure (80 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_80 = HannayBreslowModel()
+    model_light_80.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=80) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_80.results[30,4]
+    during = model_light_80.results[270,4]
+    
+    percent_supp_80 = (before - during)/before 
+    
+    print("80 lux suppression found") 
+    
+    
+    #-------------- Run the model with a 6.5 h light exposure (100 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_100 = HannayBreslowModel()
+    model_light_100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=100) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_100.results[30,4]
+    during = model_light_100.results[270,4]
+    
+    percent_supp_100 = (before - during)/before 
+    
+    print("100 lux suppression found") 
+    
+    
+    #-------------- Run the model with a 6.5 h light exposure (200 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_200 = HannayBreslowModel()
+    model_light_200.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=200) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_200.results[30,4]
+    during = model_light_200.results[270,4]
+    
+    percent_supp_200 = (before - during)/before 
+    
+    print("200 lux suppression found") 
+    
+    
+    #-------------- Run the model with a 6.5 h light exposure (500 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_500 = HannayBreslowModel()
+    model_light_500.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=500) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_500.results[30,4]
+    during = model_light_500.results[270,4]
+    
+    percent_supp_500 = (before - during)/before 
+    
+    print("500 lux suppression found") 
+    
+    
+    #-------------- Run the model with a 6.5 h light exposure (1000 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_1000 = HannayBreslowModel()
+    model_light_1000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=1000) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_1000.results[30,4]
+    during = model_light_1000.results[270,4]
+    
+    percent_supp_1000 = (before - during)/before 
+    
+    print("1000 lux suppression found") 
+    
+    
+    #-------------- Run the model with a 6.5 h light exposure (5000 lux) -----------
+    
+    # Run Zeitzer 2000 light pulse  
+    model_light_5000 = HannayBreslowModel()
+    model_light_5000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=5000) # run the model from baseline ICs
+    
+    # Calculate % suppression 
+    before = model_light_5000.results[30,4]
+    during = model_light_5000.results[270,4]
+    
+    percent_supp_5000 = (before - during)/before 
+    
+    print("5000 lux suppression found") 
+    
+    
+    #---------- Make an array of all predicted phase shifts --------------
+    
+    melatonin_suppression = [percent_supp_3, percent_supp_10, percent_supp_50, percent_supp_60, percent_supp_80, percent_supp_100, percent_supp_200, percent_supp_500, percent_supp_1000, percent_supp_5000];
+    
+    return melatonin_suppression
 
 
-# Plotting R
-plt.plot(model.ts,model.results[:,0],lw=2)
-plt.xlabel("Time (hours)")
-plt.ylabel("R, Collective Amplitude")
-plt.title("Time Trace of R, Collective Amplitude")
-plt.show()
-
-# Plotting psi
-plt.plot(model.ts,model.results[:,1],lw=2)
-plt.xlabel("Time (hours)")
-plt.ylabel("Psi, Mean Phase (radians)")
-plt.title("Time Trace of Psi, Mean Phase")
-plt.show()
-
-# Plotting psi mod 2pi
-plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),lw=2)
-plt.xlabel("Time (hours)")
-plt.ylabel("Psi, Mean Phase (radians)")
-plt.title("Time Trace of Psi, Mean Phase")
-plt.show()
-
-# Plotting n
-plt.plot(model.ts,model.results[:,2],lw=2)
-#plt.axvline(x=21.75)
-#plt.axvline(x=28.25)
-plt.xlabel("Time (hours)")
-plt.ylabel("Proportion of Activated Photoreceptors")
-plt.title("Time Trace of Photoreceptor Activation")
-plt.show()
+def objective_func(params,data_vals):
+    try: 
+        print(params)
+        melatonin_suppression = run_HannayBreslow_MelSupp(params)
+        print(melatonin_suppression)
+    
+        error = np.mean(abs(melatonin_suppression - data_vals))
+        print(error)
+    
+        return error
+    except: 
+        return 1e6
