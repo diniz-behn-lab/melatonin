@@ -48,7 +48,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 5 #7 # 1/sec, I determined by fitting (roughly) to Zeitzer
+        self.m = 5.19 # I determined by fitting to Zeitzer using differential evolution, error = 0.10136377412645162
         
         
         ## Hannay Model
@@ -244,24 +244,184 @@ CBTmin = model_baseline.ts[CBTmin_index]
 
 
 
-#-------------- Run the model with a 6.5 h light exposure -----------
+#-------------- Run the model with a 6.5 h light exposure (3 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light = HannayBreslowModel()
-model_light.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=500) # run the model from baseline ICs
+model_light_3 = HannayBreslowModel()
+model_light_3.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=3) # run the model from baseline ICs
 
 # Calculate % suppression 
-before = model_light.results[30,4]
-during = model_light.results[270,4]
+before = model_light_3.results[30,4]
+during = model_light_3.results[270,4]
 
-percent_supp = (before - during)/before 
+percent_supp_3 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (10 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_10 = HannayBreslowModel()
+model_light_10.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=10) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_10.results[30,4]
+during = model_light_10.results[270,4]
+
+percent_supp_10 = (before - during)/before
+ 
+
+#-------------- Run the model with a 6.5 h light exposure (50 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_50 = HannayBreslowModel()
+model_light_50.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=50) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_50.results[30,4]
+during = model_light_50.results[270,4]
+
+percent_supp_50 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (60 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_60 = HannayBreslowModel()
+model_light_60.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=60) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_60.results[30,4]
+during = model_light_60.results[270,4]
+
+percent_supp_60 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (80 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_80 = HannayBreslowModel()
+model_light_80.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=80) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_80.results[30,4]
+during = model_light_80.results[270,4]
+
+percent_supp_80 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (100 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_100 = HannayBreslowModel()
+model_light_100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=100) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_3.results[30,4]
+during = model_light_3.results[270,4]
+
+percent_supp_100 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (200 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_200 = HannayBreslowModel()
+model_light_200.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=200) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_200.results[30,4]
+during = model_light_200.results[270,4]
+
+percent_supp_200 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (500 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_500 = HannayBreslowModel()
+model_light_500.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=500) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_500.results[30,4]
+during = model_light_500.results[270,4]
+
+percent_supp_500 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (1000 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_1000 = HannayBreslowModel()
+model_light_1000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=1000) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_1000.results[30,4]
+during = model_light_1000.results[270,4]
+
+percent_supp_1000 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (5000 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_5000 = HannayBreslowModel()
+model_light_5000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=5000) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_5000.results[30,4]
+during = model_light_5000.results[270,4]
+
+percent_supp_5000 = (before - during)/before 
+
+
+#---------- Make an array of all predicted % suppressions --------------
+
+melatonin_suppression = [percent_supp_3, percent_supp_10, percent_supp_50, percent_supp_60, percent_supp_80, percent_supp_100, percent_supp_200, percent_supp_500, percent_supp_1000, percent_supp_5000];
+
+
+# Make array of administration times for plotting PRC 
+Lux = [3,10,50,60,80,100,200,500,1000,5000]
+
+# Plot PRC points
+#plt.plot(Lux,melatonin_suppression,'o')
+plt.plot(Lux,melatonin_suppression, lw=2)
+#plt.axhline(0)
+#plt.axvline(20.9)
+plt.xlabel("Light Exposure (Lux)")
+plt.ylabel("Melatonin Suppression (%)")
+plt.title("Simumalted Illuminance Response Curve")
+plt.show()
+
+
+#----------- Load Burgess 2008 PRC data -------------
+# From Will's excel file, only yaxis values given
+
+Zeitzer_2000 = [
+0,
+0,
+0,
+0.1,
+0.2,
+0.25,
+0.8,
+0.9,
+1.0,
+1.0
+]
+
+Lux = [3,10,50,60,80,100,200,500,1000,5000]
+
+plt.plot(Lux, Zeitzer_2000, 'o')
+plt.plot(Lux,melatonin_suppression, lw=2)
+plt.title("Simumaltion vs. Data Illuminance Response Curve")
+plt.show()
 
 
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
 #model = model_baseline
-model = model_light
+model = model_light_3
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
