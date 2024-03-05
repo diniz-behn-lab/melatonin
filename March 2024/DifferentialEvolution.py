@@ -5,6 +5,7 @@ Created on Mon Feb 19 18:18:02 2024
 @author: sstowe
 
 Optimize the melatonin forcing parameters (B1, B2, theta_M1, theta_M2, epsilon)
+
 """
 
 
@@ -43,7 +44,7 @@ now = time.time()
 bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
 #bounds = [(-0.1, 0.1), (-0.1, 0.1), (0, 0.1), (0, 0.1), (-0.1, 0.1)]
 
-optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=15, maxiter=4, disp=True)
+optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=15, maxiter=16, disp=True)
 
 # Print how long (mins) the run took
 print((time.time() - now)/60) 
