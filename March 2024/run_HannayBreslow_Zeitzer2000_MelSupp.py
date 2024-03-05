@@ -105,6 +105,7 @@ class HannayBreslowModel(object):
         else: 
             bright_light = light_pulse
             dim_light = 10
+            CBTmin = 52.2
             if 0 <= t < 24:
                 if t > np.mod(CBTmin-6.75,24):
                     return bright_light
@@ -202,53 +203,9 @@ class HannayBreslowModel(object):
 
 
 
-
-#--------- Run the model to find initial conditions ---------------
-
-model_IC = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model_IC.integrateModel(24*50,schedule=1) # use the integrateModel method with the object model
-IC = model_IC.results[-1,:] # get initial conditions from entrained model
-
-
-
-
-
-#--------- Run the model under constant conditions ---------------
-# Find baseline CBTmin
-
-# Run Zeitzer 2000 constant routine 
-model_baseline = HannayBreslowModel()
-model_baseline.integrateModel(24*3,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
-IC_2 = model_baseline.results[-1,:] 
-
-
-last_day = model_baseline.results[480:720,1]
-last_day = np.mod(last_day,2*np.pi)
-last_day = np.around(last_day, 2)
-last_day_list = last_day.tolist()
-
-try: 
-    CBTmin_index = last_day_list.index(3.14)
-except: 
-    print("3.14 not found")
-    
-try: 
-    CBTmin_index = last_day_list.index(3.13)
-except: 
-    print("3.13 not found")
-    
-try: 
-    CBTmin_index = last_day_list.index(3.15)
-except: 
-    print("3.15 not found")
-
-CBTmin_index = CBTmin_index + 480
-
-CBTmin = model_baseline.ts[CBTmin_index]
-
-
-
 def run_HannayBreslow_MelSupp(params):
+
+    IC_2 = [0.810081, 2.02662, 0.348864, 121.033, 192.803, 0]    
 
     #-------------- Run the model with a 6.5 h light exposure (3 lux) -----------
 
