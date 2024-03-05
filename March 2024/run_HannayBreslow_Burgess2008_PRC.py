@@ -51,7 +51,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 7 # 1/sec, Breslow 2013
+        self.m = 5 # 1/sec, I determined by fitting (rougly) to Zeitzer 2000
 
         ## Hannay Model
         self.D = 0
