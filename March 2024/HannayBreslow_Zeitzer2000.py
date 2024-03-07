@@ -49,10 +49,12 @@ class HannayBreslowModel(object):
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
         # Differential evolution: 
-            # 4.74483458, Error = 0.1045823000731854
+            # 4.74483458, Error = 0.1045823000731854 
             # 3.39239736, Error = 0.1045823000731854
             # 5.99803637, Error = 0.1045823000731854
-        self.m = 4.7448 # I determined by fitting to Zeitzer using differential evolution
+            # 6.63348254, Error = 0.1045823000731854
+            # 4.92783336, Error = 0.1045823000731854
+        self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -425,7 +427,7 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-#model = model_baseline
+model = model_baseline
 #model = model_light_3
 #model = model_light_10
 #model = model_light_50
@@ -435,7 +437,7 @@ plt.show()
 #model = model_light_200
 #model = model_light_500
 #model = model_light_1000
-model = model_light_5000
+#model = model_light_5000
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)

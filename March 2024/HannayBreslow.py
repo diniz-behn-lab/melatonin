@@ -45,7 +45,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 5.19 # 1/sec, I determined by fitting (roughly) to Zeitzer
+        self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -253,7 +253,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
 
 
 
