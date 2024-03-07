@@ -4,7 +4,7 @@ Created on Thu Mar  7 08:14:55 2024
 
 @author: sstowe
 
-Code to run the Hannay-Breslow model 
+Code to run the fully integrated and fit Hannay-Breslow model 
 
 """
 
