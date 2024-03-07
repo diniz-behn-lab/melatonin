@@ -511,8 +511,8 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-model = model_placebo
-#model = model_2
+#model = model_placebo
+model = model_2
 #model = model_6
 #model = model_10
 #model = model_14
