@@ -273,11 +273,13 @@ baseline_times = model_placebo.ts[0:240] # defining times from first 24hrs
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 
+
 # Final day 
 final_plasma_mel = model_placebo.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_placebo.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
 phase_shift_placebo = final_DLMO - baseline_DLMO
@@ -299,12 +301,18 @@ baseline_plasma_mel = model_2.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_2.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#print("Baseline - 2.5h")
+#print(baseline_DLMO)
+
 
 # Final day 
 final_plasma_mel = model_2.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_2.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 2.5h")
+#print(final_DLMO)
+
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
 phase_shift_2 = final_DLMO - baseline_DLMO # 2.5h, or 6.4h after DLMO
@@ -327,12 +335,18 @@ baseline_plasma_mel = model_6.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_6.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#print("Baseline - 6.5h")
+#print(baseline_DLMO)
+
 
 # Final day 
 final_plasma_mel = model_6.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_6.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 6.5h")
+#print(final_DLMO)
+
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
 phase_shift_6 = final_DLMO - baseline_DLMO # 6.5h, or 10.4h after DLMO
@@ -354,12 +368,18 @@ baseline_plasma_mel = model_10.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_10.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#print("Baseline - 10.5h")
+#print(baseline_DLMO)
+
 
 # Final day 
 final_plasma_mel = model_10.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_10.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 10.5h")
+#print(final_DLMO)
+
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
 phase_shift_10 = final_DLMO - baseline_DLMO # 10.5h, or 14.4h after DLMO
@@ -380,12 +400,18 @@ baseline_plasma_mel = model_14.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_14.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#print("Baseline - 14.5h")
+#print(baseline_DLMO)
+
 
 # Final day 
 final_plasma_mel = model_14.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_14.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 14.5h")
+#print(final_DLMO)
+
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
 phase_shift_14 = final_DLMO - baseline_DLMO # 14.5h, or 6.4h before DLMO
@@ -406,12 +432,18 @@ baseline_plasma_mel = model_18.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_18.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#print("Baseline - 18.5h")
+#print(baseline_DLMO)
+
 
 # Final day 
 final_plasma_mel = model_18.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_18.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 18.5h")
+#print(final_DLMO)
+
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
 phase_shift_18 = final_DLMO - baseline_DLMO # 18.5h, or 2.4h before DLMO
@@ -432,12 +464,18 @@ baseline_plasma_mel = model_22.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_22.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#print("Baseline - 22.5h")
+#print(baseline_DLMO)
+
 
 # Final day 
 final_plasma_mel = model_22.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_22.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 22.5h")
+#print(final_DLMO)
+
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
 phase_shift_22 = final_DLMO - baseline_DLMO # 22.5h, or 1.4h after DLMO
@@ -462,7 +500,7 @@ ExMel_times = [2.5, 6.5, 10.5, 14.5, 18.5, 22.5]
 plt.plot(ExMel_times,phase_shifts_corrected,'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.axhline(0)
-plt.axvline(20.9)
+plt.axvline(21.1)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Phase Shift (hours)")
 plt.title("3 Pulse Melatonin (3mg) Phase Response Curve")
@@ -513,12 +551,12 @@ plt.show()
 
 # pick one to plot 
 #model = model_placebo
-model = model_2
+#model = model_2
 #model = model_6
 #model = model_10
 #model = model_14
 #model = model_18
-#model = model_22
+model = model_22
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -552,7 +590,7 @@ plt.plot(model.ts[0:240],model.results[0:240,3]/4.3,lw=2)
 plt.plot(model.ts[0:240],model.results[0:240,4]/4.3,lw=2)
 plt.plot(model.ts[0:240],model.results[0:240,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-#plt.axvline(21.5)
+plt.axvline(21.1)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Baseline Day Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
@@ -600,7 +638,7 @@ plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,3]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,4]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-#plt.axvline(21.5)
+plt.axvline(22.7)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("FInal Day Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
