@@ -442,7 +442,7 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-model = model_baseline
+#model = model_baseline
 #model = model_light_3
 #model = model_light_10
 #model = model_light_50
@@ -452,7 +452,7 @@ model = model_baseline
 #model = model_light_200
 #model = model_light_500
 #model = model_light_1000
-#model = model_light_5000
+model = model_light_5000
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -476,7 +476,7 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axhline(DLMO_threshold)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Time Trace of Melatonin Concentrations (pg/mL)")
+plt.title("Zeitzer 2000 Protocol - 5000 lux")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
