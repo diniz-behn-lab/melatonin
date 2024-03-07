@@ -48,7 +48,8 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 5.19 # I determined by fitting to Zeitzer using differential evolution, error = 0.10136377412645162
+        # Differential evolution: 4.74483458, Error = 0.1045823000731854
+        self.m = 4.7448 #4.74483458 # I determined by fitting to Zeitzer using differential evolution, error = 0.10136377412645162
         
         
         ## Hannay Model
@@ -316,8 +317,8 @@ model_light_100 = HannayBreslowModel()
 model_light_100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=100) # run the model from baseline ICs
 
 # Calculate % suppression 
-before = model_light_3.results[30,4]
-during = model_light_3.results[270,4]
+before = model_light_100.results[30,4]
+during = model_light_100.results[270,4]
 
 percent_supp_100 = (before - during)/before 
 
@@ -413,6 +414,7 @@ Lux = [3,10,50,60,80,100,200,500,1000,5000]
 
 plt.plot(Lux, Zeitzer_2000, 'o')
 plt.plot(Lux,melatonin_suppression, lw=2)
+plt.xscale('log')
 plt.title("Simumaltion vs. Data Illuminance Response Curve")
 plt.show()
 
@@ -421,7 +423,16 @@ plt.show()
 
 # pick one to plot 
 #model = model_baseline
-model = model_light_3
+#model = model_light_3
+#model = model_light_10
+#model = model_light_50
+#model = model_light_60
+#model = model_light_80
+#model = model_light_100
+#model = model_light_200
+#model = model_light_500
+#model = model_light_1000
+model = model_light_5000
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
