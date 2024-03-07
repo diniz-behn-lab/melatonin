@@ -41,17 +41,17 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.1)*60*60 #(0.0675)*60*60 # CHANGED, pmol/L/sec converted to hours, I determined
+        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.0472 # radians, I determined 
-        self.psi_off = 3.92699 # radians, I determined
+        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
+        self.psi_off = 3.6652 #3.66519143 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 5.19 # 1/sec, I determined by fitting to Zeitzer 2000 using differential evolution
+        self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
 
         ## Hannay Model
         self.D = 0
@@ -249,9 +249,9 @@ def run_HannayBreslow_PRC(params):
     model_IC.integrateModel(24*50, schedule=1) # use the integrateModel method with the object model
     IC = model_IC.results[-1,:] # get initial conditions from entrained model
     '''
-    IC = ([0.832572, 2.06486, 0.47017, 117.613, 140.095, 0])
-
+    IC = ([0.832531, 2.06503, 0.470175, 80.229, 108.099, 0])
     
+
     #--------- Run the model under the placebo condition ---------------
     model_placebo = HannayBreslowModel()
     model_placebo.set_melatonin_prc_params(params)
