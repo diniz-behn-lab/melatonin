@@ -39,8 +39,8 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.0472 # radians, I determined 
-        self.psi_off = 3.66519143#3.92699 # radians, I determined
+        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
+        self.psi_off = 3.6652 #3.66519143 # radians, I determined
         
         self.m = 7 # 1/sec, Breslow 2013
         
@@ -230,8 +230,8 @@ model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-#plt.axvline(x=7)
-#plt.axvline(x=23)
+plt.axvline(x=6)
+plt.axvline(x=20.3)
 #plt.axvline(x=12)
 plt.axhline(200)
 plt.xlabel("Time (hours)")
@@ -249,7 +249,7 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 plt.axvline(x=21.4)
 #plt.axvline(x=7)
 plt.axvline(x=8.3)
-plt.axhline(4*10)
+plt.axhline(10)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Melatonin Concentrations (pg/mL)")
