@@ -40,7 +40,7 @@ class HannayBreslowModel(object):
         self.r = 15.36 # sec, Breslow 2013
         
         self.psi_on = 1.0472 # radians, I determined 
-        self.psi_off = 3.92699 # radians, I determined
+        self.psi_off = 3.66519143#3.92699 # radians, I determined
         
         self.m = 7 # 1/sec, Breslow 2013
         
