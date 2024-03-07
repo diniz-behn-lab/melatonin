@@ -35,7 +35,7 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.1)*60*60 #(0.0675)*60*60 # CHANGED, pmol/L/sec converted to hours, I determined
+        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
@@ -70,9 +70,9 @@ class HannayBreslowModel(object):
         ## Melatonin Forcing Parameters
         #x = [-0.74545016, 0.05671999, -0.76024892, 0.05994563, 0.18366069]
         # Switched sign of all five 
-        #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
+        x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
-        x = [0.99055777, -0.78238115,  0.03160424,  1.30703649, -0.09916106] # Error = 0.36376811616666666 
+        #x = [0.99055777, -0.78238115,  0.03160424,  1.30703649, -0.09916106] # Error = 0.36376811616666666 
         self.B_1 = x[0]#0.74545016#-0.74545016 
         self.theta_M1 = x[1]#-0.05671999#0.05671999
         self.B_2 = x[2]#0.76024892#-0.76024892
@@ -243,7 +243,7 @@ class HannayBreslowModel(object):
 
 #------------- Running the model under all condtions for the PRC 
 # Set the DLMO threshold that will be used throughout to determine DLMO time
-DLMO_threshold = 3
+DLMO_threshold = 10
 
 
 
