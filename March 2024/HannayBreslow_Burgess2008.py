@@ -39,13 +39,13 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.0472 # radians, I determined 
-        self.psi_off = 3.92699 # radians, I determined
+        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
+        self.psi_off = 3.6652 #3.66519143 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 5.19 # 1/sec, I determined by fitting (roughly) to Zeitzer
+        self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -72,8 +72,6 @@ class HannayBreslowModel(object):
         # Switched sign of all five 
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
-        #x = [0.99077284, -0.61489832,  0.07132476,  0.39207981, -0.07149382] # Error = 0.39710144950000287
-        #x = [0.99380215, -0.77800378,  0.0297315,   0.85202878, -0.10496969] # Error = 0.3471014494999986
         x = [0.99055777, -0.78238115,  0.03160424,  1.30703649, -0.09916106] # Error = 0.36376811616666666 
         self.B_1 = x[0]#0.74545016#-0.74545016 
         self.theta_M1 = x[1]#-0.05671999#0.05671999
