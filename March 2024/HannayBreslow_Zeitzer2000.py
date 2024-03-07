@@ -380,13 +380,26 @@ during = model_light_5000.results[270,4]
 percent_supp_5000 = (before - during)/before 
 
 
+#-------------- Run the model with a 6.5 h light exposure (10000 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_10000 = HannayBreslowModel()
+model_light_10000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=5000) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_10000.results[30,4]
+during = model_light_10000.results[270,4]
+
+percent_supp_10000 = (before - during)/before 
+
+
 #---------- Make an array of all predicted % suppressions --------------
 
-melatonin_suppression = [percent_supp_3, percent_supp_10, percent_supp_50, percent_supp_60, percent_supp_80, percent_supp_100, percent_supp_200, percent_supp_500, percent_supp_1000, percent_supp_5000];
+melatonin_suppression = [percent_supp_3, percent_supp_10, percent_supp_50, percent_supp_60, percent_supp_80, percent_supp_100, percent_supp_200, percent_supp_500, percent_supp_1000, percent_supp_5000, percent_supp_10000];
 
 
 # Make array of administration times for plotting PRC 
-Lux = [3,10,50,60,80,100,200,500,1000,5000]
+Lux = [3,10,50,60,80,100,200,500,1000,5000,10000]
 
 # Plot PRC points
 #plt.plot(Lux,melatonin_suppression,'o')
@@ -412,15 +425,17 @@ Zeitzer_2000 = [
 0.8,
 0.9,
 1.0,
+1.0,
 1.0
 ]
 
-Lux = [3,10,50,60,80,100,200,500,1000,5000]
+Lux = [3,10,50,60,80,100,200,500,1000,5000,10000]
 
 plt.plot(Lux, Zeitzer_2000, 'o')
 plt.plot(Lux,melatonin_suppression, lw=2)
 plt.xscale('log')
-plt.title("Simumaltion vs. Data Illuminance Response Curve")
+plt.title("Illuminance Response Curve")
+plt.legend(["Zeitzer 2000","Model"])
 plt.show()
 
 
