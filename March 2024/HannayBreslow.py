@@ -40,7 +40,7 @@ class HannayBreslowModel(object):
         self.r = 15.36 # sec, Breslow 2013
         
         self.psi_on = 1.0472 # radians, I determined 
-        self.psi_off = 3.92699 # radians, I determined
+        self.psi_off = 3.66519143#3.92699 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
@@ -73,8 +73,8 @@ class HannayBreslowModel(object):
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
         #x = [0.99077284, -0.61489832,  0.07132476,  0.39207981, -0.07149382] # Error = 0.39710144950000287
-        #x = [0.99380215, -0.77800378,  0.0297315,   0.85202878, -0.10496969] # Error = 0.3471014494999986
-        x = [0.99055777, -0.78238115,  0.03160424,  1.30703649, -0.09916106] # Error = 0.36376811616666666 
+        x = [0.99380215, -0.77800378,  0.0297315,   0.85202878, -0.10496969] # Error = 0.3471014494999986
+        #x = [0.99055777, -0.78238115,  0.03160424,  1.30703649, -0.09916106] # Error = 0.36376811616666666 
         self.B_1 = x[0] 
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -98,17 +98,7 @@ class HannayBreslowModel(object):
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: 
-            full_light = 1000
-            dim_light = 300
-            wake_time = 7
-            sleep_time = 23
-            sun_up = 8
-            sun_down = 19
-            
-            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-
-            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+            return 0
 
 
 # Define the alpha(L) function 
@@ -206,7 +196,7 @@ class HannayBreslowModel(object):
         dydt=np.zeros(6)
     
         # ODE System  
-        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp + MelAmp# dR/dt
+        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp + MelAmp # dR/dt
         dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt 
         dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
         
@@ -260,13 +250,20 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 
 
+#--------- Run the model without exogenous melatonin ---------------
+
+model = HannayBreslowModel()
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+
+
+
 
 #--------- Run the model with exogenous melatonin ---------------
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
  
-model = HannayBreslowModel()
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
 
 
 
