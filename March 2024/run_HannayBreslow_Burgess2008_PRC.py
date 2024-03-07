@@ -420,7 +420,7 @@ def run_HannayBreslow_PRC(params):
     # Subtract off the shift due to the protocol
     phase_shifts_corrected = (phase_shifts - phase_shift_placebo)
     
-    print(phase_shifts_corrected)
+    #print(phase_shifts_corrected)
     
     return phase_shifts_corrected
     
@@ -432,7 +432,7 @@ def objective_func(params,data_vals):
         phase_shifts = run_HannayBreslow_PRC(params)
         print(phase_shifts)
         
-        #print(phase_shifts - data_vals)
+        print(phase_shifts - data_vals)
         #print(abs(phase_shifts - data_vals))
     
         error = np.mean(abs(phase_shifts - data_vals))
