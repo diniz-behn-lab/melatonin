@@ -49,12 +49,16 @@ class HannayBreslowModel(object):
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
         # Differential evolution: 
-            # 4.74483458, Error = 0.1045823000731854 
-            # 3.39239736, Error = 0.1045823000731854
-            # 5.99803637, Error = 0.1045823000731854
-            # 6.63348254, Error = 0.1045823000731854
-            # 4.92783336, Error = 0.1045823000731854
-        self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
+            # Switched to L2 norm 
+            # 4.9848787, Error = 0.465958922024481
+            # Added more data points to fit to 
+            # 5.93990803, Error = 0.3568619615568021
+            # 5.30845266, Error = 0.3568619615568021
+            # 5.02543993, Error = 0.3568619615568021
+            # Added a couple more points to fit to 
+            # 5.16003616, Error = 0.3742083032595057
+            # 5.64876698, Error = 0.3742083032595057 
+        self.m = 5.6488 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -417,21 +421,22 @@ plt.show()
 
 Zeitzer_2000 = [
 0,
-0,
-0,
 0.1,
 0.2,
-0.25,
+0.3,
+0.4,
+0.5,
+0.6,
+0.7,
 0.8,
 0.9,
-1.0,
-1.0,
-1.0
+0.95
 ]
 
-Lux = [3,10,50,60,80,100,200,500,1000,5000,10000]
+# Eyeballed it
+Lux_2 = [10,60,70,80,90,100,120,150,180,500,5000]
 
-plt.plot(Lux, Zeitzer_2000, 'o')
+plt.plot(Lux_2, Zeitzer_2000, 'o')
 plt.plot(Lux,melatonin_suppression, lw=2)
 plt.xscale('log')
 plt.title("Illuminance Response Curve")

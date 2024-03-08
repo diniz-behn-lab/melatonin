@@ -19,20 +19,25 @@ import time
 #---------- Create an array of the data values -----------------
 
 Zeitzer_2000 = [
-0,
-0,
-0,
-0.1,
-0.2,
-0.25,
-0.8,
-0.9,
-1.0,
-1.0
+0, # 3
+0, # 10
+0, # 20
+0, # 30
+0, # 50
+0.1, # 60
+0.2, # 70
+0.3, # 80
+0.5, # 100
+0.7, # 150
+0.8, # 180
+0.9, # 300
+0.9, # 500
+0.95, # 1000
+0.95 # 5000
 ]
 
 # Eyeballed it
-Zeitzer_2000_lux = [3,10,50,60,80,100,200,500,1000,5000]
+Zeitzer_2000_lux = [3,10,20,30,50,60,70,80,100,150,180,300,500,1000,5000]
 
 data_vals = Zeitzer_2000
 
@@ -42,9 +47,9 @@ now = time.time()
 # To be optimized: [(B_1), (B_2), (theta_M1), (theta_M2), (epsilon)]
 
 # Set bounds for the one parameter to be optimized
-bounds = [(4, 5)]
+bounds = [(4, 6)]
 
-optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=15, maxiter=4, disp=True)
+optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=50, maxiter=4, disp=True)
 
 # Print how long (mins) the run took
 print((time.time() - now)/60) 
