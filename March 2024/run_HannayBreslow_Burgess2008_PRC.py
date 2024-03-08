@@ -284,10 +284,10 @@ def run_HannayBreslow_PRC(params):
 
     # Calculate shift due to protocol
     # Baseline day 
-    baseline_plasma_mel = model_2.results[0:240,4]/4.3 # converting output to pg/mL
-    baseline_times = model_2.ts[0:240] # defining times from first 24hrs 
-    baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-    baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+    #baseline_plasma_mel = model_2.results[0:240,4]/4.3 # converting output to pg/mL
+    #baseline_times = model_2.ts[0:240] # defining times from first 24hrs 
+    #baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    #baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 
     # Final day  
     final_plasma_mel = model_2.results[960:1199,4]/4.3 # converting output to pg/mL
@@ -307,10 +307,10 @@ def run_HannayBreslow_PRC(params):
 
     # Calculate shift due to protocol
     # Baseline day 
-    baseline_plasma_mel = model_6.results[0:240,4]/4.3 # converting output to pg/mL
-    baseline_times = model_6.ts[0:240] # defining times from first 24hrs 
-    baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-    baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+    #baseline_plasma_mel = model_6.results[0:240,4]/4.3 # converting output to pg/mL
+    #baseline_times = model_6.ts[0:240] # defining times from first 24hrs 
+    #baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    #baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 
     # Final day 
     final_plasma_mel = model_6.results[960:1199,4]/4.3 # converting output to pg/mL
@@ -330,10 +330,10 @@ def run_HannayBreslow_PRC(params):
 
     # Calculate shift due to protocol
     # Baseline day 
-    baseline_plasma_mel = model_10.results[0:240,4]/4.3 # converting output to pg/mL
-    baseline_times = model_10.ts[0:240] # defining times from first 24hrs 
-    baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-    baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+    #baseline_plasma_mel = model_10.results[0:240,4]/4.3 # converting output to pg/mL
+    #baseline_times = model_10.ts[0:240] # defining times from first 24hrs 
+    #baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    #baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 
     # Final day 
     final_plasma_mel = model_10.results[960:1199,4]/4.3 # converting output to pg/mL
@@ -353,10 +353,10 @@ def run_HannayBreslow_PRC(params):
 
     # Calculate shift due to protocol
     # Baseline day 
-    baseline_plasma_mel = model_14.results[0:240,4]/4.3 # converting output to pg/mL
-    baseline_times = model_14.ts[0:240] # defining times from first 24hrs 
-    baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-    baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+    #baseline_plasma_mel = model_14.results[0:240,4]/4.3 # converting output to pg/mL
+    #baseline_times = model_14.ts[0:240] # defining times from first 24hrs 
+    #baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    #baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 
     # Final day 
     final_plasma_mel = model_14.results[960:1199,4]/4.3 # converting output to pg/mL
@@ -376,10 +376,10 @@ def run_HannayBreslow_PRC(params):
 
     # Calculate shift due to protocol
     # Baseline day 
-    baseline_plasma_mel = model_18.results[0:240,4]/4.3 # converting output to pg/mL
-    baseline_times = model_18.ts[0:240] # defining times from first 24hrs 
-    baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-    baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+    #baseline_plasma_mel = model_18.results[0:240,4]/4.3 # converting output to pg/mL
+    #baseline_times = model_18.ts[0:240] # defining times from first 24hrs 
+    #baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    #baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 
     # Final day 
     final_plasma_mel = model_18.results[960:1199,4]/4.3 # converting output to pg/mL
@@ -399,10 +399,10 @@ def run_HannayBreslow_PRC(params):
 
     # Calculate shift due to protocol
     # Baseline day 
-    baseline_plasma_mel = model_22.results[0:240,4]/4.3 # converting output to pg/mL
-    baseline_times = model_22.ts[0:240] # defining times from first 24hrs 
-    baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-    baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+    #baseline_plasma_mel = model_22.results[0:240,4]/4.3 # converting output to pg/mL
+    #baseline_times = model_22.ts[0:240] # defining times from first 24hrs 
+    #baseline, = np.where(baseline_plasma_mel<=10)#self.DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    #baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 
     # Final day 
     final_plasma_mel = model_22.results[960:1199,4]/4.3 # converting output to pg/mL
