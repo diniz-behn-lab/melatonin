@@ -249,7 +249,8 @@ def run_HannayBreslow_PRC(params):
     model_IC.integrateModel(24*50, schedule=1) # use the integrateModel method with the object model
     IC = model_IC.results[-1,:] # get initial conditions from entrained model
     '''
-    IC = ([0.832556, 2.06498, 0.470171, 80.2298, 108.112, 0])
+    IC = ([0.832531, 2.06503, 0.470175, 80.229, 108.099, 0])
+
 
 
 
