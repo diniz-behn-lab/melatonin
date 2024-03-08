@@ -73,7 +73,8 @@ class HannayBreslowModel(object):
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
         #x = [0.99305271, -0.72663043,  0.21574313,  0.49105104, -0.0678659] # Error = 0.3971014495000005 
-        x = [0.99901019, -0.7989267,   0.04329946,  0.57526799, -0.10895614] # Error = 0.3804347828333324
+        #x = [0.99901019, -0.7989267,   0.04329946,  0.57526799, -0.10895614] # Error = 0.3804347828333324
+        x = [0.99688563, -0.63001718,  0.15227812,  0.31328857, -0.08197214] # Error = 0.5615942031666634
         self.B_1 = x[0]#0.74545016#-0.74545016 
         self.theta_M1 = x[1]#-0.05671999#0.05671999
         self.B_2 = x[2]#0.76024892#-0.76024892
@@ -155,7 +156,8 @@ class HannayBreslowModel(object):
 # Convert mg dose to value to be used in the Guassian dosing curve
     def mg_conversion(self, melatonin_dosage):
         x_line = melatonin_dosage
-        y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+        #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+        y_line = 60000#172234
         return y_line
 
         
@@ -551,12 +553,12 @@ plt.show()
 
 # pick one to plot 
 #model = model_placebo
-#model = model_2
+model = model_2
 #model = model_6
 #model = model_10
 #model = model_14
 #model = model_18
-model = model_22
+#model = model_22
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -602,7 +604,7 @@ plt.plot(model.ts[241:480],model.results[241:480,3]/4.3,lw=2)
 plt.plot(model.ts[241:480],model.results[241:480,4]/4.3,lw=2)
 #plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 100)
+plt.ylim(0, 400)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 1 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
@@ -614,7 +616,7 @@ plt.plot(model.ts[481:720],model.results[481:720,3]/4.3,lw=2)
 plt.plot(model.ts[481:720],model.results[481:720,4]/4.3,lw=2)
 #plt.plot(model.ts[481:720],model.results[481:720,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 100)
+plt.ylim(0, 400)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 2 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
@@ -626,7 +628,7 @@ plt.plot(model.ts[721:960],model.results[721:960,3]/4.3,lw=2)
 plt.plot(model.ts[721:960],model.results[721:960,4]/4.3,lw=2)
 #plt.plot(model.ts[721:960],model.results[721:960,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 100)
+plt.ylim(0, 400)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 3 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
