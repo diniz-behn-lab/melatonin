@@ -70,7 +70,7 @@ class HannayBreslowModel(object):
         ## Melatonin Forcing Parameters
         #x = [-0.74545016, 0.05671999, -0.76024892, 0.05994563, 0.18366069]
         # Switched sign of all five 
-        x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
+        #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
         x = [1, 0, 1, 0, 0]
         #x = [0.98819806,  0.0125164,  -0.47700146,  0.79729551, -0.39875981] # Error = 0.7115942031666643
@@ -98,7 +98,7 @@ class HannayBreslowModel(object):
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         else: # Laboratory days (5 total)
             if 24 < t < 96: # Days 2-4, ultradian schedule 
-                full_light = 40
+                full_light = 150 #40
                 if 1 <= np.mod(t,4) <= 2.5 :
                     return 0 
                 else:
