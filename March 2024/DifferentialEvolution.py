@@ -43,6 +43,7 @@ now = time.time()
 # Set bounds for the five parameters to be optimized
 bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
 #bounds = [(-1, 0.8), (-1, 0), (0, np.pi/2), (0, np.pi/2), (-0.5, 0)]
+#bounds = [(-1, 1), (-1, 1), (-np.pi/2, np.pi/2), (-np.pi/2, np.pi/2), (-0.5, 0.5)]
 
 optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=30, maxiter=10, disp=True)
 
