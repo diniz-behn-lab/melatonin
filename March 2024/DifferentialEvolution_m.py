@@ -18,6 +18,8 @@ import time
 
 #---------- Create an array of the data values -----------------
 
+''' 
+# ------- Fit to curve -----
 Zeitzer_2000 = [
 0, # 3
 0, # 10
@@ -38,6 +40,30 @@ Zeitzer_2000 = [
 
 # Eyeballed it
 Zeitzer_2000_lux = [3,10,20,30,50,60,70,80,100,150,180,300,500,1000,5000]
+'''
+
+# ----- Fit to data (determined from WebPlotDigitizer) -----
+Zeitzer_2000 = [0.11,
+0.08,
+-0.08,
+-0.01,
+-0.12,
+0.23,
+0.88,
+0.26,
+0.75,
+0.80,
+0.69,
+0.86,
+0.96,
+0.99,
+0.92,
+0.96,
+0.93,
+0.97,
+0.98,
+0.95,
+0.98]
 
 data_vals = Zeitzer_2000
 
@@ -47,9 +73,9 @@ now = time.time()
 # To be optimized: [(B_1), (B_2), (theta_M1), (theta_M2), (epsilon)]
 
 # Set bounds for the one parameter to be optimized
-bounds = [(4, 6)]
+bounds = [(4, 5.5)]
 
-optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=50, maxiter=4, disp=True)
+optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=75, maxiter=4, disp=True)
 
 # Print how long (mins) the run took
 print((time.time() - now)/60) 

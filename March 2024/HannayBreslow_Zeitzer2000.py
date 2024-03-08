@@ -49,16 +49,13 @@ class HannayBreslowModel(object):
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
         # Differential evolution: 
-            # Switched to L2 norm 
-            # 4.9848787, Error = 0.465958922024481
-            # Added more data points to fit to 
-            # 5.93990803, Error = 0.3568619615568021
-            # 5.30845266, Error = 0.3568619615568021
-            # 5.02543993, Error = 0.3568619615568021
-            # Added a couple more points to fit to 
-            # 5.16003616, Error = 0.3742083032595057
-            # 5.64876698, Error = 0.3742083032595057 
-        self.m = 5.6488 # I determined by fitting to Zeitzer using differential evolution
+            # Switched to L2 norm
+            # Fitting to curve 
+            # 4.86374213, Error = 0.38788346735130036
+            # 5.00304197, Error = 0.38788346735130036
+            # 4.51010139, Error = 0.38788346735130036
+            # Fitting to data (dtermined from WebPlotDigitizer)
+        self.m = 4.5101 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -278,7 +275,33 @@ before = model_light_10.results[30,4]
 during = model_light_10.results[270,4]
 
 percent_supp_10 = (before - during)/before
+
+
+#-------------- Run the model with a 6.5 h light exposure (20 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_20 = HannayBreslowModel()
+model_light_20.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=20) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_20.results[30,4]
+during = model_light_20.results[270,4]
+
+percent_supp_20 = (before - during)/before
  
+
+#-------------- Run the model with a 6.5 h light exposure (30 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_30 = HannayBreslowModel()
+model_light_30.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=30) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_30.results[30,4]
+during = model_light_30.results[270,4]
+
+percent_supp_30 = (before - during)/before
+
 
 #-------------- Run the model with a 6.5 h light exposure (50 lux) -----------
 
@@ -304,6 +327,19 @@ before = model_light_60.results[30,4]
 during = model_light_60.results[270,4]
 
 percent_supp_60 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (70 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_70 = HannayBreslowModel()
+model_light_70.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=70) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_70.results[30,4]
+during = model_light_70.results[270,4]
+
+percent_supp_70 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (80 lux) -----------
@@ -332,17 +368,30 @@ during = model_light_100.results[270,4]
 percent_supp_100 = (before - during)/before 
 
 
-#-------------- Run the model with a 6.5 h light exposure (200 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (180 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_200 = HannayBreslowModel()
-model_light_200.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=200) # run the model from baseline ICs
+model_light_180 = HannayBreslowModel()
+model_light_180.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=180) # run the model from baseline ICs
 
 # Calculate % suppression 
-before = model_light_200.results[30,4]
-during = model_light_200.results[270,4]
+before = model_light_180.results[30,4]
+during = model_light_180.results[270,4]
 
-percent_supp_200 = (before - during)/before 
+percent_supp_180 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (300 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_300 = HannayBreslowModel()
+model_light_300.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=300) # run the model from baseline ICs
+
+# Calculate % suppression 
+before = model_light_300.results[30,4]
+during = model_light_300.results[270,4]
+
+percent_supp_300 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (500 lux) -----------
@@ -388,7 +437,7 @@ percent_supp_5000 = (before - during)/before
 
 # Run Zeitzer 2000 light pulse  
 model_light_10000 = HannayBreslowModel()
-model_light_10000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=5000) # run the model from baseline ICs
+model_light_10000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=10000) # run the model from baseline ICs
 
 # Calculate % suppression 
 before = model_light_10000.results[30,4]
@@ -399,11 +448,11 @@ percent_supp_10000 = (before - during)/before
 
 #---------- Make an array of all predicted % suppressions --------------
 
-melatonin_suppression = [percent_supp_3, percent_supp_10, percent_supp_50, percent_supp_60, percent_supp_80, percent_supp_100, percent_supp_200, percent_supp_500, percent_supp_1000, percent_supp_5000, percent_supp_10000];
+melatonin_suppression = [percent_supp_3, percent_supp_10, percent_supp_20, percent_supp_30, percent_supp_50, percent_supp_60, percent_supp_70, percent_supp_80, percent_supp_100, percent_supp_180, percent_supp_300, percent_supp_500, percent_supp_1000, percent_supp_5000, percent_supp_10000];
 
 
 # Make array of administration times for plotting PRC 
-Lux = [3,10,50,60,80,100,200,500,1000,5000,10000]
+Lux = [3,10,20,30,50,60,70,80,100,180,300,500,1000,5000,10000]
 
 # Plot PRC points
 #plt.plot(Lux,melatonin_suppression,'o')
@@ -417,24 +466,55 @@ plt.show()
 
 
 #----------- Load Burgess 2008 PRC data -------------
-# From Will's excel file, only yaxis values given
-
+# Fitting to the curve 
+'''
 Zeitzer_2000 = [
-0,
-0.1,
-0.2,
-0.3,
-0.4,
-0.5,
-0.6,
-0.7,
-0.8,
-0.9,
-0.95
+0, # 3
+0, # 10
+0, # 20
+0, # 30
+0, # 50
+0.1, # 60
+0.2, # 70
+0.3, # 80
+0.5, # 100
+0.7, # 150
+0.8, # 180
+0.9, # 300
+0.9, # 500
+0.95, # 1000
+0.95 # 5000
 ]
 
 # Eyeballed it
-Lux_2 = [10,60,70,80,90,100,120,150,180,500,5000]
+Lux_2 = [3,10,20,30,50,60,70,80,100,150,180,300,500,1000,5000]
+'''
+
+# Fitting to the data (determined from WebPlotDigitizer)
+Zeitzer_2000 = [0.11,
+0.08,
+-0.08,
+-0.01,
+-0.12,
+0.23,
+0.88,
+0.26,
+0.75,
+0.80,
+0.69,
+0.86,
+0.96,
+0.99,
+0.92,
+0.96,
+0.93,
+0.97,
+0.98,
+0.95,
+0.98
+]
+
+Lux_2 = [3,15,25,50,60,100,120,130,170,175,300,360,400,550,650,1600,3000,4000,7300,9000,10000]
 
 plt.plot(Lux_2, Zeitzer_2000, 'o')
 plt.plot(Lux,melatonin_suppression, lw=2)

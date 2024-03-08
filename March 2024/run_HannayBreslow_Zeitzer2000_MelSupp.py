@@ -305,8 +305,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_70.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=70) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_60.results[30,4]
-    during = model_light_60.results[270,4]
+    before = model_light_70.results[30,4]
+    during = model_light_70.results[270,4]
     
     percent_supp_70 = (before - during)/before 
     
