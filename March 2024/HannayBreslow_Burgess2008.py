@@ -70,11 +70,9 @@ class HannayBreslowModel(object):
         ## Melatonin Forcing Parameters
         #x = [-0.74545016, 0.05671999, -0.76024892, 0.05994563, 0.18366069]
         # Switched sign of all five 
-        #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
+        x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
-        #x = [0.99305271, -0.72663043,  0.21574313,  0.49105104, -0.0678659] # Error = 0.3971014495000005 
-        #x = [0.99901019, -0.7989267,   0.04329946,  0.57526799, -0.10895614] # Error = 0.3804347828333324
-        x = [0.99688563, -0.63001718,  0.15227812,  0.31328857, -0.08197214] # Error = 0.5615942031666634
+        #x = [0.99688563, -0.63001718,  0.15227812,  0.31328857, -0.08197214] # Error = 0.5615942031666634
         self.B_1 = x[0]#0.74545016#-0.74545016 
         self.theta_M1 = x[1]#-0.05671999#0.05671999
         self.B_2 = x[2]#0.76024892#-0.76024892
@@ -157,7 +155,6 @@ class HannayBreslowModel(object):
     def mg_conversion(self, melatonin_dosage):
         x_line = melatonin_dosage
         y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
-        #y_line = 60000#172234
         return y_line
 
         
@@ -466,8 +463,8 @@ baseline_plasma_mel = model_22.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_22.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
-#print("Baseline - 22.5h")
-#print(baseline_DLMO)
+print("Baseline - 22.5h")
+print(baseline_DLMO)
 
 
 # Final day 
@@ -475,8 +472,8 @@ final_plasma_mel = model_22.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_22.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
-#print("Final - 22.5h")
-#print(final_DLMO)
+print("Final - 22.5h")
+print(final_DLMO)
 
 
 # Calculate phase shift (final - baseline; negative = delay, positive = advance) 
@@ -553,12 +550,12 @@ plt.show()
 
 # pick one to plot 
 #model = model_placebo
-model = model_2
+#model = model_2
 #model = model_6
 #model = model_10
 #model = model_14
 #model = model_18
-#model = model_22
+model = model_22
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -604,7 +601,7 @@ plt.plot(model.ts[241:480],model.results[241:480,3]/4.3,lw=2)
 plt.plot(model.ts[241:480],model.results[241:480,4]/4.3,lw=2)
 #plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 1000)
+plt.ylim(0, 100)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 1 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
@@ -616,7 +613,7 @@ plt.plot(model.ts[481:720],model.results[481:720,3]/4.3,lw=2)
 plt.plot(model.ts[481:720],model.results[481:720,4]/4.3,lw=2)
 #plt.plot(model.ts[481:720],model.results[481:720,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 1000)
+plt.ylim(0, 100)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 2 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
@@ -628,7 +625,7 @@ plt.plot(model.ts[721:960],model.results[721:960,3]/4.3,lw=2)
 plt.plot(model.ts[721:960],model.results[721:960,4]/4.3,lw=2)
 #plt.plot(model.ts[721:960],model.results[721:960,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 1000)
+plt.ylim(0, 100)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 3 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
@@ -641,6 +638,7 @@ plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,4]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
 plt.axvline(22.7)
+plt.ylim(0, 100)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("FInal Day Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
