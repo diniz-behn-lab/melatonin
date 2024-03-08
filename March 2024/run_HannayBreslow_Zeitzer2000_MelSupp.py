@@ -373,9 +373,11 @@ def objective_func(params,data_vals):
         a = np.array(melatonin_suppression)
         b = np.array(data_vals)
         
-        print(a - b)
+        difference = a - b
+        print(difference)
         
-        error = np.mean(abs(a - b))
+        #error = np.mean(abs(a - b))
+        error = np.linalg.norm(difference)
         print(error)
     
         return error
