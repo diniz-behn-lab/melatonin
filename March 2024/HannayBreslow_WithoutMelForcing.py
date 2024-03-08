@@ -42,7 +42,7 @@ class HannayBreslowModel(object):
         self.psi_on = 1.1345 #1.13446401 # radians, I determined 
         self.psi_off = 3.6652 #3.66519143 # radians, I determined
         
-        self.m = 7 # 1/sec, Breslow 2013
+        self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
         
         ## Hannay Model
         self.D = 0
