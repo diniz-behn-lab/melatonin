@@ -120,8 +120,7 @@ class HannayBreslowModel(object):
 # Convert mg dose to value to be used in the Guassian dosing curve
     def mg_conversion(self, melatonin_dosage):
         x_line = melatonin_dosage
-        #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
-        y_line = 60000
+        y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
         return y_line
     
 

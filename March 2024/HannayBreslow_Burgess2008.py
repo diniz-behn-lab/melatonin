@@ -156,8 +156,8 @@ class HannayBreslowModel(object):
 # Convert mg dose to value to be used in the Guassian dosing curve
     def mg_conversion(self, melatonin_dosage):
         x_line = melatonin_dosage
-        #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
-        y_line = 60000#172234
+        y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+        #y_line = 60000#172234
         return y_line
 
         
@@ -604,7 +604,7 @@ plt.plot(model.ts[241:480],model.results[241:480,3]/4.3,lw=2)
 plt.plot(model.ts[241:480],model.results[241:480,4]/4.3,lw=2)
 #plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 400)
+plt.ylim(0, 1000)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 1 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
@@ -616,7 +616,7 @@ plt.plot(model.ts[481:720],model.results[481:720,3]/4.3,lw=2)
 plt.plot(model.ts[481:720],model.results[481:720,4]/4.3,lw=2)
 #plt.plot(model.ts[481:720],model.results[481:720,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 400)
+plt.ylim(0, 1000)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 2 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
@@ -628,7 +628,7 @@ plt.plot(model.ts[721:960],model.results[721:960,3]/4.3,lw=2)
 plt.plot(model.ts[721:960],model.results[721:960,4]/4.3,lw=2)
 #plt.plot(model.ts[721:960],model.results[721:960,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 400)
+plt.ylim(0, 1000)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 3 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
