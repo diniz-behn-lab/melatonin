@@ -41,8 +41,6 @@ now = time.time()
 # To be optimized: [(B_1), (theta_M1), (B_2), (theta_M2), (epsilon)]
 
 # Set bounds for the five parameters to be optimized
-#bounds = [(-1, 1), (-1, 1), (0, np.pi/2), (0, np.pi/2), (-0.5, 0.5)]
-#bounds = [(-1, 0.8), (-1, 0), (0, np.pi/2), (0, np.pi/2), (-0.5, 0)]
 bounds = [(-1, 1), (0, np.pi/2), (-1, 1), (0, np.pi/2), (-0.5, 0.5)]
 
 optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=20, maxiter=15, disp=True)
