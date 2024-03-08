@@ -73,6 +73,7 @@ class HannayBreslowModel(object):
         x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
         #x = [0.99688563, -0.63001718,  0.15227812,  0.31328857, -0.08197214] # Error = 0.5615942031666634
+        #x = [0.99722016, -0.5910802,   0.09173488,  1.32276262, -0.20226788] # Error = 0.5615942031666658
         self.B_1 = x[0]#0.74545016#-0.74545016 
         self.theta_M1 = x[1]#-0.05671999#0.05671999
         self.B_2 = x[2]#0.76024892#-0.76024892
@@ -296,10 +297,10 @@ model_2.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melaton
 
 # Calculate shift due to protocol
 # Baseline day 
-baseline_plasma_mel = model_2.results[0:240,4]/4.3 # converting output to pg/mL
-baseline_times = model_2.ts[0:240] # defining times from first 24hrs 
-baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#baseline_plasma_mel = model_2.results[0:240,4]/4.3 # converting output to pg/mL
+#baseline_times = model_2.ts[0:240] # defining times from first 24hrs 
+#baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+#baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 #print("Baseline - 2.5h")
 #print(baseline_DLMO)
 
@@ -330,10 +331,10 @@ model_6.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=6.5, melaton
 
 # Calculate shift due to protocol
 # Baseline day 
-baseline_plasma_mel = model_6.results[0:240,4]/4.3 # converting output to pg/mL
-baseline_times = model_6.ts[0:240] # defining times from first 24hrs 
-baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#baseline_plasma_mel = model_6.results[0:240,4]/4.3 # converting output to pg/mL
+#baseline_times = model_6.ts[0:240] # defining times from first 24hrs 
+#baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+#baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 #print("Baseline - 6.5h")
 #print(baseline_DLMO)
 
@@ -363,10 +364,10 @@ model_10.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10.5, melat
 
 # Calculate shift due to protocol
 # Baseline day 
-baseline_plasma_mel = model_10.results[0:240,4]/4.3 # converting output to pg/mL
-baseline_times = model_10.ts[0:240] # defining times from first 24hrs 
-baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#baseline_plasma_mel = model_10.results[0:240,4]/4.3 # converting output to pg/mL
+#baseline_times = model_10.ts[0:240] # defining times from first 24hrs 
+#baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+#baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 #print("Baseline - 10.5h")
 #print(baseline_DLMO)
 
@@ -395,10 +396,10 @@ model_14.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=14.5, melat
 
 # Calculate shift due to protocol
 # Baseline day 
-baseline_plasma_mel = model_14.results[0:240,4]/4.3 # converting output to pg/mL
-baseline_times = model_14.ts[0:240] # defining times from first 24hrs 
-baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#baseline_plasma_mel = model_14.results[0:240,4]/4.3 # converting output to pg/mL
+#baseline_times = model_14.ts[0:240] # defining times from first 24hrs 
+#baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+#baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 #print("Baseline - 14.5h")
 #print(baseline_DLMO)
 
@@ -427,10 +428,10 @@ model_18.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=18.5, melat
 
 # Calculate shift due to protocol
 # Baseline day 
-baseline_plasma_mel = model_18.results[0:240,4]/4.3 # converting output to pg/mL
-baseline_times = model_18.ts[0:240] # defining times from first 24hrs 
-baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#baseline_plasma_mel = model_18.results[0:240,4]/4.3 # converting output to pg/mL
+#baseline_times = model_18.ts[0:240] # defining times from first 24hrs 
+#baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+#baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 #print("Baseline - 18.5h")
 #print(baseline_DLMO)
 
@@ -459,10 +460,10 @@ model_22.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=22.5, melat
 
 # Calculate shift due to protocol
 # Baseline day 
-baseline_plasma_mel = model_22.results[0:240,4]/4.3 # converting output to pg/mL
-baseline_times = model_22.ts[0:240] # defining times from first 24hrs 
-baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
+#baseline_plasma_mel = model_22.results[0:240,4]/4.3 # converting output to pg/mL
+#baseline_times = model_22.ts[0:240] # defining times from first 24hrs 
+#baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+#baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the first index below threshold, DLMO
 print("Baseline - 22.5h")
 print(baseline_DLMO)
 
