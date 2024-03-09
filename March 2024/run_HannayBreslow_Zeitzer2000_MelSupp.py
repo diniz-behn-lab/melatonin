@@ -283,19 +283,19 @@ def run_HannayBreslow_MelSupp(params):
     print("60 lux suppression found") 
     
     
-    #-------------- Run the model with a 6.5 h light exposure (100 lux) -----------
+    #-------------- Run the model with a 6.5 h light exposure (106 lux) -----------
     
     # Run Zeitzer 2000 light pulse  
-    model_light_100 = HannayBreslowModel()
-    model_light_100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=100) # run the model from baseline ICs
+    model_light_106 = HannayBreslowModel()
+    model_light_106.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=106) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = np.trapz(model_light_100.results[10:40,4])
-    during = np.trapz(model_light_100.results[250:280,4])
+    before = np.trapz(model_light_106.results[10:40,4])
+    during = np.trapz(model_light_106.results[250:280,4])
     
-    percent_supp_100 = (before - during)/before 
+    percent_supp_106 = (before - during)/before 
     
-    print("100 lux suppression found") 
+    print("106 lux suppression found") 
     
     
     #-------------- Run the model with a 6.5 h light exposure (120 lux) -----------
@@ -508,24 +508,24 @@ def run_HannayBreslow_MelSupp(params):
     print("9000 lux suppression found") 
     
     
-    #-------------- Run the model with a 6.5 h light exposure (10000 lux) -----------
+    #-------------- Run the model with a 6.5 h light exposure (9100 lux) -----------
     
     # Run Zeitzer 2000 light pulse  
-    model_light_10000 = HannayBreslowModel()
-    model_light_10000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=10000) # run the model from baseline ICs
+    model_light_9100 = HannayBreslowModel()
+    model_light_9100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=9100) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = np.trapz(model_light_10000.results[10:40,4])
-    during = np.trapz(model_light_10000.results[250:280,4])
+    before = np.trapz(model_light_9100.results[10:40,4])
+    during = np.trapz(model_light_9100.results[250:280,4])
     
-    percent_supp_10000 = (before - during)/before 
+    percent_supp_9100 = (before - during)/before 
     
-    print("10000 lux suppression found") 
+    print("9100 lux suppression found") 
     
     
     #---------- Make an array of all predicted phase shifts --------------
     
-    melatonin_suppression = [percent_supp_3, percent_supp_15, percent_supp_25, percent_supp_50, percent_supp_60, percent_supp_100, percent_supp_120, percent_supp_130, percent_supp_170, percent_supp_175, percent_supp_300, percent_supp_360, percent_supp_400, percent_supp_550, percent_supp_650, percent_supp_2000, percent_supp_3000, percent_supp_4000, percent_supp_7000, percent_supp_9000, percent_supp_10000];
+    melatonin_suppression = [percent_supp_3, percent_supp_15, percent_supp_25, percent_supp_50, percent_supp_60, percent_supp_106, percent_supp_120, percent_supp_130, percent_supp_170, percent_supp_175, percent_supp_300, percent_supp_360, percent_supp_400, percent_supp_550, percent_supp_650, percent_supp_2000, percent_supp_3000, percent_supp_4000, percent_supp_7000, percent_supp_9000, percent_supp_9100];
     
     return melatonin_suppression
 

@@ -315,17 +315,17 @@ during = np.trapz(model_light_60.results[250:280,4])
 percent_supp_60 = (before - during)/before 
 
 
-#-------------- Run the model with a 6.5 h light exposure (100 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (106 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_100 = HannayBreslowModel()
-model_light_100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=100) # run the model from baseline ICs
+model_light_106 = HannayBreslowModel()
+model_light_106.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=106) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_100.results[10:40,4])
-during = np.trapz(model_light_100.results[250:280,4])
+before = np.trapz(model_light_106.results[10:40,4])
+during = np.trapz(model_light_106.results[250:280,4])
 
-percent_supp_100 = (before - during)/before 
+percent_supp_106 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (120 lux) -----------
@@ -511,26 +511,26 @@ during = np.trapz(model_light_9000.results[250:280,4])
 percent_supp_9000 = (before - during)/before 
 
 
-#-------------- Run the model with a 6.5 h light exposure (10000 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (9100 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_10000 = HannayBreslowModel()
-model_light_10000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=10000) # run the model from baseline ICs
+model_light_9100 = HannayBreslowModel()
+model_light_9100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=9100) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_10000.results[10:40,4])
-during = np.trapz(model_light_10000.results[250:280,4])
+before = np.trapz(model_light_9100.results[10:40,4])
+during = np.trapz(model_light_9100.results[250:280,4])
 
-percent_supp_10000 = (before - during)/before 
+percent_supp_9100 = (before - during)/before 
 
 
 #---------- Make an array of all predicted % suppressions --------------
 
-melatonin_suppression = [percent_supp_3, percent_supp_15, percent_supp_25, percent_supp_50, percent_supp_60, percent_supp_100, percent_supp_120, percent_supp_130, percent_supp_170, percent_supp_175, percent_supp_300, percent_supp_360, percent_supp_400, percent_supp_550, percent_supp_650, percent_supp_2000, percent_supp_3000, percent_supp_4000, percent_supp_7000, percent_supp_9000, percent_supp_10000];
+melatonin_suppression = [percent_supp_3, percent_supp_15, percent_supp_25, percent_supp_50, percent_supp_60, percent_supp_106, percent_supp_120, percent_supp_130, percent_supp_170, percent_supp_175, percent_supp_300, percent_supp_360, percent_supp_400, percent_supp_550, percent_supp_650, percent_supp_2000, percent_supp_3000, percent_supp_4000, percent_supp_7000, percent_supp_9000, percent_supp_9100];
 
 
 # Make array of administration times for plotting PRC 
-Lux = [3,15,25,50,60,100,120,130,170,175,300,360,400,550,650,2000,3000,4000,7000,9000,10000]
+Lux = [3,15,25,50,60,106,120,130,170,175,300,360,400,550,650,2000,3000,4000,7000,9000,9100]
 
 # Plot PRC points
 #plt.plot(Lux,melatonin_suppression,'o')
@@ -592,7 +592,7 @@ Zeitzer_2000 = [0.11,
 0.98
 ]
 
-Lux_2 = [3,15,25,50,60,100,120,130,170,175,300,360,400,550,650,2000,3000,4000,7000,9000,10000]
+Lux_2 = [3,15,25,50,60,106,120,130,170,175,300,360,400,550,650,2000,3000,4000,7000,9000,9100]
 
 plt.plot(Lux_2, Zeitzer_2000, 'o')
 plt.plot(Lux,melatonin_suppression, lw=2)
