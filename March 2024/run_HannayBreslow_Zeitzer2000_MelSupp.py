@@ -542,8 +542,8 @@ def objective_func(params,data_vals):
         difference = a - b
         print(difference)
         
-        #error = np.mean(abs(a - b))
-        error = np.linalg.norm(difference)
+        error = np.mean(abs(difference))
+        #error = np.linalg.norm(difference)
         print(error)
     
         return error

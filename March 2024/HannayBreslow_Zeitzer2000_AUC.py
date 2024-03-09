@@ -46,6 +46,8 @@ class HannayBreslowModel(object):
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
         # Differential evolution: 
+            # Original error function 
+                # 5.66964304, Error = 0.12298443447150903
             # Switched to L2 norm
             # Fitting to data (determined from WebPlotDigitizer) with AUC
                 # 4.29016908, Error = 0.7862351788896191
