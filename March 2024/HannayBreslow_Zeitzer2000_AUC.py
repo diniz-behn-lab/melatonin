@@ -47,13 +47,14 @@ class HannayBreslowModel(object):
         self.sigma_M = 50 # Breslow 2013
         # Differential evolution: 
             # Original error function 
-                # 
+                # 5.4391854, Error = 0.12400199485635752
             # Switched to L2 norm
             # Fitting to data (determined from WebPlotDigitizer) with AUC
-                # 
-                # 
-                #
-        self.m = 4.8449 # I determined by fitting to Zeitzer using differential evolution
+                # 5.93022304, Error = 0.7979262129459022
+                # 4.263451,   Error = 0.7979262129459022
+                # 4.24932101, Error = 0.7979262129459022
+                # 4.71470534, Error = 0.7979262129459022
+        self.m = 4.7147 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
