@@ -51,12 +51,14 @@ class HannayBreslowModel(object):
         # Differential evolution: 
             # Switched to L2 norm
             # Fitting to curve 
-            # 4.86374213, Error = 0.38788346735130036
-            # 5.00304197, Error = 0.38788346735130036
-            # 4.51010139, Error = 0.38788346735130036
+                # 4.86374213, Error = 0.38788346735130036
+                # 5.00304197, Error = 0.38788346735130036
+                # 4.51010139, Error = 0.38788346735130036
             # Fitting to data (dtermined from WebPlotDigitizer)
-            # 5.23951053, Error = 0.7912082618390861
-        self.m = 4.5101 # I determined by fitting to Zeitzer using differential evolution
+                # 5.23951053, Error = 0.7912082618390861
+                # 4.07663691, Error = 0.7912082618390861
+                # 4.31875598, Error = 0.7912082618390861 
+        self.m = 4.3187 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
