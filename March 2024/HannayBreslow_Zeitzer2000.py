@@ -54,7 +54,7 @@ class HannayBreslowModel(object):
                 # 4.86374213, Error = 0.38788346735130036
                 # 5.00304197, Error = 0.38788346735130036
                 # 4.51010139, Error = 0.38788346735130036
-            # Fitting to data (dtermined from WebPlotDigitizer)
+            # Fitting to data (determined from WebPlotDigitizer)
                 # 5.23951053, Error = 0.7912082618390861
                 # 4.07663691, Error = 0.7912082618390861
                 # 4.31875598, Error = 0.7912082618390861 
@@ -596,7 +596,7 @@ Zeitzer_2000 = [0.11,
 0.98
 ]
 
-Lux_2 = [3,15,25,50,60,100,120,130,170,175,300,360,400,550,650,1600,3000,4000,7000,9000,10000]
+Lux_2 = [3,15,25,50,60,100,120,130,170,175,300,360,400,550,650,2000,3000,4000,7000,9000,10000]
 
 plt.plot(Lux_2, Zeitzer_2000, 'o')
 plt.plot(Lux,melatonin_suppression, lw=2)
@@ -611,15 +611,26 @@ plt.show()
 # pick one to plot 
 #model = model_baseline
 #model = model_light_3
-#model = model_light_10
+#model = model_light_15
+#model = model_light_25
 #model = model_light_50
 #model = model_light_60
-#model = model_light_80
 #model = model_light_100
-#model = model_light_200
-#model = model_light_500
-#model = model_light_1000
-model = model_light_9000
+#model = model_light_120
+#model = model_light_130
+#model = model_light_170
+#model = model_light_175
+#model = model_light_300
+#model = model_light_360
+#model = model_light_400
+#model = model_light_550
+#model = model_light_650
+#model = model_light_2000
+#model = model_light_3000
+#model = model_light_4000
+#model = model_light_7000
+#model = model_light_9000
+model = model_light_10000
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
