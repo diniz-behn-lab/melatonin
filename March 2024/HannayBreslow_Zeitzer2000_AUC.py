@@ -630,7 +630,7 @@ plt.show()
 #model = model_light_25
 #model = model_light_50
 #model = model_light_60
-model = model_light_106
+#model = model_light_106
 #model = model_light_120
 #model = model_light_130
 #model = model_light_170
@@ -645,7 +645,7 @@ model = model_light_106
 #model = model_light_4000
 #model = model_light_7000
 #model = model_light_9000
-#model = model_light_9100
+model = model_light_9100
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -674,7 +674,7 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axhline(DLMO_threshold)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Zeitzer 2000 Protocol")
+plt.title("Zeitzer 2000 Protocol - 9100 lux")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
