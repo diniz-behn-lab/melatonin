@@ -43,6 +43,7 @@ Zeitzer_2000_lux = [3,10,20,30,50,60,70,80,100,150,180,300,500,1000,5000]
 '''
 
 # ----- Fit to data (determined from WebPlotDigitizer) -----
+# n = 21
 Zeitzer_2000 = [0.11,
 0.08,
 -0.08,
