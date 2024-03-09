@@ -215,8 +215,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_3.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=3) # run the model from baseline ICs
 
     # Calculate % suppression 
-    before = model_light_3.results[30,4]
-    during = model_light_3.results[270,4]
+    before = np.trapz(model_light_3.results[10:40,4])
+    during = np.trapz(model_light_3.results[250:280,4])
 
     percent_supp_3 = (before - during)/before 
 
@@ -230,8 +230,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_15.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=15) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_15.results[30,4]
-    during = model_light_15.results[270,4]
+    before = np.trapz(model_light_15.results[10:40,4])
+    during = np.trapz(model_light_15.results[250:280,4])
     
     percent_supp_15 = (before - during)/before 
     
@@ -245,8 +245,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_25.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=25) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_25.results[30,4]
-    during = model_light_25.results[270,4]
+    before = np.trapz(model_light_25.results[10:40,4])
+    during = np.trapz(model_light_25.results[250:280,4])
     
     percent_supp_25 = (before - during)/before 
     
@@ -260,8 +260,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_50.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=50) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_50.results[30,4]
-    during = model_light_50.results[270,4]
+    before = np.trapz(model_light_50.results[10:40,4])
+    during = np.trapz(model_light_50.results[250:280,4])
     
     percent_supp_50 = (before - during)/before 
     
@@ -275,8 +275,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_60.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=60) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_60.results[30,4]
-    during = model_light_60.results[270,4]
+    before = np.trapz(model_light_60.results[10:40,4])
+    during = np.trapz(model_light_60.results[250:280,4])
     
     percent_supp_60 = (before - during)/before 
     
@@ -290,8 +290,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=100) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_100.results[30,4]
-    during = model_light_100.results[270,4]
+    before = np.trapz(model_light_100.results[10:40,4])
+    during = np.trapz(model_light_100.results[250:280,4])
     
     percent_supp_100 = (before - during)/before 
     
@@ -305,8 +305,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_120.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=120) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_120.results[30,4]
-    during = model_light_120.results[270,4]
+    before = np.trapz(model_light_120.results[10:40,4])
+    during = np.trapz(model_light_120.results[250:280,4])
     
     percent_supp_120 = (before - during)/before 
     
@@ -320,8 +320,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_130.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=130) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_130.results[30,4]
-    during = model_light_130.results[270,4]
+    before = np.trapz(model_light_130.results[10:40,4])
+    during = np.trapz(model_light_130.results[250:280,4])
     
     percent_supp_130 = (before - during)/before 
     
@@ -335,8 +335,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_170.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=170) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_170.results[30,4]
-    during = model_light_170.results[270,4]
+    before = np.trapz(model_light_170.results[10:40,4])
+    during = np.trapz(model_light_170.results[250:280,4])
     
     percent_supp_170 = (before - during)/before 
     
@@ -350,8 +350,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_175.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=175) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_175.results[30,4]
-    during = model_light_175.results[270,4]
+    before = np.trapz(model_light_175.results[10:40,4])
+    during = np.trapz(model_light_175.results[250:280,4])
     
     percent_supp_175 = (before - during)/before 
     
@@ -365,8 +365,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_300.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=300) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_300.results[30,4]
-    during = model_light_300.results[270,4]
+    before = np.trapz(model_light_300.results[10:40,4])
+    during = np.trapz(model_light_300.results[250:280,4])
     
     percent_supp_300 = (before - during)/before 
     
@@ -380,8 +380,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_360.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=360) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_360.results[30,4]
-    during = model_light_360.results[270,4]
+    before = np.trapz(model_light_360.results[10:40,4])
+    during = np.trapz(model_light_360.results[250:280,4])
     
     percent_supp_360 = (before - during)/before 
     
@@ -395,8 +395,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_400.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=400) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_400.results[30,4]
-    during = model_light_400.results[270,4]
+    before = np.trapz(model_light_400.results[10:40,4])
+    during = np.trapz(model_light_400.results[250:280,4])
     
     percent_supp_400 = (before - during)/before 
     
@@ -410,8 +410,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_550.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=550) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_550.results[30,4]
-    during = model_light_550.results[270,4]
+    before = np.trapz(model_light_550.results[10:40,4])
+    during = np.trapz(model_light_550.results[250:280,4])
     
     percent_supp_550 = (before - during)/before 
     
@@ -425,8 +425,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_650.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=650) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_650.results[30,4]
-    during = model_light_650.results[270,4]
+    before = np.trapz(model_light_650.results[10:40,4])
+    during = np.trapz(model_light_650.results[250:280,4])
     
     percent_supp_650 = (before - during)/before 
     
@@ -440,8 +440,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_2000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=2000) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_2000.results[30,4]
-    during = model_light_2000.results[270,4]
+    before = np.trapz(model_light_2000.results[10:40,4])
+    during = np.trapz(model_light_2000.results[250:280,4])
     
     percent_supp_2000 = (before - during)/before 
     
@@ -455,8 +455,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_3000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=3000) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_3000.results[30,4]
-    during = model_light_3000.results[270,4]
+    before = np.trapz(model_light_3000.results[10:40,4])
+    during = np.trapz(model_light_3000.results[250:280,4])
     
     percent_supp_3000 = (before - during)/before 
     
@@ -470,8 +470,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_4000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=4000) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_4000.results[30,4]
-    during = model_light_4000.results[270,4]
+    before = np.trapz(model_light_4000.results[10:40,4])
+    during = np.trapz(model_light_4000.results[250:280,4])
     
     percent_supp_4000 = (before - during)/before 
     
@@ -485,8 +485,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_7000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=7000) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_7000.results[30,4]
-    during = model_light_7000.results[270,4]
+    before = np.trapz(model_light_7000.results[10:40,4])
+    during = np.trapz(model_light_7000.results[250:280,4])
     
     percent_supp_7000 = (before - during)/before 
     
@@ -500,8 +500,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_9000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=9000) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_9000.results[30,4]
-    during = model_light_9000.results[270,4]
+    before = np.trapz(model_light_9000.results[10:40,4])
+    during = np.trapz(model_light_9000.results[250:280,4])
     
     percent_supp_9000 = (before - during)/before 
     
@@ -515,8 +515,8 @@ def run_HannayBreslow_MelSupp(params):
     model_light_10000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=10000) # run the model from baseline ICs
     
     # Calculate % suppression 
-    before = model_light_10000.results[30,4]
-    during = model_light_10000.results[270,4]
+    before = np.trapz(model_light_10000.results[10:40,4])
+    during = np.trapz(model_light_10000.results[250:280,4])
     
     percent_supp_10000 = (before - during)/before 
     
