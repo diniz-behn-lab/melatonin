@@ -92,7 +92,7 @@ class HannayBreslowModel(object):
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-        elif schedule == 2: # Constant conditions 
+        elif schedule == 2: # Constant conditions with sleep opportunities  
             full_light = 150
             dim_light = 150
             wake_time = 7
