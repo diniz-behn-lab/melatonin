@@ -51,7 +51,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.3188 # I determined by fitting to Zeitzer using differential evolution
 
         ## Hannay Model
         self.D = 0
