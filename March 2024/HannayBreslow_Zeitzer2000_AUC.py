@@ -47,14 +47,13 @@ class HannayBreslowModel(object):
         self.sigma_M = 50 # Breslow 2013
         # Differential evolution: 
             # Original error function 
-                # 5.66964304, Error = 0.12298443447150903
+                # 
             # Switched to L2 norm
             # Fitting to data (determined from WebPlotDigitizer) with AUC
-                # 4.29016908, Error = 0.7862351788896191
-                # 4.9854522,  Error = 0.7862351788896191
-                # 4.70692559, Error = 0.7862351788896191
-                # 4.93687143, Error = 0.7862351788896191
-        self.m = 4.7069 # I determined by fitting to Zeitzer using differential evolution
+                # 
+                # 
+                #
+        self.m = 4.8449 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -108,7 +107,7 @@ class HannayBreslowModel(object):
             bright_light = light_pulse
             dim_light = 10
             if 0 <= t < 24:
-                if t > np.mod(CBTmin-6.75,24):
+                if t > np.mod(CBTmin - 6.75,24):
                     return bright_light
                 else: 
                     return dim_light
@@ -257,8 +256,8 @@ model_light_3 = HannayBreslowModel()
 model_light_3.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=3) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_3.results[10:40,4])
-during = np.trapz(model_light_3.results[250:280,4])
+before = np.trapz(model_light_3.results[0:40,4])
+during = np.trapz(model_light_3.results[240:280,4])
 
 percent_supp_3 = (before - during)/before 
 
@@ -270,23 +269,23 @@ model_light_15 = HannayBreslowModel()
 model_light_15.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=15) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_15.results[10:40,4])
-during = np.trapz(model_light_15.results[250:280,4])
+before = np.trapz(model_light_15.results[0:40,4])
+during = np.trapz(model_light_15.results[240:280,4])
 
 percent_supp_15 = (before - during)/before
 
 
-#-------------- Run the model with a 6.5 h light exposure (25 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (20 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_25 = HannayBreslowModel()
-model_light_25.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=25) # run the model from baseline ICs
+model_light_20 = HannayBreslowModel()
+model_light_20.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=20) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_25.results[10:40,4])
-during = np.trapz(model_light_25.results[250:280,4])
+before = np.trapz(model_light_20.results[0:40,4])
+during = np.trapz(model_light_20.results[240:280,4])
 
-percent_supp_25 = (before - during)/before
+percent_supp_20 = (before - during)/before
 
 
 #-------------- Run the model with a 6.5 h light exposure (50 lux) -----------
@@ -296,8 +295,8 @@ model_light_50 = HannayBreslowModel()
 model_light_50.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=50) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_50.results[10:40,4])
-during = np.trapz(model_light_50.results[250:280,4])
+before = np.trapz(model_light_50.results[0:40,4])
+during = np.trapz(model_light_50.results[240:280,4])
 
 percent_supp_50 = (before - during)/before 
 
@@ -309,10 +308,23 @@ model_light_60 = HannayBreslowModel()
 model_light_60.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=60) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_60.results[10:40,4])
-during = np.trapz(model_light_60.results[250:280,4])
+before = np.trapz(model_light_60.results[0:40,4])
+during = np.trapz(model_light_60.results[240:280,4])
 
 percent_supp_60 = (before - during)/before 
+
+
+#-------------- Run the model with a 6.5 h light exposure (90 lux) -----------
+
+# Run Zeitzer 2000 light pulse  
+model_light_90 = HannayBreslowModel()
+model_light_90.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=90) # run the model from baseline ICs
+
+# Calculate % suppression as the AUC 
+before = np.trapz(model_light_90.results[0:40,4])
+during = np.trapz(model_light_90.results[240:280,4])
+
+percent_supp_90 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (106 lux) -----------
@@ -322,23 +334,10 @@ model_light_106 = HannayBreslowModel()
 model_light_106.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=106) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_106.results[10:40,4])
-during = np.trapz(model_light_106.results[250:280,4])
+before = np.trapz(model_light_106.results[0:40,4])
+during = np.trapz(model_light_106.results[240:280,4])
 
 percent_supp_106 = (before - during)/before 
-
-
-#-------------- Run the model with a 6.5 h light exposure (120 lux) -----------
-
-# Run Zeitzer 2000 light pulse  
-model_light_120 = HannayBreslowModel()
-model_light_120.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=120) # run the model from baseline ICs
-
-# Calculate % suppression as the AUC 
-before = np.trapz(model_light_120.results[10:40,4])
-during = np.trapz(model_light_120.results[250:280,4])
-
-percent_supp_120 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (130 lux) -----------
@@ -348,24 +347,23 @@ model_light_130 = HannayBreslowModel()
 model_light_130.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=130) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_130.results[10:40,4])
-during = np.trapz(model_light_130.results[250:280,4])
+before = np.trapz(model_light_130.results[0:40,4])
+during = np.trapz(model_light_130.results[240:280,4])
 
 percent_supp_130 = (before - during)/before
 
 
-#-------------- Run the model with a 6.5 h light exposure (170 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (160 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_170 = HannayBreslowModel()
-model_light_170.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=170) # run the model from baseline ICs
+model_light_160 = HannayBreslowModel()
+model_light_160.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=160) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_170.results[10:40,4])
-during = np.trapz(model_light_170.results[250:280,4])
+before = np.trapz(model_light_160.results[0:40,4])
+during = np.trapz(model_light_160.results[240:280,4])
 
-percent_supp_170 = (before - during)/before 
-
+percent_supp_160 = (before - during)/before 
 
 #-------------- Run the model with a 6.5 h light exposure (175 lux) -----------
 
@@ -374,11 +372,10 @@ model_light_175 = HannayBreslowModel()
 model_light_175.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=175) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_175.results[10:40,4])
-during = np.trapz(model_light_175.results[250:280,4])
+before = np.trapz(model_light_175.results[0:40,4])
+during = np.trapz(model_light_175.results[240:280,4])
 
 percent_supp_175 = (before - during)/before 
-
 
 
 #-------------- Run the model with a 6.5 h light exposure (300 lux) -----------
@@ -388,23 +385,23 @@ model_light_300 = HannayBreslowModel()
 model_light_300.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=300) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_300.results[10:40,4])
-during = np.trapz(model_light_300.results[250:280,4])
+before = np.trapz(model_light_300.results[0:40,4])
+during = np.trapz(model_light_300.results[240:280,4])
 
 percent_supp_300 = (before - during)/before 
 
 
-#-------------- Run the model with a 6.5 h light exposure (360 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (375 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_360 = HannayBreslowModel()
-model_light_360.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=360) # run the model from baseline ICs
+model_light_375 = HannayBreslowModel()
+model_light_375.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=375) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_360.results[10:40,4])
-during = np.trapz(model_light_360.results[250:280,4])
+before = np.trapz(model_light_375.results[0:40,4])
+during = np.trapz(model_light_375.results[240:280,4])
 
-percent_supp_360 = (before - during)/before 
+percent_supp_375 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (400 lux) -----------
@@ -414,8 +411,8 @@ model_light_400 = HannayBreslowModel()
 model_light_400.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=400) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_400.results[10:40,4])
-during = np.trapz(model_light_400.results[250:280,4])
+before = np.trapz(model_light_400.results[0:40,4])
+during = np.trapz(model_light_400.results[240:280,4])
 
 percent_supp_400 = (before - during)/before 
 
@@ -427,8 +424,8 @@ model_light_550 = HannayBreslowModel()
 model_light_550.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=550) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_550.results[10:40,4])
-during = np.trapz(model_light_550.results[250:280,4])
+before = np.trapz(model_light_550.results[0:40,4])
+during = np.trapz(model_light_550.results[240:280,4])
 
 percent_supp_550 = (before - during)/before 
 
@@ -440,23 +437,23 @@ model_light_650 = HannayBreslowModel()
 model_light_650.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=650) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_650.results[10:40,4])
-during = np.trapz(model_light_650.results[250:280,4])
+before = np.trapz(model_light_650.results[0:40,4])
+during = np.trapz(model_light_650.results[240:280,4])
 
 percent_supp_650 = (before - during)/before 
 
 
-#-------------- Run the model with a 6.5 h light exposure (2000 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (1500 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_2000 = HannayBreslowModel()
-model_light_2000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=2000) # run the model from baseline ICs
+model_light_1500 = HannayBreslowModel()
+model_light_1500.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=1500) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_2000.results[10:40,4])
-during = np.trapz(model_light_2000.results[250:280,4])
+before = np.trapz(model_light_1500.results[0:40,4])
+during = np.trapz(model_light_1500.results[240:280,4])
 
-percent_supp_2000 = (before - during)/before 
+percent_supp_1500 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (3000 lux) -----------
@@ -466,23 +463,23 @@ model_light_3000 = HannayBreslowModel()
 model_light_3000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=3000) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_3000.results[10:40,4])
-during = np.trapz(model_light_3000.results[250:280,4])
+before = np.trapz(model_light_3000.results[0:40,4])
+during = np.trapz(model_light_3000.results[240:280,4])
 
 percent_supp_3000 = (before - during)/before 
 
 
-#-------------- Run the model with a 6.5 h light exposure (4000 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (3700 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_4000 = HannayBreslowModel()
-model_light_4000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=4000) # run the model from baseline ICs
+model_light_3700 = HannayBreslowModel()
+model_light_3700.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=3700) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_4000.results[10:40,4])
-during = np.trapz(model_light_4000.results[250:280,4])
+before = np.trapz(model_light_3700.results[0:40,4])
+during = np.trapz(model_light_3700.results[240:280,4])
 
-percent_supp_4000 = (before - during)/before 
+percent_supp_3700 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (7000 lux) -----------
@@ -492,23 +489,23 @@ model_light_7000 = HannayBreslowModel()
 model_light_7000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=7000) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_7000.results[10:40,4])
-during = np.trapz(model_light_7000.results[250:280,4])
+before = np.trapz(model_light_7000.results[0:40,4])
+during = np.trapz(model_light_7000.results[240:280,4])
 
 percent_supp_7000 = (before - during)/before 
 
 
-#-------------- Run the model with a 6.5 h light exposure (9000 lux) -----------
+#-------------- Run the model with a 6.5 h light exposure (8100 lux) -----------
 
 # Run Zeitzer 2000 light pulse  
-model_light_9000 = HannayBreslowModel()
-model_light_9000.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=9000) # run the model from baseline ICs
+model_light_8100 = HannayBreslowModel()
+model_light_8100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=8100) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_9000.results[10:40,4])
-during = np.trapz(model_light_9000.results[250:280,4])
+before = np.trapz(model_light_8100.results[0:40,4])
+during = np.trapz(model_light_8100.results[240:280,4])
 
-percent_supp_9000 = (before - during)/before 
+percent_supp_8100 = (before - during)/before 
 
 
 #-------------- Run the model with a 6.5 h light exposure (9100 lux) -----------
@@ -518,15 +515,15 @@ model_light_9100 = HannayBreslowModel()
 model_light_9100.integrateModel(24*2,tstart=0.0,initial=IC_2,schedule=3,light_pulse=9100) # run the model from baseline ICs
 
 # Calculate % suppression as the AUC 
-before = np.trapz(model_light_9100.results[10:40,4])
-during = np.trapz(model_light_9100.results[250:280,4])
+before = np.trapz(model_light_9100.results[0:40,4])
+during = np.trapz(model_light_9100.results[240:280,4])
 
 percent_supp_9100 = (before - during)/before 
 
 
 #---------- Make an array of all predicted % suppressions --------------
 
-melatonin_suppression = [percent_supp_3, percent_supp_15, percent_supp_25, percent_supp_50, percent_supp_60, percent_supp_106, percent_supp_120, percent_supp_130, percent_supp_170, percent_supp_175, percent_supp_300, percent_supp_360, percent_supp_400, percent_supp_550, percent_supp_650, percent_supp_2000, percent_supp_3000, percent_supp_4000, percent_supp_7000, percent_supp_9000, percent_supp_9100];
+melatonin_suppression = [percent_supp_3, percent_supp_15, percent_supp_20, percent_supp_50, percent_supp_60, percent_supp_90, percent_supp_106, percent_supp_130, percent_supp_160, percent_supp_175, percent_supp_300, percent_supp_375, percent_supp_400, percent_supp_550, percent_supp_650, percent_supp_1500, percent_supp_3000, percent_supp_3700, percent_supp_7000, percent_supp_8100, percent_supp_9100];
 
 
 # Make array of administration times for plotting PRC 
@@ -574,25 +571,46 @@ Zeitzer_2000 = [0.11,
 -0.08,
 -0.01,
 -0.12,
-0.23,
+0.22,
 0.88,
 0.26,
-0.75,
 0.80,
+0.75,
 0.69,
-0.86,
+0.85,
 0.96,
 0.99,
 0.92,
 0.96,
-0.93,
+0.94,
 0.97,
 0.98,
 0.95,
 0.98
 ]
 
-Lux_2 = [3,15,25,50,60,106,120,130,170,175,300,360,400,550,650,2000,3000,4000,7000,9000,9100]
+Lux_2 = [3,
+15,
+20,
+50,
+60,
+90,
+106,
+130,
+160,
+175,
+300,
+375,
+400,
+550,
+650,
+1500,
+3000,
+3700,
+7000,
+8100,
+9100
+]
 
 plt.plot(Lux_2, Zeitzer_2000, 'o')
 plt.plot(Lux,melatonin_suppression, lw=2)
@@ -605,13 +623,13 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-model = model_baseline
+#model = model_baseline
 #model = model_light_3
 #model = model_light_15
 #model = model_light_25
 #model = model_light_50
 #model = model_light_60
-#model = model_light_100
+#model = model_light_106
 #model = model_light_120
 #model = model_light_130
 #model = model_light_170
@@ -626,16 +644,19 @@ model = model_baseline
 #model = model_light_4000
 #model = model_light_7000
 #model = model_light_9000
-#model = model_light_10000
+model = model_light_9100
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=1)
+plt.axvline(x=0)
 plt.axvline(x=4)
-plt.axvline(x=25)
+#plt.axvline(x=21.45)
+#plt.axvline(x=27.95)
+#plt.axvline(x=28.2)
+plt.axvline(x=24)
 plt.axvline(x=28)
 #plt.axvline(x=50.5)
 plt.xlabel("Time (hours)")
