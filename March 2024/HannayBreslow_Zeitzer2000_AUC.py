@@ -54,7 +54,7 @@ class HannayBreslowModel(object):
                 # 4.9854522,  Error = 0.7862351788896191
                 # 4.70692559, Error = 0.7862351788896191
                 # 4.93687143, Error = 0.7862351788896191
-        self.m = 4.70693 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.7069 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -605,8 +605,8 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-#model = model_baseline
-model = model_light_3
+model = model_baseline
+#model = model_light_3
 #model = model_light_15
 #model = model_light_25
 #model = model_light_50
