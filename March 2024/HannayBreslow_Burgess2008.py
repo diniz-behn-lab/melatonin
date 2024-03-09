@@ -574,7 +574,6 @@ Burgess_2008_PRC = [0.78,
 0.45
 ]
 
-# Eyeballed it
 Burgess_2008_PRC_times = [0.8,
 1.1,
 1.2,
@@ -603,8 +602,6 @@ Burgess_2008_PRC_times = [0.8,
 21.8,
 23.3
 ]
-
-
 
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
