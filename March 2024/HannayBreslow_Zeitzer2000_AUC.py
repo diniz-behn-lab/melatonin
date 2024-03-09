@@ -104,7 +104,7 @@ class HannayBreslowModel(object):
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-        else: 
+        else: # Light pulse timed based on CBTmin
             bright_light = light_pulse
             dim_light = 10
             if 0 <= t < 24:
