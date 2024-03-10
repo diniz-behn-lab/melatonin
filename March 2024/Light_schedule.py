@@ -218,7 +218,7 @@ DLMO = 21
 mel_timing = 11 # Timing after DLMO 
 
 for t in range(0,n): 
-    bright_light = 150
+    bright_light = 40
     dim_light = 5
     dark = 0
     
@@ -246,9 +246,10 @@ for t in range(0,n):
         
 plt.plot(range(0,n),BurgessProtocol_lightschedule)
 plt.title("Burgess 2008/2010 Protocol Light:Dark Schedule")
-plt.axvline(8+24)
-plt.axvline(8+24+24)
-plt.axvline(8+24+24+24)
+#plt.axvline(21+24)
+plt.axvline(dose_time+24)
+plt.axvline(dose_time+24+24)
+plt.axvline(dose_time+24+24+24)
 #plt.axvline(6.5)
 plt.show()        
         
