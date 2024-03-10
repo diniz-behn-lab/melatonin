@@ -19,64 +19,37 @@ import time
 
 #---------- Create an array of the data values -----------------
 
-Burgess_2008_PRC = [-0.43,
--0.08,
-0.45,
-0.78,
--0.17,
-0.08,
--0.37,
--0.55,
--1.17,
--2.69,
--1.02,
--1.78,
--1.37,
--1.05,
--0.43,
-0.35,
--0.62,
-1.00,
--0.32,
-1.58,
-2.60,
-1.09,
-2.18,
-1.66,
-0.60,
-1.68,
-1.63
-]
+# From WebPlotDigitizer (n = 27)
 
-# Hours since DLMO
-Burgess_2008_PRC_times = [0,
-0,
-2,
-3,
-4,
-4,
-7,
-10,
-10,
-11,
-11,
-11,
-12,
-12,
-13,
-13,
-15,
-16,
-17,
-17,
-18,
-19,
-19,
-21,
-22,
-22,
-23
-]
+Burgess_2008_PRC = [-0.43,
+                    -0.08,
+                    0.45,
+                    0.78,
+                    -0.17,
+                    0.08,
+                    -0.37,
+                    -0.55,
+                    -1.17,
+                    -2.69,
+                    -1.02,
+                    -1.78,
+                    -1.37,
+                    -1.05,
+                    -0.43,
+                    0.35,
+                    -0.62,
+                    1.00,
+                    -0.32,
+                    1.58,
+                    2.60,
+                    1.09,
+                    2.18,
+                    1.66,
+                    0.60,
+                    1.68,
+                    1.63
+                    ]
+
 
 data_vals = Burgess_2008_PRC
 
@@ -86,7 +59,8 @@ now = time.time()
 # To be optimized: [(B_1), (theta_M1), (B_2), (theta_M2), (epsilon)]
 
 # Set bounds for the five parameters to be optimized
-bounds = [(-1, 1), (0, np.pi/2), (-1, 1), (0, np.pi/2), (-0.5, 0.5)]
+#bounds = [(-1, 1), (0, np.pi/2), (-1, 1), (0, np.pi/2), (-0.5, 0.5)]
+bounds = [(-0.1, 0.1), (0, 0.1), (-0.1, 0.1), (0, 0.1), (-0.1, 0.1)]
 
 optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=20, maxiter=15, disp=True)
 
