@@ -4,7 +4,7 @@ Created on Mon Mar  4 15:54:04 2024
 
 @author: sstowe
 
-Simulating Burgess 2008
+Simulating Burgess 2008 Ultradian Protocol
 
 """
 
@@ -830,7 +830,7 @@ model = model_placebo # CHECK - does choice of timing matter?
 
 #check = 20
 
-'''
+
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
@@ -869,13 +869,13 @@ plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Baseline Day Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
-'''
+
 # Plotting H1, H2 on Day 1 of ultradian schedule (melatonin concentrations, pg/mL)
 plt.plot(model.ts[241:480],model.results[241:480,3]/4.3,lw=2)
 plt.plot(model.ts[241:480],model.results[241:480,4]/4.3,lw=2)
 #plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 500)
+#plt.ylim(0, 500)
 #plt.axvline(check+24)
 #plt.axvline(22+24)
 plt.xlabel("Time (hours)")
@@ -889,7 +889,7 @@ plt.plot(model.ts[481:720],model.results[481:720,3]/4.3,lw=2)
 plt.plot(model.ts[481:720],model.results[481:720,4]/4.3,lw=2)
 #plt.plot(model.ts[481:720],model.results[481:720,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 500)
+#plt.ylim(0, 500)
 #plt.axvline(check+24+24)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
@@ -902,14 +902,14 @@ plt.plot(model.ts[721:960],model.results[721:960,3]/4.3,lw=2)
 plt.plot(model.ts[721:960],model.results[721:960,4]/4.3,lw=2)
 #plt.plot(model.ts[721:960],model.results[721:960,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 500)
+#plt.ylim(0, 500)
 #plt.axvline(check+24+24+24)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 3 Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma"])
 plt.show()
-'''
+
 # Plotting H1, H2, and H3 on final day (melatonin concentrations, pg/mL)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,3]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,4]/4.3,lw=2)
@@ -944,7 +944,7 @@ plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
-'''
+
 # Plotting n
 plt.plot(model.ts,model.results[:,2],lw=2)
 #plt.axvline(check+24)
