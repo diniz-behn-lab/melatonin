@@ -59,10 +59,11 @@ now = time.time()
 # To be optimized: [(B_1), (theta_M1), (B_2), (theta_M2), (epsilon)]
 
 # Set bounds for the five parameters to be optimized
-#bounds = [(-1, 1), (0, np.pi/2), (-1, 1), (0, np.pi/2), (-0.5, 0.5)]
-bounds = [(-0.1, 0.1), (0, 0.1), (-0.1, 0.1), (0, 0.1), (-0.1, 0.1)]
+bounds = [(-1, 1), (0, np.pi/2), (-1, 1), (0, np.pi/2), (-0.5, 0.5)]
 
-optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=20, maxiter=15, disp=True)
+IC = [0.95248293,  0.78097113,  0.82623692,  1.56471182, -0.24311406] # Error = 4.579093796811765
+
+optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=1, maxiter=1, x0=IC, disp=True)
 
 # Print how long (mins) the run took
 print((time.time() - now)/60) 
