@@ -25,11 +25,11 @@ class HannayBreslowModel(object):
         ## Melatonin Forcing Parameters 
         # TO BE OPTIMIZED
     def set_melatonin_prc_params(self, theta):
-        self.B_1 = theta[0] #0.74545016
-        self.theta_M1 = theta[1] #-0.05671999
-        self.B_2 = theta[2] #0.76024892
-        self.theta_M2 = theta[3] #-0.05994563
-        self.epsilon = theta[4] #-0.18366069    
+        self.B_1 = theta[0] 
+        self.theta_M1 = theta[1] 
+        self.B_2 = theta[2] 
+        self.theta_M2 = theta[3]
+        self.epsilon = theta[4]     
         
         print("melatonin parameters are set")
         print(theta)
@@ -72,13 +72,11 @@ class HannayBreslowModel(object):
         self.I_0 = 9325
         self.G = 33.75
         
-        self.B_1 = 0
+        self.B_1 = 0 
         self.theta_M1 = 0
         self.B_2 = 0
         self.theta_M2 = 0
         self.epsilon = 0
-        
-        print("parameters are set")
     
     
 # Set the light schedule (timings and intensities)
