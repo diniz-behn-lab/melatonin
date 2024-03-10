@@ -47,7 +47,6 @@ class HannayBreslowModel(object):
         self.sigma_M = 50 # Breslow 2013
         self.m = 4.7147 # I determined by fitting to Zeitzer using differential evolution
         
-        
         ## Hannay Model
         self.D = 0
         self.gamma = 0.024
@@ -158,7 +157,8 @@ class HannayBreslowModel(object):
                     max_value = max(melatonin_values)
                     #print(max_value)
                 
-                    converted_dose = self.mg_conversion(melatonin_dosage)
+                    #converted_dose = self.mg_conversion(melatonin_dosage)
+                    converted_dose = 70000
                     #print(converted_dose)
             
                     normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
@@ -177,15 +177,15 @@ class HannayBreslowModel(object):
         return Guassian    
 
 # Convert mg dose to value to be used in the Guassian dosing curve
-    def mg_conversion(self, melatonin_dosage):
-        x_line = melatonin_dosage
+    #def mg_conversion(self, melatonin_dosage):
+        #x_line = melatonin_dosage
         #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
-        y_line = 70000
-        return y_line
+        #y_line = 70000
+        #return y_line
 
         
 
-# Defining the system of ODEs (2-dimensional system)
+# Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
         """
         This defines the ode system for the single population model and 
@@ -228,7 +228,7 @@ class HannayBreslowModel(object):
         dydt=np.zeros(6)
     
         # ODE System  
-        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp + MelAmp# dR/dt
+        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp + MelAmp # dR/dt
         dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt 
         dydt[2] = 60.0*(self.alpha0(t,schedule,melatonin_timing)*(1.0-n)-(self.delta*n)) # dn/dt
         
@@ -308,7 +308,7 @@ phase_shift_placebo = final_DLMO - baseline_DLMO
 
 
 
-#--------- Run the model with exogenous melatonin 0h after DLMO (21h)---------------
+#--------- Run the model with exogenous melatonin 0h after DLMO (Clock time: 21:00)---------------
 
 # Burgess 2008, exogenous melatonin given at start of wake episode 
 model_0 = HannayBreslowModel()
@@ -331,7 +331,7 @@ phase_shift_0 = final_DLMO - baseline_DLMO
 
 
 
-#--------- Run the model with exogenous melatonin 2h after DLMO (23h)---------------
+#--------- Run the model with exogenous melatonin 2h after DLMO (Clock time: 23:00)---------------
 
 # Burgess 2008, exogenous melatonin given at start of wake episode 
 model_2 = HannayBreslowModel()
@@ -726,7 +726,7 @@ phase_shifts_corrected = (phase_shifts - phase_shift_placebo)
 
 # Make array of administration times for plotting PRC 
 ExMel_times = [0,2,3,4,7,10,11,12,13,15,16,17,18,19,21,22,23]
-'''
+
 # Plot PRC points
 plt.plot(ExMel_times,phase_shifts_corrected,'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
@@ -736,7 +736,7 @@ plt.xlabel("Time Since DLMO (hours)")
 plt.ylabel("Phase Shift (hours)")
 plt.title("3 Pulse Melatonin (3mg) Phase Response Curve")
 plt.show()
-'''
+
 
 #----------- Load Burgess 2008 PRC data -------------
 # From WebPlotDigitizer (n = 27)
@@ -798,25 +798,25 @@ Burgess_2008_PRC_times = [0.3,
                           22.4,
                           23.4
                           ]
-'''
+
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.axvline(x=19.4) # Burgess fitted peak (max phase advance)
 plt.axvline(x=11.1) # Burgess fitted trough (max phase delay)
 plt.show()
-'''
+
 
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-model = model_placebo
+#model = model_placebo
 #model = model_0 # Clock time: 21:00
 #model = model_2 # Clock time: 23:00
 #model = model_3 # Clock time: 0:00
 #model = model_4 # Clock time: 1:00
 #model = model_7 # Clock time: 4:00
 #model = model_10 # Clock time: 7:00
-#model = model_11 # Clock time: 8:00
+model = model_11 # Clock time: 8:00
 #model = model_12 # Clock time: 9:00
 #model = model_13 # Clock time: 10:00
 #model = model_15 # Clock time: 12:00
