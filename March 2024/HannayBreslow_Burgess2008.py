@@ -73,7 +73,6 @@ class HannayBreslowModel(object):
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
         x = [1, 0, 1, 0, 0]
-        #x = [0.98819806,  0.0125164,  -0.47700146,  0.79729551, -0.39875981] # Error = 0.7115942031666643
         self.B_1 = x[0]#0.74545016#-0.74545016  
         self.theta_M1 = x[1]#-0.05671999#0.05671999
         self.B_2 = x[2]#0.76024892#-0.76024892
@@ -82,7 +81,7 @@ class HannayBreslowModel(object):
         
         
 # Set the light schedule (timings and intensities)
-    def light(self,t,schedule):
+    def light(self,t,schedule,melatonin_timing):
         
         if schedule == 1: # standard 16:8 schedule 
             full_light = 1000
@@ -96,26 +95,47 @@ class HannayBreslowModel(object):
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        
         else: # Laboratory days (5 total)
-            if 24 < t < 96: # Days 2-4, ultradian schedule 
-                full_light = 150 #40
-                if 1 <= np.mod(t,4) <= 2.5 :
-                    return 0 
-                else:
-                    return full_light
-            else: # Days 1 and 5, constant routine 
-                dim_light = 5
-                return dim_light
+            bright_light = 40 # ~Mean reported in Breslow 2008 & 2010
+            dim_light = 5
+            dark = 0
+            
+            DLMO = 21 # Rounded baseline DLMO (21.1) to nearest whole number to make light schedule work correctly
+            
+            if 24 <= t < 96: # Days 2,3,4
+                t = np.mod(t,24)
+                if melatonin_timing == None:
+                    melatonin_timing = 11 # If no exogenous melatonin is administered, have the ultradian schedule start at 0h on day 2 
+                    
+                dose_time = np.mod(DLMO+melatonin_timing,24) # Find the clock time of the first exogenous melatonin dosage 
+                
+                # Find the lights on time for the first lights on 
+                if dose_time >= 4:
+                    lights_on = np.mod(dose_time,4)
+                else: 
+                    lights_on = dose_time
+
+                # Ultradian light schedule (2.5:1.5 light:dark)
+                if 0 <= np.mod(t-lights_on, 4) < 2.5: # Turn the lights on for 2.5h 
+                    light = bright_light
+                else: # Turn the lights off for 1.5
+                    light = dark
+                    
+            else: # Days 1,5
+                light = dim_light # Constant routine during phase assesments
+        
+        return light
 
 
 # Define the alpha(L) function 
-    def alpha0(self,t,schedule):
+    def alpha0(self,t,schedule,melatonin_timing):
         """A helper function for modeling the light input processing"""
         
-        return(self.alpha_0*pow(self.light(t,schedule), self.p)/(pow(self.light(t,schedule), self.p)+self.I_0));
+        return(self.alpha_0*pow(self.light(t,schedule,melatonin_timing), self.p)/(pow(self.light(t,schedule,melatonin_timing), self.p)+self.I_0));
     
 
-# Set the exogenous melatonin administration schedule VERSION 5
+# Set the exogenous melatonin administration schedule
     def ex_melatonin(self,t,melatonin_timing,melatonin_dosage):
         
         if melatonin_timing == None:
@@ -123,9 +143,13 @@ class HannayBreslowModel(object):
         else: 
             if 24 < t < 96: 
                 t = np.mod(t,24)
-                if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
+                
+                DLMO = 21 # Rounded baseline DLMO (21.1) to nearest whole number to make light schedule work correctly
+                dose_time = np.mod(DLMO+melatonin_timing,24) # Find the clock time of the first exogenous melatonin dosage 
+                
+                if dose_time-0.1 <= t <= dose_time+0.3: # Only calculate Guassian close to exogneous melatonin administration
                     sigma = np.sqrt(0.002)
-                    mu = melatonin_timing+0.1
+                    mu = dose_time+0.1 # Shift mean of Guassian so exogenous melatonin is not entering the system too early
 
                     ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
 
@@ -155,7 +179,8 @@ class HannayBreslowModel(object):
 # Convert mg dose to value to be used in the Guassian dosing curve
     def mg_conversion(self, melatonin_dosage):
         x_line = melatonin_dosage
-        y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+        #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+        y_line = 80000
         return y_line
 
         
@@ -184,7 +209,7 @@ class HannayBreslowModel(object):
     
     
         # Light interaction with pacemaker
-        Bhat = self.G*(1.0-n)*self.alpha0(t,schedule)
+        Bhat = self.G*(1.0-n)*self.alpha0(t,schedule,melatonin_timing)
     
         # Light forcing equations
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
@@ -205,7 +230,7 @@ class HannayBreslowModel(object):
         # ODE System  
         dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp + MelAmp# dR/dt
         dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt 
-        dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
+        dydt[2] = 60.0*(self.alpha0(t,schedule,melatonin_timing)*(1.0-n)-(self.delta*n)) # dn/dt
         
         dydt[3] = -self.beta_IP*H1 + A*(1 - self.m*Bhat)*S # dH1/dt
         dydt[4] = self.beta_IP*H1 - self.beta_CP*H2 + self.beta_AP*H3 # dH2/dt
@@ -293,7 +318,7 @@ phase_shift_placebo = final_DLMO - baseline_DLMO
 
 # Burgess 2008, exogenous melatonin given at start of wake episode 
 model_2 = HannayBreslowModel()
-model_2.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
+model_2.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=11, melatonin_dosage=3.0,schedule=2) 
 
 # Calculate shift due to protocol
 # Baseline day 
@@ -319,7 +344,7 @@ phase_shift_2 = final_DLMO - baseline_DLMO # 2.5h, or 6.4h after DLMO
 
 
 
-
+'''
 
 
 
@@ -508,7 +533,7 @@ plt.show()
 
 
 #----------- Load Burgess 2008 PRC data -------------
-'''
+
 # Eyeballed it/from Will's excel file
 
 Burgess_2008_PRC = [
@@ -542,7 +567,7 @@ Burgess_2008_PRC = [
 
 # Eyeballed it
 Burgess_2008_PRC_times = [14.5,15.5,16.5,17.5,18.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,10.5,11.5,12.5,13.5,13.5]
-'''
+
 
 # From WebPlotDigitizer (n = 27)
 Burgess_2008_PRC = [0.78,
@@ -606,18 +631,18 @@ Burgess_2008_PRC_times = [0.8,
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.show()
-
+'''
 
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
 #model = model_placebo
-#model = model_2
+model = model_2
 #model = model_6
 #model = model_10
 #model = model_14
 #model = model_18
-model = model_22
+#model = model_22
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -639,6 +664,7 @@ plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
+plt.axvline(8+24)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Time Trace of Melatonin Concentrations (pg/mL)")
@@ -654,7 +680,7 @@ plt.axhline(DLMO_threshold)
 plt.axvline(21.1)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Baseline Day Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
+plt.title("Baseline Day Time Trace of Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
@@ -663,10 +689,12 @@ plt.plot(model.ts[241:480],model.results[241:480,3]/4.3,lw=2)
 plt.plot(model.ts[241:480],model.results[241:480,4]/4.3,lw=2)
 #plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 100)
+plt.ylim(0, 500)
+plt.axvline(8+24)
+plt.axvline(9+24)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Day 1 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
+plt.title("Day 1 Time Trace of Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma"])
 plt.show()
 
@@ -675,10 +703,10 @@ plt.plot(model.ts[481:720],model.results[481:720,3]/4.3,lw=2)
 plt.plot(model.ts[481:720],model.results[481:720,4]/4.3,lw=2)
 #plt.plot(model.ts[481:720],model.results[481:720,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 100)
+plt.ylim(0, 500)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Day 2 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
+plt.title("Day 2 Time Trace of Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma"])
 plt.show()
 
@@ -687,10 +715,10 @@ plt.plot(model.ts[721:960],model.results[721:960,3]/4.3,lw=2)
 plt.plot(model.ts[721:960],model.results[721:960,4]/4.3,lw=2)
 #plt.plot(model.ts[721:960],model.results[721:960,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.ylim(0, 100)
+plt.ylim(0, 500)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Day 3 Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
+plt.title("Day 3 Time Trace of Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma"])
 plt.show()
 
@@ -699,11 +727,11 @@ plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,3]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,4]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
-plt.axvline(22.7)
-plt.ylim(0, 100)
+plt.axvline(21.1)
+#plt.ylim(0, 500)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("FInal Day Time Trace of Melatonin Concentrations (DLMO = 3pg/mL)")
+plt.title("FInal Day Time Trace of Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 
@@ -730,6 +758,11 @@ plt.show()
 
 # Plotting n
 plt.plot(model.ts,model.results[:,2],lw=2)
+#plt.axvline(24)
+#plt.axvline(24+8)
+#plt.axvline(48)
+#plt.axvline(72)
+#plt.axvline(96)
 plt.xlabel("Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
