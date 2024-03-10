@@ -716,10 +716,15 @@ def objective_func(params,data_vals):
         phase_shifts = run_HannayBreslow_PRC(params)
         print(phase_shifts)
         
-        print(phase_shifts - data_vals)
-        #print(abs(phase_shifts - data_vals))
+        a = np.array(phase_shifts)
+        b = np.array(data_vals)
+        
+        difference = a - b
+        print(difference)
     
-        error = np.mean(abs(phase_shifts - data_vals))
+        #error = np.mean(abs(phase_shifts - data_vals))
+        error = np.linalg.norm(difference)
+        
         print(error)
     
         return error
