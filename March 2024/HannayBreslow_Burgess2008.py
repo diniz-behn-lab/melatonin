@@ -809,7 +809,7 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-model = model_placebo # CHECK - does choice of timing matter?
+model = model_placebo
 #model = model_0 # Clock time: 21:00
 #model = model_2 # Clock time: 23:00
 #model = model_3 # Clock time: 0:00
