@@ -131,7 +131,7 @@ plt.title("Burgess 2008 Protocol Light:Dark Schedule")
 #plt.axvline(6.5)
 plt.show()
 
-'''
+
 
 # ---------- Zeitzer 9 Day Protocol ----------
 
@@ -169,6 +169,9 @@ plt.axvline(100)
 #plt.axvline(6.5)
 plt.show()
 
+'''
+
+
 # ---------- Zeitzer 2 Days of Protocol ----------
 
 j = 2
@@ -202,3 +205,53 @@ plt.axvline(28)
 #plt.axvline(5)
 #plt.axvline(6.5)
 plt.show()
+
+
+# ---------- Burgess 2008 & 2010 Protocol ---------
+
+j = 5
+
+n = j*24
+
+BurgessProtocol_lightschedule = list()
+DLMO = 21
+mel_timing = 11 # Timing after DLMO 
+
+for t in range(0,n): 
+    bright_light = 150
+    dim_light = 5
+    dark = 0
+    
+    if 24 <= t < 96: # Days 2,3,4 (ultradian light schedule)
+        t = np.mod(t,24)
+        dose_time = np.mod(DLMO+mel_timing,24)
+        
+        # Find the lights on time
+        if dose_time >= 4:
+            lights_on = np.mod(dose_time,4)
+        else: 
+            lights_on = dose_time
+
+        # Ultradian light schedule (2.5:1.5 light:dark)
+        if 0 <= np.mod(t-lights_on, 4) < 2.5:
+            light = bright_light
+            BurgessProtocol_lightschedule.append(light)
+        else: 
+            light = dark
+            BurgessProtocol_lightschedule.append(light)
+            
+    else:
+        light = dim_light
+        BurgessProtocol_lightschedule.append(light)
+        
+plt.plot(range(0,n),BurgessProtocol_lightschedule)
+plt.title("Burgess 2008/2010 Protocol Light:Dark Schedule")
+plt.axvline(8+24)
+plt.axvline(8+24+24)
+plt.axvline(8+24+24+24)
+#plt.axvline(6.5)
+plt.show()        
+        
+        
+    
+    
