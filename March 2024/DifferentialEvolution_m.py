@@ -77,7 +77,7 @@ now = time.time()
 # Set bounds for the one parameter to be optimized
 bounds = [(4, 5)]
 
-optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=75, maxiter=4, disp=True)
+optimized = differential_evolution(objective_func, bounds, args=(data_vals,), popsize=50, maxiter=4, tol=0.01, disp=True)
 
 # Print how long (mins) the run took
 print((time.time() - now)/60) 
