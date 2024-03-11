@@ -310,8 +310,8 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 #print(final_DLMO)
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_placebo = final_DLMO - baseline_DLMO
+# Calculate phase shift (baseline - final; negative = delay, positive = advance) 
+phase_shift_placebo = baseline_DLMO - final_DLMO
 
 
 
@@ -333,8 +333,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_0 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_0 = baseline_DLMO - final_DLMO 
 
 
 
@@ -356,8 +356,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_2 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_2 = baseline_DLMO - final_DLMO 
 
 
 
@@ -379,8 +379,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_3 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_3 = baseline_DLMO - final_DLMO
 
 
 
@@ -402,8 +402,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_4 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_4 = baseline_DLMO - final_DLMO 
 
 
 
@@ -425,8 +425,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_7 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance) 
+phase_shift_7 = baseline_DLMO - final_DLMO 
 
 
 
@@ -448,8 +448,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_10 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_10 = baseline_DLMO - final_DLMO
 
 
 
@@ -471,8 +471,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_11 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_11 = baseline_DLMO - final_DLMO
 
 
 
@@ -494,8 +494,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_12 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_12 = baseline_DLMO - final_DLMO
 
 
 
@@ -517,8 +517,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_13 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_13 = baseline_DLMO - final_DLMO
 
 
 
@@ -540,8 +540,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_15 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance) 
+phase_shift_15 = baseline_DLMO - final_DLMO
 
 
 
@@ -563,8 +563,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_16 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_16 = baseline_DLMO - final_DLMO
 
 
 
@@ -586,8 +586,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_17 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_17 = baseline_DLMO - final_DLMO
 
 
 
@@ -609,8 +609,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_18 = final_DLMO - baseline_DLMO 
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_18 = baseline_DLMO - final_DLMO
 
 
 
@@ -632,8 +632,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_19 = final_DLMO - baseline_DLMO
+# Calculate phase shift (baseline - final; negative = delay, positive = advance) 
+phase_shift_19 = baseline_DLMO - final_DLMO
 
 
 
@@ -655,8 +655,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_21 = final_DLMO - baseline_DLMO
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_21 = baseline_DLMO - final_DLMO
 
 
 
@@ -678,8 +678,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_22 = final_DLMO - baseline_DLMO
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_22 = baseline_DLMO - final_DLMO
 
 
 
@@ -701,8 +701,8 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 #print(final_DLMO)
 
 
-# Calculate phase shift (final - baseline; negative = delay, positive = advance) 
-phase_shift_23 = final_DLMO - baseline_DLMO
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_23 = baseline_DLMO - final_DLMO
 
 
 
@@ -735,7 +735,7 @@ phase_shifts_corrected = (phase_shifts - phase_shift_placebo)
 ExMel_times = [0,2,3,4,7,10,11,12,13,15,16,17,18,19,21,22,23]
 
 # Plot PRC points
-plt.plot(ExMel_times,phase_shifts_corrected,'o')
+#plt.plot(ExMel_times,phase_shifts_corrected,'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.axhline(0)
 plt.axvline(21.1)
