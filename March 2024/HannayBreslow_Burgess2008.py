@@ -804,7 +804,7 @@ Burgess_2008_PRC_times = [0.3,
                           23.4
                           ]
 '''
-# What I am actually fitting to: 
+# What I am actually fitting to (rounded to nearest hour): 
 Burgess_2008_PRC_times = [0,
                           0,
                           2,
