@@ -71,14 +71,17 @@ class HannayBreslowModel(object):
         # Switched sign of all five 
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
-        #x = [1, 0, 1, 0, 0]
-        x = [0.95248293,  0.78097113,  0.82623692,  1.56471182, -0.24311406] # Error = 4.579093796811765
-        
-        self.B_1 = x[0]#0.74545016#-0.74545016  
-        self.theta_M1 = x[1]#-0.05671999#0.05671999
-        self.B_2 = x[2]#0.76024892#-0.76024892
-        self.theta_M2 = x[3]#-0.05994563#0.05994563
-        self.epsilon = x[4]#-0.18366069#0.18366069
+        #x = [0, 0, 0, 0, 0]
+        #x = [0.95248293,  0.78097113,  0.82623692,  1.56471182, -0.24311406] # Error = 4.579093796811765
+        #x = [0.95248293,  0.78097113,  0.82623692,  1.56471182, -0.24311406] # Error = 4.579093796811765
+        #x = [0.95454361,  0.51195699,  0.89647909,  1.1634005,   0.00778411] # Error = 4.479966517732024
+        #x = [1.77933371,  0.60638676,  2.8676035,   1.07183046, -0.14709443] # Error = 3.5704481511429305
+        x = [1.83748124,  0.61746707,  1.83032292,  1.24868776, -0.06290714]  # Error = 3.481680628661965
+        self.B_1 = x[0]
+        self.theta_M1 = x[1]
+        self.B_2 = x[2]
+        self.theta_M2 = x[3]
+        self.epsilon = x[4]
         
         
 # Set the light schedule (timings and intensities)
@@ -800,10 +803,43 @@ Burgess_2008_PRC_times = [0.3,
                           22.4,
                           23.4
                           ]
-
+'''
+# What I am actually fitting to: 
+Burgess_2008_PRC_times = [0,
+                          0,
+                          2,
+                          3,
+                          4,
+                          4,
+                          7,
+                          10,
+                          10,
+                          11,
+                          11,
+                          11,
+                          12,
+                          12,
+                          13,
+                          13,
+                          15,
+                          16,
+                          17,
+                          17,
+                          18,
+                          19,
+                          19,
+                          21,
+                          22,
+                          22,
+                          23
+                          ]
+'''
+    
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.axvline(x=19.4) # Burgess fitted peak (max phase advance)
+plt.axhline(y=1.8) # Burgess fitted max advance 
+plt.axhline(y=-1.3) # Burgess fitted max delay
 plt.axvline(x=11.1) # Burgess fitted trough (max phase delay)
 plt.show()
 
