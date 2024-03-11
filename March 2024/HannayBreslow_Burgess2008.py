@@ -160,8 +160,8 @@ class HannayBreslowModel(object):
                     max_value = max(melatonin_values)
                     #print(max_value)
                 
-                    converted_dose = self.mg_conversion(melatonin_dosage)
-                    #converted_dose = 70000
+                    #converted_dose = self.mg_conversion(melatonin_dosage)
+                    converted_dose = 179893 #70000
                     #print(converted_dose)
             
                     normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
@@ -180,11 +180,11 @@ class HannayBreslowModel(object):
         return Guassian    
 
 # Convert mg dose to value to be used in the Guassian dosing curve
-    def mg_conversion(self, melatonin_dosage):
-        x_line = melatonin_dosage
-        y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+    #def mg_conversion(self, melatonin_dosage):
+        #x_line = melatonin_dosage
+        #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
         #y_line = 70000
-        return y_line
+        #return y_line
 
         
 

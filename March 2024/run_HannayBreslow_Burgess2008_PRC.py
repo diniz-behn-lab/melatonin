@@ -157,7 +157,7 @@ class HannayBreslowModel(object):
                     max_value = max(melatonin_values)
                     #print(max_value)
                 
-                    converted_dose = 70000
+                    converted_dose = 179893 #70000
             
                     normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
                     dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
