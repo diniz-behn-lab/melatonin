@@ -42,12 +42,12 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
-        self.psi_off = 3.6652 #3.66519143 # radians, I determined
+        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
@@ -205,7 +205,7 @@ class HannayBreslowModel(object):
 
 def run_HannayBreslow_MelSupp(params):
 
-    IC_2 = [0.810067, 2.02671, 0.348941, 81.761, 130.759, 0] 
+    IC_2 = [0.810065, 2.02662, 0.349036, 121.393, 197.088, 0] 
 
 
     #-------------- Run the model with a 6.5 h light exposure (3 lux) -----------
