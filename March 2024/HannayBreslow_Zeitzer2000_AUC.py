@@ -35,26 +35,23 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
-        self.psi_off = 3.6652 #3.66519143 # radians, I determined
+        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
         # Differential evolution: 
-            # Original error function 
-                # 5.4391854, Error = 0.12400199485635752
             # Switched to L2 norm
             # Fitting to data (determined from WebPlotDigitizer) with AUC
-                # 5.93022304, Error = 0.7979262129459022
-                # 4.263451,   Error = 0.7979262129459022
-                # 4.24932101, Error = 0.7979262129459022
+                # 4.92083843, Error = 0.8007471773658505
+                
                 # 4.71470534, Error = 0.7979262129459022
-        self.m = 4.7147 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.9208 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
