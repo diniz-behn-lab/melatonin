@@ -72,7 +72,7 @@ data_vals = Zeitzer_2000
 
 #------------- Run the differential evolution algorithm ----------
 now = time.time()
-# To be optimized: [(B_1), (B_2), (theta_M1), (theta_M2), (epsilon)]
+# To be optimized: [(m)]
 
 # Set bounds for the one parameter to be optimized
 bounds = [(4, 5)]
