@@ -735,11 +735,15 @@ ExMel_times = [0,2,3,4,7,10,11,12,13,15,16,17,18,19,21,22,23]
 # Plot PRC points
 #plt.plot(ExMel_times,phase_shifts_corrected,'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
-plt.axhline(0)
-plt.axvline(21.1)
+plt.axhline(0,color='black',linestyle='dashed')
+#plt.axvline(21.1)
+plt.axvline(x=20.7,color='grey',linestyle='dashed') # Burgess 2010 fitted peak (max phase advance)
+#plt.axhline(y=1.5,color='grey',linestyle='dashed') # Burgess 2010 fitted max advance 
+#plt.axhline(y=-1.3,color='grey',linestyle='dashed') # Burgess 2010 fitted max delay
+plt.axvline(x=13.6,color='grey',linestyle='dashed') # Burgess 2010 fitted trough (max phase delay)
 plt.xlabel("Time Since DLMO (hours)")
 plt.ylabel("Phase Shift (hours)")
-plt.title("3 Pulse Melatonin (3mg) Phase Response Curve")
+plt.title("3 Pulse Melatonin (0.5mg) Phase Response Curve")
 plt.show()
 
 
