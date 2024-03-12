@@ -273,7 +273,7 @@ n = j*24
 
 BurgessProtocol_lightschedule = list()
 DLMO = 21
-mel_timing = 0 # Timing after DLMO 
+mel_timing = 13 # Timing after DLMO 
 
 for t in range(0,n): 
     bright_light = 40
