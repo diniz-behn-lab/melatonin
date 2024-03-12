@@ -39,8 +39,8 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
-        self.psi_off = 3.6652 #3.66519143 # radians, I determined
+        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_off = 3.5779  # radians, I determined
         
         self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
         
@@ -224,6 +224,14 @@ model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from
 #Uncomment this one to run it with exogenous melatonin
 #model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=12.0, melatonin_dosage=7500,schedule=2)
 
+# Finding DLMO and DLMOff
+plasma_mel = model.results[:,4]/4.3 # converting output to pg/mL
+times = model.ts[:] # defining times from first 24hrs 
+melatonin, = np.where(plasma_mel<=10) # finding all the indices where concentration is below 10pg/mL
+DLMO = times[melatonin[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMOff = times[melatonin[0]] # finding the time corresponding to the first index below threshold, DLMOff
+
+
 #--------- Plot Model Output -------------------
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -246,10 +254,13 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-plt.axvline(x=21.4) # Burgess 2008 reported average DLMO
-#plt.axvline(x=7)
-plt.axvline(x=8.3) # Burgess 2008 reported average DLMOff
-plt.axhline(10) # DLMO threshold 
+#plt.axvline(x=6) # Set psi_off
+#plt.axvline(x=20.3) # Set psi_on
+#plt.axvline(x=DLMOff)
+#plt.axvline(x=DLMO)
+plt.axvline(x=21.4,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMO
+plt.axvline(x=8.3,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMOff
+plt.axhline(10,linestyle='dashed',color='black') # DLMO threshold 
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Melatonin Concentrations (pg/mL)")
