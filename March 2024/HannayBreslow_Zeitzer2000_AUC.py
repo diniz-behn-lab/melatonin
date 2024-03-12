@@ -49,9 +49,9 @@ class HannayBreslowModel(object):
             # Switched to L2 norm
             # Fitting to data (determined from WebPlotDigitizer) with AUC
                 # 4.92083843, Error = 0.8007471773658505
-                
-                # 4.71470534, Error = 0.7979262129459022
-        self.m = 4.9208 # I determined by fitting to Zeitzer using differential evolution
+                # 4.7564997,  Error = 0.8007471773658505
+                # 4.80942936, Error = 0.8007471773658505
+        self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -645,7 +645,7 @@ model = model_light_3
 #model = model_light_4000
 #model = model_light_7000
 #model = model_light_9000
-#model = model_light_9100
+model = model_light_9100
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -674,7 +674,7 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axhline(DLMO_threshold)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Zeitzer 2000 Protocol - 3 lux")
+plt.title("Zeitzer 2000 Protocol - 9100 lux")
 plt.axvspan(21.45, 3.95+(24*1), facecolor='y', alpha=0.4)
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
