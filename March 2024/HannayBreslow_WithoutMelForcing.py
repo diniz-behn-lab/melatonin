@@ -35,7 +35,7 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
@@ -230,10 +230,10 @@ model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=6)
-plt.axvline(x=20.3)
+#plt.axvline(x=6)
+#plt.axvline(x=20.3)
 #plt.axvline(x=12)
-plt.axhline(200)
+#plt.axhline(200)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Melatonin Concentrations (pmol/L)")
@@ -246,10 +246,10 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-plt.axvline(x=21.4)
+plt.axvline(x=21.4) # Burgess 2008 reported average DLMO
 #plt.axvline(x=7)
-plt.axvline(x=8.3)
-plt.axhline(10)
+plt.axvline(x=8.3) # Burgess 2008 reported average DLMOff
+plt.axhline(10) # DLMO threshold 
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Melatonin Concentrations (pg/mL)")
