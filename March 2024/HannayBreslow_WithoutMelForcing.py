@@ -129,7 +129,7 @@ class HannayBreslowModel(object):
         x_line = melatonin_dosage
         #y_line = (56686*x_line) + 16897 # with 2.0mg dose (3pts fit)
         #y_line = (57553*x_line) + 7234 # without 2.0mg dose (2pts fit)
-        y_line = melatonin_dosage
+        y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points 
         return y_line
 
         
@@ -222,7 +222,7 @@ IC = model.results[-1,:] # get initial conditions from entrained model
 #model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=13.0, melatonin_dosage=7000,schedule=2)
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=13.0, melatonin_dosage=3,schedule=2)
 
 # Finding DLMO and DLMOff
 plasma_mel = model.results[:,4]/4.3 # converting output to pg/mL
@@ -262,7 +262,7 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axvline(x=21.4,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMO
 #plt.axvline(x=8.3,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMOff
 #plt.axhline(10,linestyle='dashed',color='black') # DLMO threshold 
-plt.axhline(45)
+plt.axhline(1000)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Melatonin Concentrations (pg/mL)")
