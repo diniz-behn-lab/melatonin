@@ -74,9 +74,9 @@ class HannayBreslowModel(object):
         # Differential Evolution: 
             #x = [0, 0, 0, 0, 0] 
         # Fitting to melatonin_dose = 70000
-        #x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548] # Error = 3.5961229122486875 # Optimization terminated successfully!! 
+        x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548] # Error = 3.5961229122486875 # Optimization terminated successfully!! 
         # Fitting to melatonin_dose = 179893 (fit to Wyatt 2006)
-        x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
+        #x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
         self.B_1 = x[0]
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -163,7 +163,7 @@ class HannayBreslowModel(object):
                     #print(max_value)
                 
                     #converted_dose = self.mg_conversion(melatonin_dosage)
-                    converted_dose = 179893 #70000
+                    converted_dose = 70000 # 179893 #70000
                     #print(converted_dose)
             
                     normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
@@ -887,7 +887,7 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-plt.axhline(DLMO_threshold)
+plt.axhline(DLMO_threshold, linestyle='dashed')
 #plt.axvline(8+24)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
@@ -900,7 +900,7 @@ plt.show()
 plt.plot(model.ts[0:240],model.results[0:240,3]/4.3,lw=2)
 plt.plot(model.ts[0:240],model.results[0:240,4]/4.3,lw=2)
 plt.plot(model.ts[0:240],model.results[0:240,5]/4.3,lw=2)
-plt.axhline(DLMO_threshold)
+plt.axhline(DLMO_threshold, linestyle='dashed')
 plt.axvline(21.1)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
@@ -912,7 +912,7 @@ plt.show()
 plt.plot(model.ts[241:480],model.results[241:480,3]/4.3,lw=2)
 plt.plot(model.ts[241:480],model.results[241:480,4]/4.3,lw=2)
 #plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
-plt.axhline(DLMO_threshold)
+plt.axhline(DLMO_threshold, linestyle='dashed')
 #plt.ylim(0, 500)
 #plt.axvline(check+24)
 #plt.axvline(22+24)
@@ -926,7 +926,7 @@ plt.show()
 plt.plot(model.ts[481:720],model.results[481:720,3]/4.3,lw=2)
 plt.plot(model.ts[481:720],model.results[481:720,4]/4.3,lw=2)
 #plt.plot(model.ts[481:720],model.results[481:720,5]/4.3,lw=2)
-plt.axhline(DLMO_threshold)
+plt.axhline(DLMO_threshold, linestyle='dashed')
 #plt.ylim(0, 500)
 #plt.axvline(check+24+24)
 plt.xlabel("Time (hours)")
@@ -939,7 +939,7 @@ plt.show()
 plt.plot(model.ts[721:960],model.results[721:960,3]/4.3,lw=2)
 plt.plot(model.ts[721:960],model.results[721:960,4]/4.3,lw=2)
 #plt.plot(model.ts[721:960],model.results[721:960,5]/4.3,lw=2)
-plt.axhline(DLMO_threshold)
+plt.axhline(DLMO_threshold, linestyle='dashed')
 #plt.ylim(0, 500)
 #plt.axvline(check+24+24+24)
 plt.xlabel("Time (hours)")
@@ -952,7 +952,7 @@ plt.show()
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,3]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,4]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,5]/4.3,lw=2)
-plt.axhline(DLMO_threshold)
+plt.axhline(DLMO_threshold, linestyle='dashed')
 #plt.axvline(21.5)
 #plt.ylim(0, 50)
 #plt.xlim(15, 24)
