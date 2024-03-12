@@ -73,8 +73,8 @@ class HannayBreslowModel(object):
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
             #x = [0, 0, 0, 0, 0] 
-        x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548] # Error = 3.5961229122486875 # Optimization terminated successfully!! 
-        
+        #x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548] # Error = 3.5961229122486875 # Optimization terminated successfully!! 
+        x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
         self.B_1 = x[0]
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -161,7 +161,7 @@ class HannayBreslowModel(object):
                     #print(max_value)
                 
                     #converted_dose = self.mg_conversion(melatonin_dosage)
-                    converted_dose = 36010
+                    converted_dose = 36010 # 40000
                     #print(converted_dose)
             
                     normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
