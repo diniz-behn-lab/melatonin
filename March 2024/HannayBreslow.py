@@ -35,7 +35,7 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
@@ -45,7 +45,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 4.9278 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.7147 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -73,13 +73,13 @@ class HannayBreslowModel(object):
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
         #x = [0.99077284, -0.61489832,  0.07132476,  0.39207981, -0.07149382] # Error = 0.39710144950000287
-        x = [0.99380215, -0.77800378,  0.0297315,   0.85202878, -0.10496969] # Error = 0.3471014494999986
+        #x = [0.99380215, -0.77800378,  0.0297315,   0.85202878, -0.10496969] # Error = 0.3471014494999986
         #x = [0.99055777, -0.78238115,  0.03160424,  1.30703649, -0.09916106] # Error = 0.36376811616666666 
-        self.B_1 = x[0] 
-        self.theta_M1 = x[1]
-        self.B_2 = x[2]
-        self.theta_M2 = x[3]
-        self.epsilon = x[4]
+        #self.B_1 = x[0] 
+        #self.theta_M1 = x[1]
+        #self.B_2 = x[2]
+        #self.theta_M2 = x[3]
+        #self.epsilon = x[4]
         
         
 # Set the light schedule (timings and intensities)
@@ -148,7 +148,8 @@ class HannayBreslowModel(object):
 # Convert mg dose to value to be used in the Guassian dosing curve
     def mg_conversion(self, melatonin_dosage):
         x_line = melatonin_dosage
-        y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+        #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+        y_line = 7500
         return y_line
 
         
@@ -184,9 +185,9 @@ class HannayBreslowModel(object):
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
     
         # Melatonin interaction with pacemaker
-        Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
-        MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
-        MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
+        #Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
+        #MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
+        #MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
     
         # Switch pineal on and off in the presence of light 
         tmp = 1 - self.m*Bhat
@@ -196,8 +197,8 @@ class HannayBreslowModel(object):
         dydt=np.zeros(6)
     
         # ODE System  
-        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp + MelAmp # dR/dt
-        dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt 
+        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp #+ MelAmp # dR/dt
+        dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase #+ MelPhase # dpsi/dt 
         dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
         
         dydt[3] = -self.beta_IP*H1 + A*(1 - self.m*Bhat)*S # dH1/dt
@@ -237,7 +238,7 @@ class HannayBreslowModel(object):
 
 #------------- Running the model under all condtions for the PRC 
 # Set the DLMO threshold that will be used throughout to determine DLMO time
-DLMO_threshold = 3
+DLMO_threshold = 10
 
 
 
@@ -263,7 +264,7 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin dosage to a mg amount
  
 #model = HannayBreslowModel()
-#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2.5, melatonin_dosage=3.0,schedule=2) 
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
 
 
 
@@ -274,6 +275,7 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 
 #--------- Plot Model Output -------------------
 
+'''
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
@@ -287,17 +289,17 @@ plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Melatonin Concentrations (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
-
+'''
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-plt.axvline(x=21.4)
+#plt.axvline(x=21.4)
 #plt.axvline(x=7)
-plt.axvline(x=8.3)
-plt.axhline(10)
+plt.axhline(70)
+plt.axhline(10, linestyle='dashed')
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Melatonin Concentrations (pg/mL)")
