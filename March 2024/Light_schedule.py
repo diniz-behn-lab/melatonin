@@ -64,7 +64,7 @@ plt.plot(range(0,n),WyattBaseline_lightschedule)
 plt.title("Wyatt 2006 Light:Dark Schedule")
 plt.show()
 
-
+'''
 #------------------- Burgess 2008 Ultradian Light Schedule ------------
 
 j = 1 # Number of days to be plotted
@@ -92,7 +92,7 @@ plt.title("Burgess 2008 Ultradian Light:Dark Schedule (2.5:1.5)")
 #plt.axvline(6.5)
 plt.show()
 
-'''
+
 #------------------- Burgess 2008 5 Day Protocol ------------
 
 j = 5 # Number of days to be plotted
@@ -182,8 +182,8 @@ ZeitzerProtocol_lightschedule = list()
 CBTmin = 4
 
 for t in range(0,n): 
-    bright_light = 1000
-    dim_light = 150
+    bright_light = 300
+    dim_light = 10
     dark = 0
     
     if 0 <= t < 24:
@@ -200,11 +200,69 @@ for t in range(0,n):
 
 plt.plot(range(0,n),ZeitzerProtocol_lightschedule)
 plt.title("Zeitzer 2000 Protocol Light:Dark Schedule")
-plt.axvline(28)
-#plt.axvline(1)
+plt.axvline(28,color='black')
+plt.axvline(24,linestyle='dashed')
 #plt.axvline(5)
 #plt.axvline(6.5)
 plt.show()
+
+
+
+# ---------- Zeitzer 5 Days of Protocol ----------
+
+j = 5
+
+n = j*24
+
+ZeitzerProtocol_lightschedule = list()
+CBTmin = 4
+
+for t in range(0,n): 
+    bright_light = 550
+    dim_light = 10
+    dark = 0
+    
+    if 0 <= t < 24*3:
+        full_light = 150
+        dim_light = 150
+        wake_time = 7
+        sleep_time = 23
+        sun_up = 8
+        sun_down = 19
+        
+        is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+        sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+        light = is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        
+        ZeitzerProtocol_lightschedule.append(light)
+        
+    if 24*3 <= t < 24*4:
+        if np.mod(t,24) > np.mod(CBTmin - 6.75,24):
+            ZeitzerProtocol_lightschedule.append(bright_light)
+        else: 
+            ZeitzerProtocol_lightschedule.append(dim_light)    
+    if 24*4 <= t < 24*5:
+        if np.mod(t,24) < np.mod(CBTmin - 0.25,24):
+            ZeitzerProtocol_lightschedule.append(bright_light)
+        else:
+            ZeitzerProtocol_lightschedule.append(dim_light)
+    
+
+plt.plot(range(0,n),ZeitzerProtocol_lightschedule)
+plt.title("Zeitzer 2000 Protocol Light:Dark Schedule")
+plt.axvline(4+(24*4),color='black')
+plt.axvline(24,linestyle='dashed',color='grey')
+plt.axvline(24*2,linestyle='dashed',color='grey')
+plt.axvline(24*3,linestyle='dashed',color='grey')
+plt.axvline(24*4,linestyle='dashed',color='grey')
+plt.axvspan(21.25+(24*3), 3.75+(24*4), facecolor='y', alpha=0.4)
+plt.axvspan(21.25+(24*2), 3.75+(24*3), facecolor='grey', alpha=0.4)
+#plt.axvline(7+24,color='orange')
+#plt.axvline(23,color='orange')
+plt.show()
+
+
 
 
 # ---------- Burgess 2008 & 2010 Protocol ---------
@@ -215,7 +273,7 @@ n = j*24
 
 BurgessProtocol_lightschedule = list()
 DLMO = 21
-mel_timing = 11 # Timing after DLMO 
+mel_timing = 0 # Timing after DLMO 
 
 for t in range(0,n): 
     bright_light = 40
@@ -246,10 +304,15 @@ for t in range(0,n):
         
 plt.plot(range(0,n),BurgessProtocol_lightschedule)
 plt.title("Burgess 2008/2010 Protocol Light:Dark Schedule")
-#plt.axvline(21+24)
-plt.axvline(dose_time+24)
-plt.axvline(dose_time+24+24)
-plt.axvline(dose_time+24+24+24)
+plt.axvline(21,color='orange')
+plt.axvline(dose_time+24,color='green')
+plt.axvline(dose_time+24+24,color='green')
+plt.axvline(dose_time+24+24+24,color='green')
+plt.axvline(24,linestyle='dashed',color='grey')
+plt.axvline(24*2,linestyle='dashed',color='grey')
+plt.axvline(24*3,linestyle='dashed',color='grey')
+plt.axvline(24*4,linestyle='dashed',color='grey')
+plt.ylim([-1, 70])
 #plt.axvline(6.5)
 plt.show()        
         
