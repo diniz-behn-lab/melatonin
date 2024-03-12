@@ -163,7 +163,7 @@ class HannayBreslowModel(object):
                     #print(max_value)
                 
                     #converted_dose = self.mg_conversion(melatonin_dosage)
-                    converted_dose = 70000 # 179893 #70000
+                    converted_dose = 70000 #179893 #70000
                     #print(converted_dose)
             
                     normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
@@ -837,10 +837,15 @@ Burgess_2008_PRC_times = [0,
     
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
-plt.axvline(x=19.4) # Burgess 2008 fitted peak (max phase advance)
-plt.axhline(y=1.8) # Burgess 2008 fitted max advance 
-plt.axhline(y=-1.3) # Burgess 2008 fitted max delay
-plt.axvline(x=11.1) # Burgess 2008 fitted trough (max phase delay)
+plt.title("3 Pulse PRC To 3mg Exogenous Melatonin")
+plt.xlabel("Time After DLMO (hours)")
+plt.ylabel("Phase Shift (hours)")
+plt.axhline(y=0,color='black',linestyle='dashed')
+plt.axvline(x=19.4,color='grey',linestyle='dashed') # Burgess 2008 fitted peak (max phase advance)
+plt.axhline(y=1.8,color='grey',linestyle='dashed') # Burgess 2008 fitted max advance 
+plt.axhline(y=-1.3,color='grey',linestyle='dashed') # Burgess 2008 fitted max delay
+plt.axvline(x=11.1,color='grey',linestyle='dashed') # Burgess 2008 fitted trough (max phase delay)
+plt.legend(["Burgess 2008 Data", "Model"])
 plt.show()
 
 
