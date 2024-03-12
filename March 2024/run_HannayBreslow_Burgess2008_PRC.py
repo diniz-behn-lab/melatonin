@@ -41,17 +41,17 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
-        self.psi_off = 3.6652 #3.66519143 # radians, I determined
+        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 4.7147 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
 
         ## Hannay Model
         self.D = 0
@@ -157,7 +157,8 @@ class HannayBreslowModel(object):
                     max_value = max(melatonin_values)
                     #print(max_value)
                 
-                    converted_dose = 179893 #70000
+                    #converted_dose = 179893 #70000
+                    converted_dose = self.mg_conversion(melatonin_dosage)
             
                     normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
                     dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
@@ -174,7 +175,14 @@ class HannayBreslowModel(object):
         Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(time-mu,2))/(2*pow(sigma,2)))
         return Guassian    
 
-
+# Convert mg dose to value to be used in the Guassian dosing curve
+    def mg_conversion(self, melatonin_dosage):
+        x_line = melatonin_dosage
+        #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
+        #y_line = 70000
+        y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
+        return y_line
+    
 
 # Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
@@ -263,7 +271,7 @@ def run_HannayBreslow_PRC(params):
     
     #--------- Set initial conditions --------------- 
 
-    IC = ([0.832571, 2.06488, 0.47021, 80.4852, 112.074, 0])
+    IC = ([0.83257, 2.06485, 0.470162, 119.165, 164.449, 0])
 
 
     # ------- Set the DLMO threshold that determines DLMO time ----------
