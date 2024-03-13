@@ -13,14 +13,14 @@ Optimize the melatonin forcing parameters (B1, B2, theta_M1, theta_M2, epsilon)
 
 import numpy as np
 from scipy.optimize import differential_evolution
-from run_HannayBreslow_Burgess2008_PRC import objective_func
+#from run_HannayBreslow_Burgess2008_PRC import objective_func
+from run_HannayBreslow_Burgess2010_PRC import objective_func
 import time
 
 
 #---------- Create an array of the data values -----------------
 
 # From WebPlotDigitizer (n = 27)
-
 Burgess_2008_PRC = [-0.43,
                     -0.08,
                     0.45,
@@ -50,8 +50,46 @@ Burgess_2008_PRC = [-0.43,
                     1.63
                     ]
 
+# From WebPlotDigitizer (n = 34)
+Burgess_2010_PRC = [1.2,
+                    -0.5,
+                    -1.5,
+                    -1.2,
+                    0.7,
+                    -0.1,
+                    -1.0,
+                    -0.6,
+                    0.9,
+                    1.2,
+                    -1.2,
+                    -1.1,
+                    0.9,
+                    -1.8,
+                    -1.8,
+                    -0.3,
+                    -1.2,
+                    -0.9,
+                    -0.7,
+                    -1.3,
+                    -0.9,
+                    -0.3,
+                    0.7,
+                    1.4,
+                    1.7,
+                    0.7,
+                    2.7,
+                    2.9,
+                    -0.2,
+                    0.8,
+                    2.5,
+                    1.0,
+                    0.9,
+                    1.0
+                    ]
 
-data_vals = Burgess_2008_PRC
+
+#data_vals = Burgess_2008_PRC
+data_vals = Burgess_2010_PRC
 
 
 #------------- Run the differential evolution algorithm ----------

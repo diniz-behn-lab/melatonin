@@ -68,15 +68,8 @@ class HannayBreslowModel(object):
         self.G = 33.75
         
         ## Melatonin Forcing Parameters
-        #x = [-0.74545016, 0.05671999, -0.76024892, 0.05994563, 0.18366069]
-        # Switched sign of all five 
-        #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
             #x = [0, 0, 0, 0, 0] 
-        # Fitting to melatonin_dose = 70000
-        #x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548] # Error = 3.5961229122486875 # Optimization terminated successfully!!  
-        # Fitting to melatonin_dose = 179893 (fit to Wyatt 2006)
-        #x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
         # Fitting to the cubic dose curve 
         x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413 #  Optimization terminated successfully!!
         self.B_1 = x[0]
@@ -292,7 +285,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model under the placebo condition ---------------
 
-# Run Burgess 2008 placebo protocol
+# Run Burgess 2010 placebo protocol
 model_placebo = HannayBreslowModel()
 model_placebo.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
@@ -318,7 +311,7 @@ phase_shift_placebo = baseline_DLMO - final_DLMO
 
 #--------- Run the model with exogenous melatonin 0h after DLMO (Clock time: 21:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_0 = HannayBreslowModel()
 model_0.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=0, melatonin_dosage=0.5,schedule=2) 
 
@@ -339,9 +332,32 @@ phase_shift_0 = baseline_DLMO - final_DLMO
 
 
 
+#--------- Run the model with exogenous melatonin 1h after DLMO (Clock time: 22:00)---------------
+
+# Burgess 2010, exogenous melatonin given at start of wake episode 
+model_1 = HannayBreslowModel()
+model_1.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=1, melatonin_dosage=0.5,schedule=2) 
+
+# Calculate shift due to protocol
+# Baseline day DLMO determined above
+
+# Final day 
+final_plasma_mel = model_1.results[960:1199,4]/4.3 # converting output to pg/mL
+final_times = model_1.ts[960:1199] # defining times from last 24hrs
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
+final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 0h")
+#print(final_DLMO)
+
+
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_1 = baseline_DLMO - final_DLMO 
+
+
+
 #--------- Run the model with exogenous melatonin 2h after DLMO (Clock time: 23:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_2 = HannayBreslowModel()
 model_2.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2, melatonin_dosage=0.5,schedule=2) 
 
@@ -364,7 +380,7 @@ phase_shift_2 = baseline_DLMO - final_DLMO
 
 #--------- Run the model with exogenous melatonin 3h after DLMO (Clock time: 0:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_3 = HannayBreslowModel()
 model_3.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=3, melatonin_dosage=0.5,schedule=2) 
 
@@ -385,18 +401,18 @@ phase_shift_3 = baseline_DLMO - final_DLMO
 
 
 
-#--------- Run the model with exogenous melatonin 4h after DLMO (Clock time: 1:00)---------------
+#--------- Run the model with exogenous melatonin 5h after DLMO (Clock time: 2:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
-model_4 = HannayBreslowModel()
-model_4.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=4, melatonin_dosage=0.5,schedule=2) 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
+model_5 = HannayBreslowModel()
+model_5.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=5, melatonin_dosage=0.5,schedule=2) 
 
 # Calculate shift due to protocol
 # Baseline day DLMO determined above
 
 # Final day 
-final_plasma_mel = model_4.results[960:1199,4]/4.3 # converting output to pg/mL
-final_times = model_4.ts[960:1199] # defining times from last 24hrs
+final_plasma_mel = model_5.results[960:1199,4]/4.3 # converting output to pg/mL
+final_times = model_5.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
 final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
 #print("Final - 4h")
@@ -404,13 +420,36 @@ final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding 
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
-phase_shift_4 = baseline_DLMO - final_DLMO 
+phase_shift_5 = baseline_DLMO - final_DLMO 
+
+
+
+#--------- Run the model with exogenous melatonin 6h after DLMO (Clock time: 3:00)---------------
+
+# Burgess 2010, exogenous melatonin given at start of wake episode 
+model_6 = HannayBreslowModel()
+model_6.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=6, melatonin_dosage=0.5,schedule=2) 
+
+# Calculate shift due to protocol
+# Baseline day DLMO determined above
+
+# Final day 
+final_plasma_mel = model_6.results[960:1199,4]/4.3 # converting output to pg/mL
+final_times = model_6.ts[960:1199] # defining times from last 24hrs
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
+final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 4h")
+#print(final_DLMO)
+
+
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_6 = baseline_DLMO - final_DLMO 
 
 
 
 #--------- Run the model with exogenous melatonin 7h after DLMO (Clock time: 4:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_7 = HannayBreslowModel()
 model_7.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=7, melatonin_dosage=0.5,schedule=2) 
 
@@ -431,9 +470,32 @@ phase_shift_7 = baseline_DLMO - final_DLMO
 
 
 
+#--------- Run the model with exogenous melatonin 8h after DLMO (Clock time: 5:00)---------------
+
+# Burgess 2010, exogenous melatonin given at start of wake episode 
+model_8 = HannayBreslowModel()
+model_8.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=8, melatonin_dosage=0.5,schedule=2) 
+
+# Calculate shift due to protocol
+# Baseline day DLMO determined above
+
+# Final day 
+final_plasma_mel = model_8.results[960:1199,4]/4.3 # converting output to pg/mL
+final_times = model_8.ts[960:1199] # defining times from last 24hrs
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
+final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 7h")
+#print(final_DLMO)
+
+
+# Calculate phase shift (baseline - final; negative = delay, positive = advance) 
+phase_shift_8 = baseline_DLMO - final_DLMO 
+
+
+
 #--------- Run the model with exogenous melatonin 10h after DLMO (Clock time: 7:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_10 = HannayBreslowModel()
 model_10.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10, melatonin_dosage=0.5,schedule=2)
 
@@ -456,7 +518,7 @@ phase_shift_10 = baseline_DLMO - final_DLMO
 
 #--------- Run the model with exogenous melatonin 11h after DLMO (Clock time: 8:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_11 = HannayBreslowModel()
 model_11.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=11, melatonin_dosage=0.5,schedule=2)
 
@@ -479,7 +541,7 @@ phase_shift_11 = baseline_DLMO - final_DLMO
 
 #--------- Run the model with exogenous melatonin 12h after DLMO (Clock time: 9:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_12 = HannayBreslowModel()
 model_12.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=12, melatonin_dosage=0.5,schedule=2)
 
@@ -502,7 +564,7 @@ phase_shift_12 = baseline_DLMO - final_DLMO
 
 #--------- Run the model with exogenous melatonin 13h after DLMO (Clock time: 10:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_13 = HannayBreslowModel()
 model_13.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=13, melatonin_dosage=0.5,schedule=2)
 
@@ -523,32 +585,9 @@ phase_shift_13 = baseline_DLMO - final_DLMO
 
 
 
-#--------- Run the model with exogenous melatonin 15h after DLMO (Clock time: 12:00)---------------
-
-# Burgess 2008, exogenous melatonin given at start of wake episode 
-model_15 = HannayBreslowModel()
-model_15.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.5,schedule=2)
-
-# Calculate shift due to protocol
-# Baseline day DLMO determined above
-
-# Final day 
-final_plasma_mel = model_15.results[960:1199,4]/4.3 # converting output to pg/mL
-final_times = model_15.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
-#print("Final - 15h")
-#print(final_DLMO)
-
-
-# Calculate phase shift (baseline - final; negative = delay, positive = advance) 
-phase_shift_15 = baseline_DLMO - final_DLMO
-
-
-
 #--------- Run the model with exogenous melatonin 16h after DLMO (Clock time: 13:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_16 = HannayBreslowModel()
 model_16.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=16, melatonin_dosage=0.5,schedule=2)
 
@@ -571,7 +610,7 @@ phase_shift_16 = baseline_DLMO - final_DLMO
 
 #--------- Run the model with exogenous melatonin 17h after DLMO (Clock time: 14:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_17 = HannayBreslowModel()
 model_17.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17, melatonin_dosage=0.5,schedule=2)
 
@@ -592,32 +631,9 @@ phase_shift_17 = baseline_DLMO - final_DLMO
 
 
 
-#--------- Run the model with exogenous melatonin 18h after DLMO (Clock time: 15:00)---------------
-
-# Burgess 2008, exogenous melatonin given at start of wake episode 
-model_18 = HannayBreslowModel()
-model_18.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=18, melatonin_dosage=0.5,schedule=2)
-
-# Calculate shift due to protocol
-# Baseline day DLMO determined above
-
-# Final day 
-final_plasma_mel = model_18.results[960:1199,4]/4.3 # converting output to pg/mL
-final_times = model_18.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
-#print("Final - 18h")
-#print(final_DLMO)
-
-
-# Calculate phase shift (baseline - final; negative = delay, positive = advance)
-phase_shift_18 = baseline_DLMO - final_DLMO
-
-
-
 #--------- Run the model with exogenous melatonin 19h after DLMO (Clock time: 16:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_19 = HannayBreslowModel()
 model_19.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=19, melatonin_dosage=0.5,schedule=2)
 
@@ -638,9 +654,32 @@ phase_shift_19 = baseline_DLMO - final_DLMO
 
 
 
+#--------- Run the model with exogenous melatonin 20h after DLMO (Clock time: 17:00)---------------
+
+# Burgess 2010, exogenous melatonin given at start of wake episode 
+model_20 = HannayBreslowModel()
+model_20.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=20, melatonin_dosage=0.5,schedule=2)
+
+# Calculate shift due to protocol
+# Baseline day DLMO determined above
+
+# Final day 
+final_plasma_mel = model_20.results[960:1199,4]/4.3 # converting output to pg/mL
+final_times = model_20.ts[960:1199] # defining times from last 24hrs
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
+final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+#print("Final - 21h")
+#print(final_DLMO)
+
+
+# Calculate phase shift (baseline - final; negative = delay, positive = advance)
+phase_shift_20 = baseline_DLMO - final_DLMO
+
+
+
 #--------- Run the model with exogenous melatonin 21h after DLMO (Clock time: 18:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_21 = HannayBreslowModel()
 model_21.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=21, melatonin_dosage=0.5,schedule=2)
 
@@ -663,7 +702,7 @@ phase_shift_21 = baseline_DLMO - final_DLMO
 
 #--------- Run the model with exogenous melatonin 22h after DLMO (Clock time: 19:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_22 = HannayBreslowModel()
 model_22.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=22, melatonin_dosage=0.5,schedule=2)
 
@@ -686,7 +725,7 @@ phase_shift_22 = baseline_DLMO - final_DLMO
 
 #--------- Run the model with exogenous melatonin 23h after DLMO (clock time: 20:00)---------------
 
-# Burgess 2008, exogenous melatonin given at start of wake episode 
+# Burgess 2010, exogenous melatonin given at start of wake episode 
 model_23 = HannayBreslowModel()
 model_23.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=23, melatonin_dosage=0.5,schedule=2)
 
@@ -709,22 +748,23 @@ phase_shift_23 = baseline_DLMO - final_DLMO
 
 
 #---------- Make an array of all predicted phase shifts --------------
-
-phase_shifts = [phase_shift_0, 
-                phase_shift_2, 
+phase_shifts = [phase_shift_0,
+                phase_shift_1,
+                phase_shift_2,
                 phase_shift_3, 
-                phase_shift_4, 
-                phase_shift_7, 
-                phase_shift_10, 
-                phase_shift_11, 
-                phase_shift_12, 
-                phase_shift_13, 
-                phase_shift_15, 
-                phase_shift_16, 
-                phase_shift_17, 
-                phase_shift_18, 
+                phase_shift_5, 
+                phase_shift_6, 
+                phase_shift_7,
+                phase_shift_8,
+                phase_shift_10,
+                phase_shift_11,
+                phase_shift_12,
+                phase_shift_13,
+                phase_shift_16,
+                phase_shift_17,
                 phase_shift_19,
-                phase_shift_21, 
+                phase_shift_20,
+                phase_shift_21,
                 phase_shift_22,
                 phase_shift_23
                 ];
@@ -733,7 +773,7 @@ phase_shifts = [phase_shift_0,
 phase_shifts_corrected = (phase_shifts - phase_shift_placebo)
 
 # Make array of administration times for plotting PRC 
-ExMel_times = [0,2,3,4,7,10,11,12,13,15,16,17,18,19,21,22,23]
+ExMel_times = [0,1,2,3,5,6,7,8,10,11,12,13,16,17,19,20,21,22,23]
 
 # Plot PRC points
 #plt.plot(ExMel_times,phase_shifts_corrected,'o')
@@ -836,7 +876,7 @@ plt.axvline(x=20.7,color='grey',linestyle='dashed') # Burgess 2010 fitted peak (
 plt.axhline(y=1.5,color='grey',linestyle='dashed') # Burgess 2010 fitted max advance 
 plt.axhline(y=-1.3,color='grey',linestyle='dashed') # Burgess 2010 fitted max delay
 plt.axvline(x=13.6,color='grey',linestyle='dashed') # Burgess 2010 fitted trough (max phase delay)
-plt.legend(["Burgess 2008 Data", "Model"])
+plt.legend(["Burgess 2010 Data", "Model"])
 plt.show()
 
 
@@ -844,7 +884,7 @@ plt.show()
 
 # pick one to plot 
 #model = model_placebo
-#model = model_0 # Clock time: 21:00
+model = model_0 # Clock time: 21:00
 #model = model_2 # Clock time: 23:00
 #model = model_3 # Clock time: 0:00
 #model = model_4 # Clock time: 1:00
@@ -853,7 +893,7 @@ plt.show()
 #model = model_11 # Clock time: 8:00
 #model = model_12 # Clock time: 9:00
 #model = model_13 # Clock time: 10:00
-model = model_15 # Clock time: 12:00
+#model = model_15 # Clock time: 12:00
 #model = model_16 # Clock time: 13:00
 #model = model_17 # Clock time: 14:00
 #model = model_18 # Clock time: 15:00
