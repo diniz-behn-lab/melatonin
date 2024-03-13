@@ -37,6 +37,7 @@ for i in range(0,len(psi)):
     
     
 plt.plot(psi,Q_L_list) 
+plt.title('Instantaneous PRC to Light')
 plt.show()
 
 
@@ -48,7 +49,9 @@ plt.show()
 #x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548]
 
 # Fitting to melatonin_dose = 179893 (fit to Wyatt 2006)
-x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
+#x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
+# Fitting to the cubic dose curve 
+x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
 
 B_1 = x[0]
 theta_M1 = x[1]
@@ -63,15 +66,19 @@ for i in range(0,len(psi)):
     Q_M_list.append(Q_M)
     
     
-plt.plot(psi,Q_M_list)    
+plt.plot(psi,Q_M_list) 
+plt.title('Instantaneous PRC to Melatonin')   
 plt.show()
 
 
 # --------- Plot PRCs together ---------
 
+plt.plot(psi,Q_M_list)
 plt.plot(psi,Q_L_list) 
-plt.plot(psi,Q_M_list)    
 plt.axhline(0, linestyle='dashed')
-plt.axvline(1.26) # DLMO 
-plt.legend(["Light PRC","Melatonin PRC"])
+plt.axvline(1.26,color='black') # DLMO 
+plt.title('Instantaneous Phase Response Curves')
+plt.legend(["Melatonin PRC","Light PRC"])
+plt.xlabel('Psi')
+plt.ylabel('Instantaneous Phase Response')
 plt.show()
