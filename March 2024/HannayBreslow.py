@@ -144,7 +144,8 @@ class HannayBreslowModel(object):
     def mg_conversion(self, melatonin_dosage):
         x_line = melatonin_dosage
         #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
-        y_line = 7500
+        #y_line = 7500
+        y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
         return y_line
 
         
@@ -249,7 +250,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -259,7 +260,7 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin dosage to a mg amount
  
 #model = HannayBreslowModel()
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
 
 
 
@@ -293,7 +294,7 @@ plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axvline(x=21.4)
 #plt.axvline(x=7)
-plt.axhline(70)
+#plt.axhline(70)
 plt.axhline(10, linestyle='dashed')
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
