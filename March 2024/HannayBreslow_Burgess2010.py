@@ -76,7 +76,9 @@ class HannayBreslowModel(object):
         # Fitting to melatonin_dose = 70000
         #x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548] # Error = 3.5961229122486875 # Optimization terminated successfully!!  
         # Fitting to melatonin_dose = 179893 (fit to Wyatt 2006)
-        x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
+        #x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
+        # Fitting to the cubic dose curve 
+        x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413 #  Optimization terminated successfully!!
         self.B_1 = x[0]
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -162,8 +164,8 @@ class HannayBreslowModel(object):
                     max_value = max(melatonin_values)
                     #print(max_value)
                 
-                    #converted_dose = self.mg_conversion(melatonin_dosage)
-                    converted_dose = 36010 # 40000
+                    converted_dose = self.mg_conversion(melatonin_dosage)
+                    #converted_dose = 36010 # 40000
                     #print(converted_dose)
             
                     normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
@@ -182,11 +184,12 @@ class HannayBreslowModel(object):
         return Guassian    
 
 # Convert mg dose to value to be used in the Guassian dosing curve
-    #def mg_conversion(self, melatonin_dosage):
-        #x_line = melatonin_dosage
+    def mg_conversion(self, melatonin_dosage):
+        x_line = melatonin_dosage
         #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
         #y_line = 70000
-        #return y_line
+        y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
+        return y_line
 
         
 
