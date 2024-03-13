@@ -39,13 +39,13 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
-        self.psi_off = 3.6652 #3.66519143 # radians, I determined
+        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 4.7147 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -75,11 +75,14 @@ class HannayBreslowModel(object):
         #x = [0.99077284, -0.61489832,  0.07132476,  0.39207981, -0.07149382] # Error = 0.39710144950000287
         #x = [0.99380215, -0.77800378,  0.0297315,   0.85202878, -0.10496969] # Error = 0.3471014494999986
         #x = [0.99055777, -0.78238115,  0.03160424,  1.30703649, -0.09916106] # Error = 0.36376811616666666 
-        #self.B_1 = x[0] 
-        #self.theta_M1 = x[1]
-        #self.B_2 = x[2]
-        #self.theta_M2 = x[3]
-        #self.epsilon = x[4]
+        
+        # Fitting to the cubic dose curve 
+        x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
+        self.B_1 = x[0] 
+        self.theta_M1 = x[1]
+        self.B_2 = x[2]
+        self.theta_M2 = x[3]
+        self.epsilon = x[4]
         
         
 # Set the light schedule (timings and intensities)
@@ -185,9 +188,9 @@ class HannayBreslowModel(object):
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
     
         # Melatonin interaction with pacemaker
-        #Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
-        #MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
-        #MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
+        Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
+        MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
+        MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
     
         # Switch pineal on and off in the presence of light 
         tmp = 1 - self.m*Bhat
@@ -197,8 +200,8 @@ class HannayBreslowModel(object):
         dydt=np.zeros(6)
     
         # ODE System  
-        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp #+ MelAmp # dR/dt
-        dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase #+ MelPhase # dpsi/dt 
+        dydt[0] = -(self.D + self.gamma)*R + (self.K/2)*np.cos(self.beta)*R*(1 - pow(R,4.0)) + LightAmp + MelAmp # dR/dt
+        dydt[1] = self.omega_0 + (self.K/2)*np.sin(self.beta)*(1 + pow(R,4.0)) + LightPhase + MelPhase # dpsi/dt 
         dydt[2] = 60.0*(self.alpha0(t,schedule)*(1.0-n)-(self.delta*n)) # dn/dt
         
         dydt[3] = -self.beta_IP*H1 + A*(1 - self.m*Bhat)*S # dH1/dt
