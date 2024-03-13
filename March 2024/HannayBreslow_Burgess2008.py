@@ -103,7 +103,7 @@ class HannayBreslowModel(object):
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         
         else: # Laboratory days (5 total)
-            bright_light = 40 # ~Mean reported in Breslow 2008 & 2010
+            bright_light = 40 # ~Mean reported in Burgess 2008 & 2010
             dim_light = 5
             dark = 0
             
