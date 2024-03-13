@@ -150,7 +150,7 @@ class HannayBreslowModel(object):
             if 24 < t < 96: 
                 t = np.mod(t,24)
                 
-                DLMO = 21 # Rounded baseline DLMO (21.1) to nearest whole number to make light schedule work correctly
+                DLMO = 21 # Rounded baseline DLMO (21.3) to nearest whole number to make light schedule work correctly
                 dose_time = np.mod(DLMO+melatonin_timing,24) # Find the clock time of the first exogenous melatonin dosage 
                 
                 if dose_time-0.1 <= t <= dose_time+0.3: # Only calculate Guassian close to exogneous melatonin administration
