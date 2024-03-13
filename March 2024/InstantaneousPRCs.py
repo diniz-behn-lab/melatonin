@@ -75,10 +75,12 @@ plt.show()
 
 plt.plot(psi,Q_M_list)
 plt.plot(psi,Q_L_list) 
-plt.axhline(0, linestyle='dashed')
-plt.axvline(1.26,color='black') # DLMO 
+#plt.axvline(1.26,color='black') # DLMO 
+plt.axvline(1.31,color='grey',linestyle='dashed') # DLMO 
+plt.axvline(3.14,color='grey') # CBTmin 
+plt.axhline(0, linestyle='dashed',color='black')
 plt.title('Instantaneous Phase Response Curves')
-plt.legend(["Melatonin PRC","Light PRC"])
+plt.legend(["Melatonin PRC","Light PRC","DLMO","CBTmin"])
 plt.xlabel('Psi')
 plt.ylabel('Instantaneous Phase Response')
 plt.show()
