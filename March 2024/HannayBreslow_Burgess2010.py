@@ -36,17 +36,17 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.0675)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.1345 #1.13446401 # radians, I determined 
-        self.psi_off = 3.6652 #3.66519143 # radians, I determined
+        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
-        self.m = 4.7147 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
         
         ## Hannay Model
         self.D = 0
@@ -828,10 +828,15 @@ Burgess_2010_PRC_times = [15.5,
     
 plt.plot(Burgess_2010_PRC_times, Burgess_2010_PRC, 'o')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
-plt.axvline(x=20.7) # Burgess 2010 fitted peak (max phase advance)
-plt.axhline(y=1.5) # Burgess 2010 fitted max advance 
-plt.axhline(y=-1.3) # Burgess 2010 fitted max delay
-plt.axvline(x=13.6) # Burgess 2010 fitted trough (max phase delay)
+plt.title("3 Pulse PRC To 0.5mg Exogenous Melatonin")
+plt.xlabel("Time After DLMO (hours)")
+plt.ylabel("Phase Shift (hours)")
+plt.axhline(y=0,color='black',linestyle='dashed')
+plt.axvline(x=20.7,color='grey',linestyle='dashed') # Burgess 2010 fitted peak (max phase advance)
+plt.axhline(y=1.5,color='grey',linestyle='dashed') # Burgess 2010 fitted max advance 
+plt.axhline(y=-1.3,color='grey',linestyle='dashed') # Burgess 2010 fitted max delay
+plt.axvline(x=13.6,color='grey',linestyle='dashed') # Burgess 2010 fitted trough (max phase delay)
+plt.legend(["Burgess 2008 Data", "Model"])
 plt.show()
 
 
@@ -847,8 +852,8 @@ plt.show()
 #model = model_10 # Clock time: 7:00
 #model = model_11 # Clock time: 8:00
 #model = model_12 # Clock time: 9:00
-#model = model_13 # Clock time: 10:00
-model = model_15 # Clock time: 12:00
+model = model_13 # Clock time: 10:00
+#model = model_15 # Clock time: 12:00
 #model = model_16 # Clock time: 13:00
 #model = model_17 # Clock time: 14:00
 #model = model_18 # Clock time: 15:00
@@ -857,7 +862,7 @@ model = model_15 # Clock time: 12:00
 #model = model_22 # Clock time: 19:00
 #model = model_23 # Clock time: 20:00
 
-#check = 20
+check = 10
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -905,8 +910,9 @@ plt.plot(model.ts[241:480],model.results[241:480,4]/4.3,lw=2)
 #plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold)
 #plt.ylim(0, 500)
-#plt.axvline(check+24)
-#plt.axvline(22+24)
+plt.axvline(check+24,color='green')
+plt.axvline(check+24+1,color='green',linestyle='dashed')
+plt.axhline(200, color='green',linestyle='dashed')
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Day 1 Melatonin Concentrations (DLMO = 10pg/mL)")
