@@ -67,15 +67,7 @@ class HannayBreslowModel(object):
         self.I_0 = 9325
         self.G = 33.75
         
-        ## Melatonin Forcing Parameters
-        #x = [-0.74545016, 0.05671999, -0.76024892, 0.05994563, 0.18366069]
-        # Switched sign of all five 
-        #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
-        # Differential Evolution: 
-        #x = [0.99077284, -0.61489832,  0.07132476,  0.39207981, -0.07149382] # Error = 0.39710144950000287
-        #x = [0.99380215, -0.77800378,  0.0297315,   0.85202878, -0.10496969] # Error = 0.3471014494999986
-        #x = [0.99055777, -0.78238115,  0.03160424,  1.30703649, -0.09916106] # Error = 0.36376811616666666 
-        
+        ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
         x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
         self.B_1 = x[0] 
@@ -257,7 +249,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
