@@ -308,7 +308,8 @@ baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to
 final_plasma_mel = model_placebo.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_placebo.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the first index below threshold, DLMO
+final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+DLMOff = np.mod(final_times[final[0]],24) # finding the time corresponding to the first index below threshold, DLMOff
 #print(final_DLMO)
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
@@ -864,8 +865,8 @@ plt.show()
 #model = model_10 # Clock time: 7:00
 #model = model_11 # Clock time: 8:00
 #model = model_12 # Clock time: 9:00
-model = model_13 # Clock time: 10:00
-#model = model_15 # Clock time: 12:00
+#model = model_13 # Clock time: 10:00
+model = model_15 # Clock time: 12:00
 #model = model_16 # Clock time: 13:00
 #model = model_17 # Clock time: 14:00
 #model = model_18 # Clock time: 15:00
@@ -874,7 +875,7 @@ model = model_13 # Clock time: 10:00
 #model = model_22 # Clock time: 19:00
 #model = model_23 # Clock time: 20:00
 
-check = 10
+check = 12
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
