@@ -76,7 +76,9 @@ class HannayBreslowModel(object):
         # Fitting to melatonin_dose = 70000
         #x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548] # Error = 3.5961229122486875 # Optimization terminated successfully!! 
         # Fitting to melatonin_dose = 179893 (fit to Wyatt 2006)
-        x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
+        #x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 #  Optimization terminated successfully!!
+        
+        x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413
         self.B_1 = x[0]
         self.theta_M1 = x[1]
         self.B_2 = x[2]
