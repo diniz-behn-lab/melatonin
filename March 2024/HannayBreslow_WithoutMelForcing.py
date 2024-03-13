@@ -219,10 +219,10 @@ model.integrateModel(10*24,schedule=1) # use the integrateModel method with the 
 IC = model.results[-1,:] # get initial conditions from entrained model
 
 #Uncomment this one to run it without exogenous melatonin
-#model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
+model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from entrained ICs
 
 #Uncomment this one to run it with exogenous melatonin
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=13.0, melatonin_dosage=3,schedule=2)
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=13.0, melatonin_dosage=3,schedule=2)
 
 # Finding DLMO and DLMOff
 plasma_mel = model.results[:,4]/4.3 # converting output to pg/mL
@@ -257,12 +257,12 @@ plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axvline(x=6) # Set psi_off
 #plt.axvline(x=20.3) # Set psi_on
-#plt.axvline(x=DLMOff)
-#plt.axvline(x=DLMO)
-#plt.axvline(x=21.4,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMO
-#plt.axvline(x=8.3,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMOff
-#plt.axhline(10,linestyle='dashed',color='black') # DLMO threshold 
-plt.axhline(1000)
+plt.axvline(x=DLMOff)
+plt.axvline(x=DLMO)
+plt.axvline(x=21.4,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMO
+plt.axvline(x=8.3,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMOff
+plt.axhline(10,linestyle='dashed',color='black') # DLMO threshold 
+#plt.axhline(1000)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Melatonin Concentrations (pg/mL)")
