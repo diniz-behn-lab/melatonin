@@ -43,7 +43,7 @@ class HannayBreslowModel(object):
         self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
-        self.H_sat = 861 # Breslow 2013
+        self.H_sat = 250#861 # Breslow 2013
         self.sigma_M = 50 # Breslow 2013
         self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
         
@@ -187,6 +187,9 @@ class HannayBreslowModel(object):
         MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
     
+        #print(MelAmp)
+        #print(MelPhase)
+    
         # Switch pineal on and off in the presence of light 
         tmp = 1 - self.m*Bhat
         S = np.piecewise(tmp, [tmp >= 0, tmp < 0 and H1 < 0.001], [1, 0])
@@ -252,17 +255,22 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
+#--------- Find DLMO and CBTmin -----------
 
+psi_mod2pi = np.mod(model.results[:,1],2*np.pi)
+
+DLMO = model.ts[42] # closest to psi = 3.14
+CBTmin = model.ts[213] # closest to psi = 1.30899
 
 #--------- Run the model with exogenous melatonin ---------------
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
  
 #model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
 
 
 
@@ -273,7 +281,7 @@ model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_
 
 #--------- Plot Model Output -------------------
 
-'''
+
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
@@ -287,7 +295,7 @@ plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Melatonin Concentrations (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
-'''
+
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
@@ -323,10 +331,10 @@ plt.show()
 
 # Plotting psi mod 2pi
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'o')#lw=2)
-plt.axhline(1.04719755)
-plt.axhline(3.92699)
-plt.axvline(x=7)
-plt.axvline(x=23)
+plt.axhline(5*np.pi/12)
+plt.axhline(np.pi)
+plt.axvline(DLMO)
+plt.axvline(CBTmin)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
