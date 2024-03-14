@@ -72,11 +72,14 @@ plt.show()
 
 
 # --------- Plot PRCs together ---------
-DLMO = 5*np.pi/12
-psi_rel_to_DLMO = np.mod(psi - DLMO,2*np.pi)
-psi_rel_to_DLMO[psi_rel_to_DLMO > np.pi] = psi_rel_to_DLMO[psi_rel_to_DLMO > np.pi] - 2*np.pi
-plt.plot(psi_rel_to_DLMO,Q_M_list)
-plt.plot(psi_rel_to_DLMO,Q_L_list) 
+#DLMO = 5*np.pi/12
+#psi_rel_to_DLMO = np.mod(psi - DLMO,2*np.pi)
+#psi_rel_to_DLMO[psi_rel_to_DLMO > np.pi] = psi_rel_to_DLMO[psi_rel_to_DLMO > np.pi] - 2*np.pi
+#plt.plot(psi_rel_to_DLMO,Q_M_list)
+#plt.plot(psi_rel_to_DLMO,Q_L_list)
+
+plt.plot(psi,Q_M_list)
+plt.plot(psi,Q_L_list) 
 #plt.axvline(1.26,color='black') # DLMO 
 plt.axvline(1.31,color='grey',linestyle='dashed') # DLMO 
 plt.axvline(3.14,color='grey') # CBTmin 
