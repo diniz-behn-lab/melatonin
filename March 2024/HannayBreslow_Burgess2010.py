@@ -71,7 +71,10 @@ class HannayBreslowModel(object):
         # Differential Evolution: 
             #x = [0, 0, 0, 0, 0] 
         # Fitting to the cubic dose curve 
-        x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413 #  Optimization terminated successfully!!
+        #x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413 #  Optimization terminated successfully!!
+        
+        # Fitting to the 2010 data set 
+        x = [-2.91490428,  0.54571364, -2.98262173,  0.34960018,  0.10144625] # Error = 5.599999999999998 # Optimization terminated successfully.
         self.B_1 = x[0]
         self.theta_M1 = x[1]
         self.B_2 = x[2]
