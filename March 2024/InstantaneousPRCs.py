@@ -223,6 +223,8 @@ text_str = "Max delay at {:.2} hours \n after DLMO".format(max_delay_time)
 plt.text(3,-0.48,text_str,bbox=props)
 plt.show()
 
+
+# Determine phase difference between melatonin and light PRCs 
 mel_fourier = np.fft.fft(macro_response)
 light_fourier = np.fft.fft(np.flip(macro_light_response))
 cross_cor_four = mel_fourier*light_fourier
