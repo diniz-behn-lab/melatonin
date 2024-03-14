@@ -39,7 +39,7 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 # radians, I determined 
+        self.psi_on = 1.2217 # radians, I determined # 1.48352986 to show example of pineal not turning on before light exposure
         self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
@@ -213,7 +213,6 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 
 #--------- Run the model under constant conditions ---------------
-# Find baseline CBTmin
 
 # Run Zeitzer 2000 constant routine 
 model_baseline = HannayBreslowModel()
@@ -221,6 +220,13 @@ model_baseline.integrateModel(24*3,tstart=0.0,initial=IC,schedule=2) # run the m
 IC_2 = model_baseline.results[-1,:] 
 
 
+baseline_plasma_mel = model_baseline.results[0:240,4]/4.3 # converting output to pg/mL
+baseline_times = model_baseline.ts[0:240] # defining times from first 24hrs 
+baseline, = np.where(baseline_plasma_mel<=10) # finding all the indices where concentration is below 10pg/mL
+baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the last index below threshold, DLMO
+
+
+# Find baseline CBTmin
 last_day = model_baseline.results[480:720,1]
 last_day = np.mod(last_day,2*np.pi)
 last_day = np.around(last_day, 2)
@@ -630,7 +636,7 @@ plt.show()
 #model = model_light_25
 #model = model_light_50
 #model = model_light_60
-model = model_light_106
+#model = model_light_106
 #model = model_light_120
 #model = model_light_130
 #model = model_light_170
@@ -645,7 +651,7 @@ model = model_light_106
 #model = model_light_4000
 #model = model_light_7000
 #model = model_light_9000
-#model = model_light_9100
+model = model_light_9100
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
