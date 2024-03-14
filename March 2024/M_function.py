@@ -11,9 +11,9 @@ Plotting M(t)
 import numpy as np
 import matplotlib.pyplot as plt
 
-M_max = 0.5#0.019513; 
-H_sat = 861; 
-sigma_M = 0.2#50; 
+M_max = 0.019513; 
+H_sat = 250#861; 
+sigma_M = 50; 
 
 H2 = [164.444,
       177.708,
@@ -261,7 +261,7 @@ H2 = [164.444,
 M_list = list()
 
 for i in range(len(H2)):
-    M = M_max/(1 + np.exp((H_sat - H2[i]/sigma_M)));
+    M = M_max/(1 + np.exp((H_sat - (H2[i]*1)/sigma_M)));
     M_list.append(M)    
 
 plt.plot(H2, M_list)
