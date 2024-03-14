@@ -39,7 +39,7 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_on = 1.2217 # radians, I determined 
         self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
@@ -625,12 +625,12 @@ plt.show()
 
 # pick one to plot 
 #model = model_baseline
-model = model_light_3
+#model = model_light_3
 #model = model_light_15
 #model = model_light_25
 #model = model_light_50
 #model = model_light_60
-#model = model_light_106
+model = model_light_106
 #model = model_light_120
 #model = model_light_130
 #model = model_light_170
@@ -645,7 +645,7 @@ model = model_light_3
 #model = model_light_4000
 #model = model_light_7000
 #model = model_light_9000
-model = model_light_9100
+#model = model_light_9100
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -675,8 +675,12 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Zeitzer 2000 Protocol - 9100 lux")
-plt.axvspan(21.45, 3.95+(24*1), facecolor='y', alpha=0.4)
 plt.legend(["Pineal","Plasma", "Exogenous"])
+plt.axvline(x=0)
+plt.axvline(x=4)
+plt.axvline(x=24)
+plt.axvline(x=28)
+plt.axvspan(21.45, 3.95+(24*1), facecolor='y', alpha=0.4)
 plt.show()
 
 
