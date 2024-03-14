@@ -150,7 +150,7 @@ class HannayBreslowModel(object):
 
         
 
-# Defining the system of ODEs (2-dimensional system)
+# Defining the system of ODEs (6-dimensional system)
     def ODESystem(self,t,y,melatonin_timing,melatonin_dosage,schedule):
         """
         This defines the ode system for the single population model and 
@@ -175,13 +175,15 @@ class HannayBreslowModel(object):
     
         # Light interaction with pacemaker
         Bhat = self.G*(1.0-n)*self.alpha0(t,schedule)
-    
+        #print(Bhat)
         # Light forcing equations
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
     
         # Melatonin interaction with pacemaker
         Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
+        #print(Mhat)
+        # Melatonin forcing equations 
         MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
         MelPhase = self.epsilon*Mhat - (self.B_1/2.0)*Mhat*(pow(R,3.0)+1.0/R)*np.sin(Psi + self.theta_M1) - (self.B_2/2.0)*Mhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.theta_M2) # M_psi
     
