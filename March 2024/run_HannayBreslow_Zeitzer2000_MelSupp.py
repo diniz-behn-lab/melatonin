@@ -49,9 +49,7 @@ class HannayBreslowModel(object):
         self.psi_on = 1.2217 #1.13446401 # radians, I determined 
         self.psi_off = 3.5779  # radians, I determined
         
-        self.M_max = 0.019513 # Breslow 2013
-        self.H_sat = 861 # Breslow 2013
-        self.sigma_M = 50 # Breslow 2013
+        
         self.m = 5 #7 # 1/sec, I determined by fitting (roughly) to Zeitzer
         
         
