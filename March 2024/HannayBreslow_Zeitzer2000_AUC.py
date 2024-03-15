@@ -137,7 +137,7 @@ class HannayBreslowModel(object):
 
         
         # Pineal activation/deactivation 
-        psi = Psi #t*(np.pi/12) + (8*np.pi/12) # Convert hours to radians, shift to align with Hannay's convention 
+        psi = Psi
         if (np.mod(psi,2*np.pi) > self.psi_on) and (np.mod(psi,2*np.pi) < self.psi_off): 
             A = self.a*((1 - np.exp(-self.delta_M*np.mod(psi - self.psi_on,2*np.pi))/1 - np.exp(-self.delta_M*np.mod(self.psi_off - self.psi_on,2*np.pi))));
         else: 
@@ -541,81 +541,58 @@ plt.title("Simumalted Illuminance Response Curve")
 plt.show()
 
 
-#----------- Load Burgess 2008 PRC data -------------
-# Fitting to the curve 
-'''
-Zeitzer_2000 = [
-0, # 3
-0, # 10
-0, # 20
-0, # 30
-0, # 50
-0.1, # 60
-0.2, # 70
-0.3, # 80
-0.5, # 100
-0.7, # 150
-0.8, # 180
-0.9, # 300
-0.9, # 500
-0.95, # 1000
-0.95 # 5000
-]
-
-# Eyeballed it
-Lux_2 = [3,10,20,30,50,60,70,80,100,150,180,300,500,1000,5000]
-'''
+#----------- Load Zeitzer 2000 IRC data -------------
 
 # Fitting to the data (determined from WebPlotDigitizer)
 # n = 21
 Zeitzer_2000 = [0.11,
-0.08,
--0.08,
--0.01,
--0.12,
-0.22,
-0.88,
-0.26,
-0.80,
-0.75,
-0.69,
-0.85,
-0.96,
-0.99,
-0.92,
-0.96,
-0.94,
-0.97,
-0.98,
-0.95,
-0.98
-]
+                0.08,
+                -0.08,
+                -0.01,
+                -0.12,
+                0.22,
+                0.88,
+                0.26,
+                0.80,
+                0.75,
+                0.69,
+                0.85,
+                0.96,
+                0.99,
+                0.92,
+                0.96,
+                0.94,
+                0.97,
+                0.98,
+                0.95,
+                0.98
+                ]
 
 Lux_2 = [3,
-15,
-20,
-50,
-60,
-90,
-106,
-130,
-160,
-175,
-300,
-375,
-400,
-550,
-650,
-1500,
-3000,
-3700,
-7000,
-8100,
-9100
-]
+         15,
+         20,
+         50,
+         60,
+         90,
+         106,
+         130,
+         160,
+         175,
+         300,
+         375,
+         400,
+         550,
+         650,
+         1500,
+         3000,
+         3700,
+         7000,
+         8100,
+         9100
+         ]
 
-plt.plot(Lux_2, Zeitzer_2000, 'o')
-plt.plot(Lux,melatonin_suppression, lw=2)
+plt.plot(Lux_2, Zeitzer_2000, 'o') # Data points
+plt.plot(Lux,melatonin_suppression, lw=2) # Fitted curve
 plt.xscale('log')
 plt.title("Illuminance Response Curve")
 plt.xlabel("Illuminance (lux)")
@@ -627,7 +604,7 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-#model = model_baseline
+model = model_baseline
 #model = model_light_3
 #model = model_light_15
 #model = model_light_25
@@ -648,20 +625,20 @@ plt.show()
 #model = model_light_4000
 #model = model_light_7000
 #model = model_light_9000
-model = model_light_9100
+#model = model_light_9100
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=0)
-plt.axvline(x=4)
+#plt.axvline(x=0)
+#plt.axvline(x=4)
 #plt.axvline(x=21.45)
 #plt.axvline(x=27.95)
 #plt.axvline(x=28.2)
-plt.axvline(x=24)
-plt.axvline(x=28)
+#plt.axvline(x=24)
+#plt.axvline(x=28)
 #plt.axvline(x=50.5)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pmol/L)")
@@ -674,16 +651,17 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-#plt.axhline(DLMO_threshold)
+plt.axhline(10)
+plt.axvline(baseline_DLMO)
+#plt.axvline(x=0)
+#plt.axvline(x=4)
+#plt.axvline(x=24)
+#plt.axvline(x=28)
+#plt.axvspan(21.45, 3.95+(24*1), facecolor='y', alpha=0.4)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Zeitzer 2000 Protocol - 9100 lux")
 plt.legend(["Pineal","Plasma", "Exogenous"])
-plt.axvline(x=0)
-plt.axvline(x=4)
-plt.axvline(x=24)
-plt.axvline(x=28)
-plt.axvspan(21.45, 3.95+(24*1), facecolor='y', alpha=0.4)
 plt.show()
 
 
