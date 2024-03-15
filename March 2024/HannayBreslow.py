@@ -42,9 +42,9 @@ class HannayBreslowModel(object):
         self.psi_on = 1.2217 #1.13446401 # radians, I determined 
         self.psi_off = 3.5779  # radians, I determined
         
-        self.M_max = 1 #0.019513 # Breslow 2013
-        self.H_sat = 300 #861 # Breslow 2013
-        self.sigma_M = 1 #50 # Breslow 2013
+        self.M_max = 0.019513 # Breslow 2013
+        self.H_sat = 861 # Breslow 2013
+        self.sigma_M = 50 # Breslow 2013
         self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
         
         
