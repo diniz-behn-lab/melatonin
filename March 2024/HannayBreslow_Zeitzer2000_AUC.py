@@ -604,7 +604,7 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-model = model_baseline
+#model = model_baseline
 #model = model_light_3
 #model = model_light_15
 #model = model_light_25
@@ -625,7 +625,7 @@ model = model_baseline
 #model = model_light_4000
 #model = model_light_7000
 #model = model_light_9000
-#model = model_light_9100
+model = model_light_9100
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -651,13 +651,14 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-plt.axhline(10)
-plt.axvline(baseline_DLMO)
+#plt.axhline(10)
+#plt.axvline(baseline_DLMO)
 #plt.axvline(x=0)
 #plt.axvline(x=4)
 #plt.axvline(x=24)
 #plt.axvline(x=28)
-#plt.axvspan(21.45, 3.95+(24*1), facecolor='y', alpha=0.4)
+plt.axvline(x=20.6)
+plt.axvspan(21.45, 3.95+(24*1), facecolor='y', alpha=0.4)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Zeitzer 2000 Protocol - 9100 lux")
