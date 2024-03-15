@@ -11,9 +11,9 @@ Plotting M(t)
 import numpy as np
 import matplotlib.pyplot as plt
 
-M_max = 300#0.019513; 
-H_sat = 200#861; # Determines when the curve starts to really increase
-sigma_M = 1 
+M_max = 1#0.019513; 
+H_sat = 300#861; # Determines when the curve starts to really increase
+sigma_M = 1
 '''
 H2 = [164.444,
       177.708,
@@ -268,7 +268,7 @@ plt.plot(H2, M_list)
 plt.show()
 '''
 
-index = np.linspace(0,300)
+index = np.linspace(0,400)
 
 M_list = list()
 
