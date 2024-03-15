@@ -267,9 +267,9 @@ plt.show()
 '''
 
 M_max = 0.019513; 
-H_sat = 861 # 300
-sigma_M = 50 # 1
-index = np.linspace(0,400)
+H_sat = 300 #861 # 300
+sigma_M = 17 #50 # 1
+index = np.linspace(0,6500)
 
 M_list = list()
 
