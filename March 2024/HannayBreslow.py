@@ -39,7 +39,7 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_on = 1.2217 # radians, I determined 
         self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
@@ -163,7 +163,7 @@ class HannayBreslowModel(object):
 
         
         # Pineal activation/deactivation 
-        psi = Psi #t*(np.pi/12) + (8*np.pi/12) # Convert hours to radians, shift to align with Hannay's convention 
+        psi = Psi 
         if (np.mod(psi,2*np.pi) > self.psi_on) and (np.mod(psi,2*np.pi) < self.psi_off): 
             A = self.a*((1 - np.exp(-self.delta_M*np.mod(psi - self.psi_on,2*np.pi))/1 - np.exp(-self.delta_M*np.mod(self.psi_off - self.psi_on,2*np.pi))));
         else: 
