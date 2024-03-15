@@ -40,7 +40,7 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_on = 1.2217 # radians, I determined 
         self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
@@ -300,7 +300,7 @@ model_placebo.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, 
 # Baseline day 
 baseline_plasma_mel = model_placebo.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_placebo.ts[0:240] # defining times from first 24hrs 
-baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the last index below threshold, DLMO
 #print(baseline_DLMO)
 
