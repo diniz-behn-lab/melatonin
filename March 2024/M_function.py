@@ -11,7 +11,7 @@ Plotting M(t)
 import numpy as np
 import matplotlib.pyplot as plt
 
-M_max = 1#0.019513; 
+M_max = 0.019513; 
 H_sat = 300#861; # Determines when the curve starts to really increase
 sigma_M = 1
 '''
