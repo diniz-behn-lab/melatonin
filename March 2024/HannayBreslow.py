@@ -43,8 +43,8 @@ class HannayBreslowModel(object):
         self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
-        self.H_sat = 861 # Breslow 2013
-        self.sigma_M = 50 # Breslow 2013
+        self.H_sat = 300 #861 # Breslow 2013
+        self.sigma_M = 17 #50 # Breslow 2013
         self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
         
         
@@ -109,28 +109,25 @@ class HannayBreslowModel(object):
         if melatonin_timing == None:
             return 0 # set exogenous melatonin to zero
         else: 
-            if 24 < t < 96: 
-                t = np.mod(t,24)
-                if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
-                    sigma = np.sqrt(0.002)
-                    mu = melatonin_timing+0.1
+            t = np.mod(t,24)
+            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
+                sigma = np.sqrt(0.002)
+                mu = melatonin_timing+0.1
 
-                    ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
+                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
 
-                    x = np.arange(0, 1, 0.01)
-                    melatonin_values = self.max_value(x, sigma)
-                    max_value = max(melatonin_values)
-                    #print(max_value)
+                x = np.arange(0, 1, 0.01)
+                melatonin_values = self.max_value(x, sigma)
+                max_value = max(melatonin_values)
+                #print(max_value)
                 
-                    converted_dose = self.mg_conversion(melatonin_dosage)
-                    #print(converted_dose)
+                converted_dose = self.mg_conversion(melatonin_dosage)
+                #print(converted_dose)
             
-                    normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
-                    dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
+                normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+                dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
             
-                    return dose_ex_mel        
-                else: 
-                    return 0
+                return dose_ex_mel        
             else: 
                 return 0
     
@@ -258,22 +255,23 @@ model = HannayBreslowModel()
 model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
-#--------- Find DLMO and CBTmin -----------
 
-psi_mod2pi = np.mod(model.results[:,1],2*np.pi)
-
-DLMO = model.ts[42] # closest to psi = 3.14
-CBTmin = model.ts[213] # closest to psi = 1.30899
 
 #--------- Run the model with exogenous melatonin ---------------
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
  
 #model = HannayBreslowModel()
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.0,schedule=2) 
 
 
 
+#--------- Find DLMO and CBTmin -----------
+
+psi_mod2pi = np.mod(model.results[:,1],2*np.pi)
+
+DLMO = model.ts[213] # closest to psi = 1.30899
+CBTmin = model.ts[42] # closest to psi = 3.14
 
 
 
@@ -281,13 +279,13 @@ CBTmin = model.ts[213] # closest to psi = 1.30899
 
 #--------- Plot Model Output -------------------
 
-
+'''
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
 plt.plot(model.ts,model.results[:,4],lw=2)
 plt.plot(model.ts,model.results[:,5],lw=2)
-plt.axvline(x=6)
-plt.axvline(x=20.3)
+#plt.axvline(x=6)
+#plt.axvline(x=20.3)
 #plt.axvline(x=12)
 plt.axhline(200)
 plt.xlabel("Time (hours)")
@@ -295,16 +293,18 @@ plt.ylabel("Melatonin Concentration (pmol/L)")
 plt.title("Melatonin Concentrations (pmol/L)")
 plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
-
+'''
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-#plt.axvline(x=21.4)
-#plt.axvline(x=7)
-#plt.axhline(70)
+#plt.axvline(x=DLMO) # Checking DLMO
+#plt.axvline(x=8.3) # Checking DLMOff
+plt.axvline(x=20.6) # Checking pineal on 
+plt.axvline(x=5.7) # Checking pineal off
+plt.axvline(CBTmin,color='grey')
 plt.axhline(10, linestyle='dashed')
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
@@ -316,6 +316,9 @@ plt.show()
 
 # Plotting R
 plt.plot(model.ts,model.results[:,0],lw=2)
+plt.axvline(x=20.6)
+plt.axvline(x=5.7)
+#plt.axvline(15)
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Time Trace of R, Collective Amplitude")
@@ -331,10 +334,13 @@ plt.show()
 
 # Plotting psi mod 2pi
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'o')#lw=2)
-plt.axhline(5*np.pi/12)
-plt.axhline(np.pi)
-plt.axvline(DLMO)
-plt.axvline(CBTmin)
+#plt.axhline(5*np.pi/12)
+#plt.axhline(np.pi)
+#plt.axvline(DLMO)
+#plt.axvline(CBTmin)
+#plt.axvline(x=20.6) # Checking pineal on 
+#plt.axvline(x=5.7) # Checking pineal off
+plt.axvline(15)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
