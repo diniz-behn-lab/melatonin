@@ -368,7 +368,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the Hannay 2019 model ---------------
 
 model_Hannay = HannayModel()
-model_Hannay.integrateModel(24*2,tstart=0.0,initial=IC,schedule=2) 
+model_Hannay.integrateModel(24*5,tstart=0.0,initial=IC,schedule=2) 
 
 
 
@@ -386,7 +386,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the Hannay-Breslow 2024 model without exogenous melatonin ---------------
 
 model_HannayBreslow = HannayBreslowModel()
-model_HannayBreslow.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model_HannayBreslow.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -448,8 +448,8 @@ plt.show()
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,3]/4.3,lw=2)
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,4]/4.3,lw=2)
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,5]/4.3,lw=2)
-#plt.axvline(x=DLMO) # Checking DLMO
-#plt.axvline(x=8.3) # Checking DLMOff
+plt.axvline(x=21.3) # Checking DLMO
+plt.axvline(x=8.3) # Checking DLMOff
 #plt.axvline(x=20.6+24) # Checking pineal on 
 #plt.axvline(x=5.7+24) # Checking pineal off
 plt.axhline(10, linestyle='dashed')

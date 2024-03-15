@@ -247,8 +247,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -257,8 +257,8 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
  
-#model = HannayBreslowModel()
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.0,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.2,schedule=2) 
 
 
 
@@ -303,8 +303,8 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-plt.axvline(x=21.3) # Checking DLMO
-plt.axvline(x=8.3) # Checking DLMOff
+#plt.axvline(x=21.3) # Checking DLMO
+#plt.axvline(x=8.3) # Checking DLMOff
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(CBTmin,color='grey')
@@ -319,9 +319,9 @@ plt.show()
 
 # Plotting R
 plt.plot(model.ts,model.results[:,0],lw=2)
-plt.axvline(x=20.6)
-plt.axvline(x=5.7)
-#plt.axvline(15)
+#plt.axvline(x=20.6)
+#plt.axvline(x=5.7)
+plt.axvline(15)
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Time Trace of R, Collective Amplitude")
