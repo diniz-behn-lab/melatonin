@@ -6,6 +6,20 @@ Created on Fri Mar  8 17:50:09 2024
 
 Same as HannayBreslow_Zeitzer2000 but suppression is calculated as an AUC 
 
+
+I looked closer at DLMO and CBTmin. DLMO, whether determined by crossing 
+10pg/mL or at psi = 5*pi/12 are 20.9 h and 20.6 h respectively, which is 
+earlier than in the model fit to the Burgess reported DLMO (21.4 h) and 
+DLMOff. The light exposure time starts at 21.45 h and the pineal turns on at 
+20.6 h, so the pineal has been active for almost an hour before light 
+suppression begins. By changing psi_on, we can make the pineal turn on later. 
+However, the % suppression calculations do not change drastically because the 
+AUC is only for the final four hours of the suppression window.
+
+In constant darkness, the model without melatonin forcing predicts the same 
+DLMO timing regardless of method (10 pg/mL threshold or psi = 5*pi/12). When 
+there is light, the DLMO timings differ. 
+
 """
 
 #-------- Set Up -------------------------------
