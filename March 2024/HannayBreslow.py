@@ -233,11 +233,7 @@ class HannayBreslowModel(object):
 
 
 
-
-#------------- Running the model under all condtions for the PRC 
-# Set the DLMO threshold that will be used throughout to determine DLMO time
-DLMO_threshold = 10
-
+ 
 
 
 
@@ -268,12 +264,19 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 
 #--------- Find DLMO and CBTmin -----------
 
+# By Hannay model definition 
 psi_mod2pi = np.mod(model.results[:,1],2*np.pi)
 
-DLMO = model.ts[213] # closest to psi = 1.30899
+DLMO_psi = model.ts[213] # closest to psi = 1.30899
 CBTmin = model.ts[42] # closest to psi = 3.14
 
+# By threshold definition (10 pg/mL in plasma)
+DLMO_threshold = 10
 
+plasma_mel_concentrations = model.results[0:240,4]/4.3 # converting output to pg/mL
+times = model.ts[0:240] # defining times from first 24hrs 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 
 
 
@@ -300,11 +303,11 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-#plt.axvline(x=DLMO) # Checking DLMO
-#plt.axvline(x=8.3) # Checking DLMOff
-plt.axvline(x=20.6) # Checking pineal on 
-plt.axvline(x=5.7) # Checking pineal off
-plt.axvline(CBTmin,color='grey')
+plt.axvline(x=21.3) # Checking DLMO
+plt.axvline(x=8.3) # Checking DLMOff
+#plt.axvline(x=20.6) # Checking pineal on 
+#plt.axvline(x=5.7) # Checking pineal off
+#plt.axvline(CBTmin,color='grey')
 plt.axhline(10, linestyle='dashed')
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")

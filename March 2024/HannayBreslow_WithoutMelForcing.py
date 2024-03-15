@@ -224,11 +224,23 @@ model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from
 #Uncomment this one to run it with exogenous melatonin
 #model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=13.0, melatonin_dosage=3,schedule=2)
 
-# Finding DLMO and DLMOff
-plasma_mel = model.results[:,4]/4.3 # converting output to pg/mL
-times = model.ts[:] # defining times from first 24hrs 
-melatonin, = np.where(plasma_mel<=10) # finding all the indices where concentration is below 10pg/mL
-DLMO = times[melatonin[-1]] # finding the time corresponding to the last index below threshold, DLMO
+
+
+#--------- Find DLMO and CBTmin -----------
+
+# By Hannay model definition 
+psi_mod2pi = np.mod(model.results[:,1],2*np.pi)
+
+DLMO_psi = model.ts[213] # closest to psi = 1.30899
+CBTmin = model.ts[42] # closest to psi = 3.14
+
+# By threshold definition (10 pg/mL in plasma)
+DLMO_threshold = 10
+
+plasma_mel_concentrations = model.results[0:240,4]/4.3 # converting output to pg/mL
+times = model.ts[0:240] # defining times from first 24hrs 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMOff = times[melatonin[0]] # finding the time corresponding to the first index below threshold, DLMOff
 
 
