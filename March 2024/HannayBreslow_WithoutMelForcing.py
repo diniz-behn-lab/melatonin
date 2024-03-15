@@ -231,8 +231,8 @@ model.integrateModel(1*24,tstart=0.0,initial=IC,schedule=2) # run the model from
 # By Hannay model definition 
 psi_mod2pi = np.mod(model.results[:,1],2*np.pi)
 
-DLMO_psi = model.ts[213] # closest to psi = 1.30899
-CBTmin = model.ts[42] # closest to psi = 3.14
+DLMO_psi = model.ts[214] # closest to psi = 1.30899
+CBTmin = model.ts[43] # closest to psi = 3.14
 
 # By threshold definition (10 pg/mL in plasma)
 DLMO_threshold = 10
@@ -241,7 +241,7 @@ plasma_mel_concentrations = model.results[0:240,4]/4.3 # converting output to pg
 times = model.ts[0:240] # defining times from first 24hrs 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
-DLMOff = times[melatonin[0]] # finding the time corresponding to the first index below threshold, DLMOff
+DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
 
 
 #--------- Plot Model Output -------------------
@@ -270,7 +270,7 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axvline(x=6) # Set psi_off
 #plt.axvline(x=20.3) # Set psi_on
 plt.axvline(x=DLMOff)
-plt.axvline(x=DLMO)
+plt.axvline(x=DLMO_H2)
 plt.axvline(x=21.4,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMO
 plt.axvline(x=8.3,linestyle='dashed',color='grey') # Burgess 2008 reported average DLMOff
 plt.axhline(10,linestyle='dashed',color='black') # DLMO threshold 
