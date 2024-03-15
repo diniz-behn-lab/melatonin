@@ -258,7 +258,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin dosage to a mg amount
  
 model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.2,schedule=2) 
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.5,schedule=2) 
 
 
 
@@ -328,6 +328,7 @@ plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
 
 
+
 # Plotting psi
 plt.plot(model.ts,model.results[:,1],lw=2)
 plt.xlabel("Time (hours)")
@@ -348,6 +349,8 @@ plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
+
+
 
 # Plotting n
 plt.plot(model.ts,model.results[:,2],lw=2)
