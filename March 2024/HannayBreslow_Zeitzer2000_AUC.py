@@ -42,9 +42,6 @@ class HannayBreslowModel(object):
         self.psi_on = 1.2217 # radians, I determined # 1.48352986 to show example of pineal not turning on before light exposure
         self.psi_off = 3.5779  # radians, I determined
         
-        self.M_max = 0.019513 # Breslow 2013
-        self.H_sat = 861 # Breslow 2013
-        self.sigma_M = 50 # Breslow 2013
         # Differential evolution: 
             # Switched to L2 norm
             # Fitting to data (determined from WebPlotDigitizer) with AUC
