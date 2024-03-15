@@ -72,15 +72,15 @@ class HannayBreslowModel(object):
         # Switched sign of all five 
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
-            #x = [0, 0, 0, 0, 0] 
+        #x = [0, 0, 0, 0, 0, 0] 
         # Fitting to the cubic dose curve 
-
+        x = [-2.31237718,  0.05735545, -1.95984974,  0.43823887,  0.01527743,  0.0084559 ] # Error = 3.7419380005553253, I ended optimization early 
         self.B_1 = x[0]
         self.theta_M1 = x[1]
         self.B_2 = x[2]
         self.theta_M2 = x[3]
         self.epsilon = x[4]
-        self.M_max = x[5] # Breslow 2013
+        self.M_max = x[5] 
         
         
 # Set the light schedule (timings and intensities)
