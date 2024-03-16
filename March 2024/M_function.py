@@ -259,28 +259,36 @@ H2 = [164.444,
 
 M_max = 0.019513; 
 H_sat =  301 #861 #100 #500
-sigma_M = 1 #17.5 #50  #6 #29
-index = np.linspace(0,6500,100)
+sigma_M = 17.5 #50  #6 #29
+index = np.linspace(0,1000,100)
 
+'''
 M_list = list()
 
 for i in range(len(H2)):
-    M = M_max/(1 + np.exp((H_sat - (H2[i]*1)/sigma_M)));
+    M = M_max/(1 + np.exp((H_sat - H2[i])/(sigma_M)));
     M_list.append(M)    
+
 
 plt.plot(H2, M_list)
 plt.show()
-
-
+'''
 
 
 M_list = list()
 
 for i in range(len(index)):
-    M = M_max/(1 + np.exp((H_sat - (index[i])/sigma_M)));
+    M = M_max/(1 + np.exp((H_sat - index[i])/(sigma_M)));
     M_list.append(M)    
 
-plt.plot(index, M_list)
+plt.plot(index/4.3, M_list)
+#plt.axhline(M_max,color='black')
+plt.axvline(H_sat/4.3,color='orange')
+plt.axvline(55,color='black',linestyle='dotted')
+plt.axvline(135,color='black',linestyle='dashdot')
+plt.axvline(213,color='black',linestyle='dashed')
+plt.legend(['M(H2)','Hsat (70 pg/mL)','0.1 mg peak','0.3 mg peak','0.5 mg peak'])
+plt.xlabel('H2 Concentrations (pg/mL)')
 plt.show()
 
 
