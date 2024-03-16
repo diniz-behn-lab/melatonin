@@ -35,7 +35,7 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.2)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
@@ -250,8 +250,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-model = HannayBreslowModel()
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -260,8 +260,8 @@ model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
  
-#model = HannayBreslowModel()
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=8, melatonin_dosage=3.0,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=1.75,schedule=2) 
 
 
 
@@ -324,10 +324,10 @@ plt.show()
 # Plotting R
 plt.plot(model.ts,model.results[:,0],lw=2)
 #plt.axvline(x=20.6)
-plt.axvline(x=5.7)
+#plt.axvline(x=5.7)
 #plt.axvline(x=8.1)
 #plt.axvline(15)
-plt.axvline(5.7+24)
+#plt.axvline(5.7+24)
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Time Trace of R, Collective Amplitude")
@@ -367,4 +367,3 @@ plt.xlabel("Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
-

@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-'''
+
 H2 = [164.444,
       177.708,
       189.941,
@@ -256,6 +256,12 @@ H2 = [164.444,
       ];
 
 
+
+M_max = 0.019513; 
+H_sat =  301 #861 #100 #500
+sigma_M = 1 #17.5 #50  #6 #29
+index = np.linspace(0,6500,100)
+
 M_list = list()
 
 for i in range(len(H2)):
@@ -264,12 +270,9 @@ for i in range(len(H2)):
 
 plt.plot(H2, M_list)
 plt.show()
-'''
 
-M_max = 0.019513; 
-H_sat =  301 #861 #100 #500
-sigma_M = 1 #17.5 #50  #6 #29
-index = np.linspace(0,6500,100)
+
+
 
 M_list = list()
 
