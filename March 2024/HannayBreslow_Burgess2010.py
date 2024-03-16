@@ -40,13 +40,14 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
+        self.psi_on = 1.2217 # radians, I determined 
         self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
-        self.H_sat = 301 #861 # Breslow 2013
-        self.sigma_M = 17.5 #50 # Breslow 2013
+        self.H_sat = 301 # Scaled for our peak concentration #861 # Breslow 2013
+        self.sigma_M = 17.5 # Scaled for our peak concentration #50 # Breslow 2013
         self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
+        
         
         ## Hannay Model
         self.D = 0
@@ -68,16 +69,15 @@ class HannayBreslowModel(object):
         self.G = 33.75
         
         ## Melatonin Forcing Parameters
+        #x = [-0.74545016, 0.05671999, -0.76024892, 0.05994563, 0.18366069]
+        # Switched sign of all five 
+        #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
             #x = [0, 0, 0, 0, 0] 
         # Fitting to the cubic dose curve 
-        #x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413 #  Optimization terminated successfully!!
-        
         # Corrected Hsat and sigma_M 
-        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!! 
-        
-        # Fitting to the 2010 data set 
-        #x = [-2.91490428,  0.54571364, -2.98262173,  0.34960018,  0.10144625] # Error = 5.599999999999998 # Optimization terminated successfully.
+        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        #x = [-1.08465998, -0.08352192,  0.17752519, -1.24471854,  0.01725839] # Error = 3.701634773988374 # Optimization terminated successfully!!
         self.B_1 = x[0]
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -872,7 +872,7 @@ Burgess_2010_PRC_times = [15.5,
                           ]
 
     
-plt.plot(Burgess_2010_PRC_times, Burgess_2010_PRC, 'o')
+plt.plot(Burgess_2010_PRC_times, Burgess_2010_PRC, 'o',color='black')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.title("3 Pulse PRC To 0.5mg Exogenous Melatonin")
 plt.xlabel("Time After DLMO (hours)")
@@ -890,7 +890,7 @@ plt.show()
 
 # pick one to plot 
 #model = model_placebo
-model = model_0 # Clock time: 21:00
+#model = model_0 # Clock time: 21:00
 #model = model_2 # Clock time: 23:00
 #model = model_3 # Clock time: 0:00
 #model = model_4 # Clock time: 1:00
@@ -898,7 +898,7 @@ model = model_0 # Clock time: 21:00
 #model = model_10 # Clock time: 7:00
 #model = model_11 # Clock time: 8:00
 #model = model_12 # Clock time: 9:00
-#model = model_13 # Clock time: 10:00
+model = model_13 # Clock time: 10:00
 #model = model_15 # Clock time: 12:00
 #model = model_16 # Clock time: 13:00
 #model = model_17 # Clock time: 14:00
@@ -908,7 +908,7 @@ model = model_0 # Clock time: 21:00
 #model = model_22 # Clock time: 19:00
 #model = model_23 # Clock time: 20:00
 
-check = 12
+check = 10
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
