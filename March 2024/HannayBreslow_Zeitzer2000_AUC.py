@@ -605,13 +605,13 @@ Lux_2 = [3,
          9100
          ]
 
-plt.plot(Lux_2, Zeitzer_2000, 'o') # Data points
+plt.plot(Lux_2, Zeitzer_2000, 'o',color='black') # Data points
 plt.plot(Lux,melatonin_suppression, lw=2) # Fitted curve
 plt.xscale('log')
 plt.title("Illuminance Response Curve")
 plt.xlabel("Illuminance (lux)")
 plt.ylabel("Melatonin Suppression (%)")
-plt.legend(["Zeitzer 2000","Model"])
+plt.legend(["Zeitzer 2000","Hannay-Breslow 2024 Model"])
 plt.show()
 
 
