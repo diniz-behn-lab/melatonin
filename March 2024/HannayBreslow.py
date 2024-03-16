@@ -305,9 +305,9 @@ plt.show()
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
-plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
-plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
-plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
+plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
+plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
+plt.plot(model.ts,model.results[:,5]/4.3,lw=3,color='hotpink')
 plt.axvline(x=8.1,color='black',linestyle='dotted') # Checking DLMOff
 plt.axvline(x=21.2,color='black',linestyle='dashed') # Checking DLMO
 #plt.axvline(x=20.6) # Checking pineal on 
@@ -324,7 +324,7 @@ plt.show()
 
 
 # Plotting R
-plt.plot(model.ts,model.results[:,0],lw=2)
+plt.plot(model.ts,model.results[:,0],lw=3,color='forestgreen')
 #plt.axvline(x=20.6)
 #plt.axvline(x=5.7)
 #plt.axvline(x=8.1)
@@ -346,7 +346,7 @@ plt.show()
 
 # Plotting psi mod 2pi
 plt.axvline(x=21.2,color='black',linestyle='dashed') # Checking DLMO
-plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'.')#,lw=2)
+plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'.',markersize=10,color='mediumturquoise')
 plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axhline(np.pi)
 #plt.axvline(CBTmin)
@@ -363,7 +363,7 @@ plt.show()
 
 
 # Plotting n
-plt.plot(model.ts,model.results[:,2],lw=2)
+plt.plot(model.ts,model.results[:,2],lw=3,color='goldenrod')
 #plt.axvline(x=7)
 #plt.axvline(x=23)
 plt.xlabel("Clock Time (hours)")
