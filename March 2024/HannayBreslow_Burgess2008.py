@@ -48,6 +48,7 @@ class HannayBreslowModel(object):
         self.sigma_M = 17.5 # Scaled for our peak concentration #50 # Breslow 2013
         self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
         
+        
         ## Hannay Model
         self.D = 0
         self.gamma = 0.024
@@ -837,7 +838,7 @@ Burgess_2008_PRC_times = [0,
                           ]
 '''
     
-plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o')
+plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o',color='black')
 plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
 plt.title("3 Pulse PRC To 3mg Exogenous Melatonin")
 plt.xlabel("Time After DLMO (hours)")
@@ -863,8 +864,8 @@ plt.show()
 #model = model_10 # Clock time: 7:00
 #model = model_11 # Clock time: 8:00
 #model = model_12 # Clock time: 9:00
-#model = model_13 # Clock time: 10:00
-model = model_15 # Clock time: 12:00
+model = model_13 # Clock time: 10:00
+#model = model_15 # Clock time: 12:00
 #model = model_16 # Clock time: 13:00
 #model = model_17 # Clock time: 14:00
 #model = model_18 # Clock time: 15:00
@@ -873,7 +874,7 @@ model = model_15 # Clock time: 12:00
 #model = model_22 # Clock time: 19:00
 #model = model_23 # Clock time: 20:00
 
-check = 12
+check = 10
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
