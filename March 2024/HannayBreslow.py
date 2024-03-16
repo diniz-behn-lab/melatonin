@@ -35,7 +35,7 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.2)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
@@ -69,7 +69,10 @@ class HannayBreslowModel(object):
         
         ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
-        x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
+        #x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
+        
+        # Corrected Hsat and sigma_M 
+        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
         self.B_1 = x[0] 
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -248,7 +251,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -258,7 +261,7 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin dosage to a mg amount
  
 #model = HannayBreslowModel()
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=2) 
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=8, melatonin_dosage=3.0,schedule=2) 
 
 
 
@@ -304,9 +307,10 @@ plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axvline(x=21.3) # Checking DLMO
-#plt.axvline(x=8.3) # Checking DLMOff
+#plt.axvline(x=8.1) # Checking DLMOff
 #plt.axvline(x=20.6) # Checking pineal on 
-#plt.axvline(x=5.7) # Checking pineal off
+plt.axvline(x=5.7) # Checking pineal off
+plt.axvline(5.7+24)
 #plt.axvline(CBTmin,color='grey')
 plt.axhline(10, linestyle='dashed')
 plt.xlabel("Time (hours)")
@@ -320,8 +324,10 @@ plt.show()
 # Plotting R
 plt.plot(model.ts,model.results[:,0],lw=2)
 #plt.axvline(x=20.6)
-#plt.axvline(x=5.7)
-plt.axvline(15)
+plt.axvline(x=5.7)
+#plt.axvline(x=8.1)
+#plt.axvline(15)
+plt.axvline(5.7+24)
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Time Trace of R, Collective Amplitude")
@@ -340,11 +346,12 @@ plt.show()
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'o')#lw=2)
 #plt.axhline(5*np.pi/12)
 #plt.axhline(np.pi)
-#plt.axvline(DLMO)
+plt.axvline(5.7+24)
 #plt.axvline(CBTmin)
 #plt.axvline(x=20.6) # Checking pineal on 
-#plt.axvline(x=5.7) # Checking pineal off
-plt.axvline(15)
+plt.axvline(x=5.7) # Checking pineal off
+#plt.axvline(x=8.1)
+#plt.axvline(15)
 plt.xlabel("Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.title("Time Trace of Psi, Mean Phase")

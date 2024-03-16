@@ -191,7 +191,10 @@ class HannayBreslowModel(object):
         
         ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
-        x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
+        #x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
+        
+        # Corrected Hsat and sigma_M 
+        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
         self.B_1 = x[0] 
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -368,7 +371,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the Hannay 2019 model ---------------
 
 model_Hannay = HannayModel()
-model_Hannay.integrateModel(24*5,tstart=0.0,initial=IC,schedule=2) 
+model_Hannay.integrateModel(24*1,tstart=0.0,initial=IC,schedule=2) 
 
 
 
@@ -386,7 +389,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the Hannay-Breslow 2024 model without exogenous melatonin ---------------
 
 model_HannayBreslow = HannayBreslowModel()
-model_HannayBreslow.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model_HannayBreslow.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
