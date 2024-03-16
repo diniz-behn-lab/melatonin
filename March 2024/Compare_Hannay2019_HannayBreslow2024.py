@@ -437,7 +437,7 @@ plt.show()
 
 # Plotting n
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,2],lw=3,color='goldenrod')
-plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=2,linestyle='dashed')
+plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=3,linestyle='dashed')
 #plt.axvline(x=7)
 #plt.axvline(x=23)
 plt.xlabel("Clock Time (hours)")
