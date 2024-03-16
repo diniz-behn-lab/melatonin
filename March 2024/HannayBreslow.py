@@ -252,8 +252,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -262,8 +262,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=2) 
 
 
 
@@ -272,8 +272,8 @@ model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_
 # By Hannay model definition 
 psi_mod2pi = np.mod(model.results[:,1],2*np.pi)
 
-DLMO_psi = model.ts[213] # closest to psi = 1.30899
-CBTmin = model.ts[42] # closest to psi = 3.14
+DLMO_psi = model.ts[212] # closest to psi = 1.30899
+CBTmin = model.ts[40] # closest to psi = 3.14
 
 # By threshold definition (10 pg/mL in plasma)
 DLMO_threshold = 10
@@ -308,17 +308,17 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,4]/4.3,lw=2)
 plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
-#plt.axvline(x=21.3) # Checking DLMO
-#plt.axvline(x=8.1) # Checking DLMOff
+plt.axvline(x=8.1,color='black',linestyle='dotted') # Checking DLMOff
+plt.axvline(x=21.2,color='black',linestyle='dashed') # Checking DLMO
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(5.7+24)
 #plt.axvline(CBTmin,color='grey')
-plt.axhline(10, linestyle='dashed')
-plt.xlabel("Time (hours)")
+plt.axhline(10, color='black',lw=1)
+plt.xlabel("Clock Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Melatonin Concentrations (pg/mL)")
-plt.legend(["Pineal","Plasma", "Exogenous"])
+#plt.title("Melatonin Concentrations (pg/mL)")
+plt.legend(["Pineal","Plasma","Exogenous","DLMOff","DLMO"])
 plt.show()
 
 
@@ -330,9 +330,9 @@ plt.plot(model.ts,model.results[:,0],lw=2)
 #plt.axvline(x=8.1)
 #plt.axvline(15)
 #plt.axvline(5.7+24)
-plt.xlabel("Time (hours)")
+plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
-plt.title("Time Trace of R, Collective Amplitude")
+#plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
 
 
@@ -345,18 +345,19 @@ plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting psi mod 2pi
-plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'o')#lw=2)
-#plt.axhline(5*np.pi/12)
+plt.axvline(x=21.2,color='black',linestyle='dashed') # Checking DLMO
+plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'.')#,lw=2)
+plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axhline(np.pi)
-#plt.axvline(5.7+24)
 #plt.axvline(CBTmin)
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(x=8.1)
 #plt.axvline(15)
-plt.xlabel("Time (hours)")
+plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
-plt.title("Time Trace of Psi, Mean Phase")
+plt.legend(["DLMO"])
+#plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 
@@ -365,8 +366,8 @@ plt.show()
 plt.plot(model.ts,model.results[:,2],lw=2)
 #plt.axvline(x=7)
 #plt.axvline(x=23)
-plt.xlabel("Time (hours)")
-plt.ylabel("Proportion of Activated Photoreceptors")
-plt.title("Time Trace of Photoreceptor Activation")
+plt.xlabel("Clock Time (hours)")
+plt.ylabel("n, Proportion of Activated Photoreceptors")
+#plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
