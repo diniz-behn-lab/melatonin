@@ -69,8 +69,6 @@ class HannayBreslowModel(object):
         
         ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
-        #x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
-        
         # Corrected Hsat and sigma_M 
         x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
         self.B_1 = x[0] 
@@ -265,7 +263,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin dosage to a mg amount
 
 model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=2) 
 
 
 
