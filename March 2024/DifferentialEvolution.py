@@ -13,8 +13,8 @@ Optimize the melatonin forcing parameters (B1, B2, theta_M1, theta_M2, epsilon)
 
 import numpy as np
 from scipy.optimize import differential_evolution
-#from run_HannayBreslow_Burgess2008_PRC import objective_func
-from run_HannayBreslow_Burgess2010_PRC import objective_func
+from run_HannayBreslow_Burgess2008_PRC import objective_func
+#from run_HannayBreslow_Burgess2010_PRC import objective_func
 import time
 
 
@@ -88,8 +88,8 @@ Burgess_2010_PRC = [1.2,
                     ]
 
 
-#data_vals = Burgess_2008_PRC
-data_vals = Burgess_2010_PRC
+data_vals = Burgess_2008_PRC
+#data_vals = Burgess_2010_PRC
 
 
 #------------- Run the differential evolution algorithm ----------
