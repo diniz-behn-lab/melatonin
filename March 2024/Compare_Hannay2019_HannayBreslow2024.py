@@ -165,8 +165,8 @@ class HannayBreslowModel(object):
         self.psi_off = 3.5779  # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
-        self.H_sat = 301 #861 # Breslow 2013
-        self.sigma_M = 17.5 #50 # Breslow 2013
+        self.H_sat = 301 # Scaled from Breslow 2013
+        self.sigma_M = 17.5 # Scaled from Breslow 2013
         self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
         
         
@@ -191,8 +191,6 @@ class HannayBreslowModel(object):
         
         ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
-        #x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
-        
         # Corrected Hsat and sigma_M 
         x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
         self.B_1 = x[0] 

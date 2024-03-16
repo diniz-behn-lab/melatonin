@@ -73,13 +73,7 @@ class HannayBreslowModel(object):
         #x = [0.74545016, -0.05671999, 0.76024892, -0.05994563, -0.18366069]
         # Differential Evolution: 
             #x = [0, 0, 0, 0, 0] 
-        # Fitting to melatonin_dose = 70000
-        #x = [-1.91498106,  0.49976944, -1.26086337,  1.05335774,  0.29083548] # Error = 3.5961229122486875 # Optimization terminated successfully!! 
-        # Fitting to melatonin_dose = 179893 (fit to Wyatt 2006)
-        #x = [-1.27270047,  0.38065833, -0.86828183,  0.67052757,  0.14395031] # Error = 3.5785611633727887 # Optimization terminated successfully!!
         # Fitting to the cubic dose curve 
-        #x = [-1.42992587,  0.43158586, -0.89095487,  0.82059878,  0.11236468] # Error = 3.6102769976831413  # Optimization terminated successfully!!
-        
         # Corrected Hsat and sigma_M 
         x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
         #x = [-1.08465998, -0.08352192,  0.17752519, -1.24471854,  0.01725839] # Error = 3.701634773988374 # Optimization terminated successfully!!
