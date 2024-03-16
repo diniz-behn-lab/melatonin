@@ -180,8 +180,12 @@ class HannayBreslowModel(object):
         LightAmp = (self.A_1/2.0)*Bhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.beta_L1) + (self.A_2/2.0)*Bhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.beta_L2) # L_R
         LightPhase = self.sigma*Bhat - (self.A_1/2.0)*Bhat*(pow(R,3.0) + 1.0/R)*np.sin(Psi + self.beta_L1) - (self.A_2/2.0)*Bhat*(1.0 + pow(R,8.0))*np.sin(2.0*Psi + self.beta_L2) # L_psi
     
+        #print(LightAmp)
+        #print(LightPhase)
+    
         # Melatonin interaction with pacemaker
-        Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/self.sigma_M))
+        Mhat = self.M_max/(1 + np.exp((self.H_sat - H2)/(self.sigma_M)))
+        
         #print(Mhat)
         # Melatonin forcing equations 
         MelAmp = (self.B_1/2)*Mhat*(1.0 - pow(R,4.0))*np.cos(Psi + self.theta_M1) + (self.B_2/2.0)*Mhat*R*(1.0 - pow(R,8.0))*np.cos(2.0*Psi + self.theta_M2) # M_R
@@ -259,9 +263,9 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model with exogenous melatonin ---------------
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
- 
+
 model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=1.75,schedule=2) 
+model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
 
 
 
@@ -309,8 +313,8 @@ plt.plot(model.ts,model.results[:,5]/4.3,lw=2)
 #plt.axvline(x=21.3) # Checking DLMO
 #plt.axvline(x=8.1) # Checking DLMOff
 #plt.axvline(x=20.6) # Checking pineal on 
-plt.axvline(x=5.7) # Checking pineal off
-plt.axvline(5.7+24)
+#plt.axvline(x=5.7) # Checking pineal off
+#plt.axvline(5.7+24)
 #plt.axvline(CBTmin,color='grey')
 plt.axhline(10, linestyle='dashed')
 plt.xlabel("Time (hours)")
@@ -346,10 +350,10 @@ plt.show()
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'o')#lw=2)
 #plt.axhline(5*np.pi/12)
 #plt.axhline(np.pi)
-plt.axvline(5.7+24)
+#plt.axvline(5.7+24)
 #plt.axvline(CBTmin)
 #plt.axvline(x=20.6) # Checking pineal on 
-plt.axvline(x=5.7) # Checking pineal off
+#plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(x=8.1)
 #plt.axvline(15)
 plt.xlabel("Time (hours)")
@@ -367,3 +371,4 @@ plt.xlabel("Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
 plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
+

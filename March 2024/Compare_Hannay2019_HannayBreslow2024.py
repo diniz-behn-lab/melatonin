@@ -371,7 +371,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the Hannay 2019 model ---------------
 
 model_Hannay = HannayModel()
-model_Hannay.integrateModel(24*1,tstart=0.0,initial=IC,schedule=2) 
+model_Hannay.integrateModel(24*2,tstart=0.0,initial=IC,schedule=1) 
 
 
 
@@ -389,7 +389,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the Hannay-Breslow 2024 model without exogenous melatonin ---------------
 
 model_HannayBreslow = HannayBreslowModel()
-model_HannayBreslow.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model_HannayBreslow.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
 
 
 
