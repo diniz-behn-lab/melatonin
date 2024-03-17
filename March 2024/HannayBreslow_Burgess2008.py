@@ -839,7 +839,7 @@ Burgess_2008_PRC_times = [0,
 '''
     
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o',color='black')
-plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
+plt.plot(ExMel_times,phase_shifts_corrected, lw=3,color='mediumturquoise')
 plt.title("3 Pulse PRC To 3mg Exogenous Melatonin")
 plt.xlabel("Time After DLMO (hours)")
 plt.ylabel("Phase Shift (hours)")
@@ -848,7 +848,7 @@ plt.axvline(x=19.4,color='grey',linestyle='dashed') # Burgess 2008 fitted peak (
 plt.axhline(y=1.8,color='grey',linestyle='dashed') # Burgess 2008 fitted max advance 
 plt.axhline(y=-1.3,color='grey',linestyle='dashed') # Burgess 2008 fitted max delay
 plt.axvline(x=11.1,color='grey',linestyle='dashed') # Burgess 2008 fitted trough (max phase delay)
-plt.legend(["Burgess 2008 Data", "Model"])
+plt.legend(["Burgess 2008 Data", "Hannay-Breslow 2024 Model"])
 plt.show()
 
 
@@ -919,7 +919,7 @@ plt.show()
 # Plotting H1, H2 on Day 1 of ultradian schedule (melatonin concentrations, pg/mL)
 plt.plot(model.ts[241:480],model.results[241:480,3]/4.3,lw=2)
 plt.plot(model.ts[241:480],model.results[241:480,4]/4.3,lw=2)
-#plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
+plt.plot(model.ts[241:480],model.results[241:480,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold, linestyle='dashed')
 #plt.ylim(0, 500)
 plt.axvline(check+24,color='green')

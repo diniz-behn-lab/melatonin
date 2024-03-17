@@ -606,7 +606,7 @@ Lux_2 = [3,
          ]
 
 plt.plot(Lux_2, Zeitzer_2000, 'o',color='black') # Data points
-plt.plot(Lux,melatonin_suppression, lw=2) # Fitted curve
+plt.plot(Lux,melatonin_suppression, lw=3,color='forestgreen') # Fitted curve
 plt.xscale('log')
 plt.title("Illuminance Response Curve")
 plt.xlabel("Illuminance (lux)")
