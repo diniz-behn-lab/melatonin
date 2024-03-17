@@ -248,18 +248,20 @@ for t in range(0,n):
         else:
             ZeitzerProtocol_lightschedule.append(dim_light)
     
-
-plt.plot(range(0,n),ZeitzerProtocol_lightschedule)
+plt.axvline(4+(24*4),color='black',linestyle='dashdot')
+plt.plot(range(0,n),ZeitzerProtocol_lightschedule,color='goldenrod')
+plt.xlabel('Time (hours)')
+plt.ylabel('Light Intensity (lux)')
 plt.title("Zeitzer 2000 Protocol Light:Dark Schedule")
-plt.axvline(4+(24*4),color='black')
 plt.axvline(24,linestyle='dashed',color='grey')
 plt.axvline(24*2,linestyle='dashed',color='grey')
 plt.axvline(24*3,linestyle='dashed',color='grey')
 plt.axvline(24*4,linestyle='dashed',color='grey')
-plt.axvspan(21.25+(24*3), 3.75+(24*4), facecolor='y', alpha=0.4)
+plt.axvspan(21.25+(24*3), 3.75+(24*4), facecolor='gold', alpha=0.4)
 plt.axvspan(21.25+(24*2), 3.75+(24*3), facecolor='grey', alpha=0.4)
 #plt.axvline(7+24,color='orange')
 #plt.axvline(23,color='orange')
+plt.legend(['CBTmin'])
 plt.show()
 
 
@@ -273,7 +275,7 @@ n = j*24
 
 BurgessProtocol_lightschedule = list()
 DLMO = 21
-mel_timing = 13 # Timing after DLMO 
+mel_timing = 0 # Timing after DLMO 
 
 for t in range(0,n): 
     bright_light = 40
@@ -301,18 +303,21 @@ for t in range(0,n):
     else:
         light = dim_light
         BurgessProtocol_lightschedule.append(light)
-        
-plt.plot(range(0,n),BurgessProtocol_lightschedule)
+       
+plt.axvline(21,color='black',linestyle='dashed')        
+plt.axvline(dose_time+24,color='hotpink')       
+plt.plot(range(0,n),BurgessProtocol_lightschedule,color='goldenrod')
 plt.title("Burgess 2008/2010 Protocol Light:Dark Schedule")
-plt.axvline(21,color='orange')
-plt.axvline(dose_time+24,color='green')
-plt.axvline(dose_time+24+24,color='green')
-plt.axvline(dose_time+24+24+24,color='green')
+plt.axvline(dose_time+24+24,color='hotpink')
+plt.axvline(dose_time+24+24+24,color='hotpink')
 plt.axvline(24,linestyle='dashed',color='grey')
 plt.axvline(24*2,linestyle='dashed',color='grey')
 plt.axvline(24*3,linestyle='dashed',color='grey')
 plt.axvline(24*4,linestyle='dashed',color='grey')
 plt.ylim([-1, 70])
+plt.xlabel('Time (hours)')
+plt.ylabel('Light Intensity (lux)')
+plt.legend(['DLMO','Exogenous Melatonin Dose'])
 #plt.axvline(6.5)
 plt.show()        
         
