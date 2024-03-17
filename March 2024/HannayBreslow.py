@@ -93,8 +93,36 @@ class HannayBreslowModel(object):
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-        else: 
+        
+        elif schedule == 2: # Constant darkness 
+            
             return 0
+        
+        elif schedule == 3: # Night owl schedule 
+            full_light = 1000
+            dim_light = 300 # reduced light
+            wake_time = 10
+            sleep_time = 2
+            sun_up = 8
+            sun_down = 19
+
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+            
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        
+        elif schedule == 4: # Morning lark schedule 
+            full_light = 1000
+            dim_light = 300 # reduced light
+            wake_time = 4
+            sleep_time = 20
+            sun_up = 8
+            sun_down = 19
+
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+            
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
 
 
 # Define the alpha(L) function 
@@ -245,7 +273,7 @@ class HannayBreslowModel(object):
 #--------- Run the model to find initial conditions ---------------
 
 model_IC = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model_IC.integrateModel(24*50,schedule=1) # use the integrateModel method with the object model
+model_IC.integrateModel(24*50,schedule=4) # use the integrateModel method with the object model
 IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 
@@ -253,7 +281,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
 
 
 
@@ -309,7 +337,7 @@ plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
 plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
 plt.plot(model.ts,model.results[:,5]/4.3,lw=3,color='hotpink')
 plt.axvline(x=8.1,color='black',linestyle='dotted') # Checking DLMOff
-plt.axvline(x=21.2,color='black',linestyle='dashed') # Checking DLMO
+plt.axvline(x=DLMO_H2,color='black',linestyle='dashed') # Checking DLMO
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(5.7+24)
