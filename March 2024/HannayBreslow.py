@@ -98,32 +98,6 @@ class HannayBreslowModel(object):
             
             return 0
         
-        elif schedule == 3: # Night owl schedule 
-            full_light = 1000
-            dim_light = 300 # reduced light
-            wake_time = 10
-            sleep_time = 2
-            sun_up = 8
-            sun_down = 19
-
-            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-            
-            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-        
-        elif schedule == 4: # Morning lark schedule 
-            full_light = 1000
-            dim_light = 300 # reduced light
-            wake_time = 4
-            sleep_time = 20
-            sun_up = 8
-            sun_down = 19
-
-            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
-            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
-            
-            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
-
 
 # Define the alpha(L) function 
     def alpha0(self,t,schedule):
@@ -273,7 +247,7 @@ class HannayBreslowModel(object):
 #--------- Run the model to find initial conditions ---------------
 
 model_IC = HannayBreslowModel() # defining model as a new object built with the HannayBreslowModel class 
-model_IC.integrateModel(24*50,schedule=4) # use the integrateModel method with the object model
+model_IC.integrateModel(24*50,schedule=1) # use the integrateModel method with the object model
 IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 
@@ -281,7 +255,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -298,16 +272,19 @@ model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 #--------- Find DLMO and CBTmin -----------
 
 # By Hannay model definition 
-psi_mod2pi = np.mod(model.results[:,1],2*np.pi)
+psi_mod2pi = np.mod(model.results[0:240,1],2*np.pi)
 
-DLMO_psi = model.ts[212] # closest to psi = 1.30899
-CBTmin = model.ts[40] # closest to psi = 3.14
+DLMO_index = min(range(len(psi_mod2pi)), key=lambda i: abs(psi_mod2pi[i]-1.30899))
+CBTmin_index = min(range(len(psi_mod2pi)), key=lambda i: abs(psi_mod2pi[i]-3.14159))
+
+DLMO_psi = model.ts[DLMO_index] # closest to psi = 1.30899
+CBTmin = model.ts[CBTmin_index] # closest to psi = 3.14159
 
 # By threshold definition (10 pg/mL in plasma)
 DLMO_threshold = 10
 
-plasma_mel_concentrations = model.results[0:240,4]/4.3 # converting output to pg/mL
-times = model.ts[0:240] # defining times from first 24hrs 
+plasma_mel_concentrations = model.results[60:240,4]/4.3 # converting output to pg/mL
+times = model.ts[60:240] # defining times from first 24hrs 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
@@ -336,7 +313,7 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
 plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
 plt.plot(model.ts,model.results[:,5]/4.3,lw=3,color='hotpink')
-plt.axvline(x=8.1,color='black',linestyle='dotted') # Checking DLMOff
+plt.axvline(x=DLMOff,color='black',linestyle='dotted') # Checking DLMOff
 plt.axvline(x=DLMO_H2,color='black',linestyle='dashed') # Checking DLMO
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
@@ -373,7 +350,7 @@ plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting psi mod 2pi
-plt.axvline(x=21.2,color='black',linestyle='dashed') # Checking DLMO
+plt.axvline(x=DLMO_psi,color='black',linestyle='dashed') # Checking DLMO
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'.',markersize=10,color='mediumturquoise')
 plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axhline(np.pi)
