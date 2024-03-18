@@ -107,7 +107,7 @@ class HannayBreslowModel(object):
             dim_light = 5
             bright_light = 1000
             
-            if 5+24 <= t <= 7+24: # Hour before habitual wake 
+            if 5+24 <= t <= 7+24: # 2 Hours before habitual wake 
                 return bright_light 
             else:
                 return dim_light
@@ -117,7 +117,7 @@ class HannayBreslowModel(object):
             dim_light = 5
             bright_light = 1000
             
-            if 23+24 <= t <= 24+24: # Hour after habitual bedtime 
+            if 21+24 <= t <= 23+24: # 2 Hours before habitual bedtime 
                 return bright_light
             else:
                 return dim_light
@@ -291,7 +291,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin dosage to a mg amount
 
 model = HannayBreslowModel()
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=4) 
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=3) 
 
 
 
@@ -335,6 +335,18 @@ DLMO_H2_final = times_final[plasma_mel_final[-1]] # finding the time correspondi
 #DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
 
 
+#------- Calculate Phase Shift --------------
+
+# By Hannay model defintion 
+DLMO_psi_shift = np.mod(DLMO_psi_baseline,24) - np.mod(DLMO_psi_final,24)
+
+
+# By threshold definition 
+DLMO_H2_shift = np.mod(DLMO_H2_baseline,24) - np.mod(DLMO_H2_final,24)
+
+
+
+
 #--------- Plot Model Output -------------------
 
 '''
@@ -366,7 +378,7 @@ plt.axvline(x=DLMO_H2_final,color='grey',linestyle='dashed')
 #plt.axvline(5.7+24)
 #plt.axvline(CBTmin,color='grey')
 plt.axhline(10, color='black',lw=1)
-plt.axvspan(5+24, 7+24, facecolor='gold', alpha=0.4)
+#plt.axvspan(5+24, 7+24, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 #plt.title("Melatonin Concentrations (pg/mL)")
@@ -383,7 +395,7 @@ plt.plot(model.ts,model.results[:,0],lw=3,color='forestgreen')
 #plt.axvline(x=8.1)
 #plt.axvline(5.7+24)
 plt.axvline(15+24,lw=3,color='hotpink')
-plt.axvspan(5+24, 7+24, facecolor='gold', alpha=0.4)
+#plt.axvspan(5+24, 7+24, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 #plt.title("Time Trace of R, Collective Amplitude")
@@ -409,7 +421,7 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(x=8.1)
 plt.axvline(15+24,lw=3,color='hotpink')
-plt.axvspan(5+24, 7+24, facecolor='gold', alpha=0.4)
+#plt.axvspan(5+24, 7+24, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.legend(["Baseline DLMO", "Final DlMO"])
