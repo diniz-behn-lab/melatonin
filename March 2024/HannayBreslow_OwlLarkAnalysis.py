@@ -399,7 +399,7 @@ plasma_mel_concentrations = model.results[360:600,4]/4.3 # converting output to 
 times = model.ts[360:600] # defining times from first 24hrs 
 plasma_mel, = np.where(plasma_mel_concentrations>=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2 = times[plasma_mel[0]-1] # finding the time corresponding to the last index below threshold, DLMO
-DLMOff = times[plasma_mel[-1]-1] # finding the time corresponding to the first index below threshold, DLMOff
+DLMOff = times[plasma_mel[-1]+1] # finding the time corresponding to the first index below threshold, DLMOff
 
 
 #--------- Plot Model Output -------------------
