@@ -369,7 +369,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the Hannay 2019 model ---------------
 
 model_Hannay = HannayModel()
-model_Hannay.integrateModel(24*1,tstart=0.0,initial=IC,schedule=2) 
+model_Hannay.integrateModel(24*2,tstart=0.0,initial=IC,schedule=1) 
 
 
 
@@ -387,7 +387,44 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the Hannay-Breslow 2024 model without exogenous melatonin ---------------
 
 model_HannayBreslow = HannayBreslowModel()
-model_HannayBreslow.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model_HannayBreslow.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
+
+
+
+
+#--------- Find DLMO and CBTmin for Hannay 2019 -----------
+
+# By Hannay model definition 
+psi_mod2pi_Hannay = np.mod(model_Hannay.results[0:240,1],2*np.pi)
+
+DLMO_index = min(range(len(psi_mod2pi_Hannay)), key=lambda i: abs(psi_mod2pi_Hannay[i]-1.30899))
+CBTmin_index = min(range(len(psi_mod2pi_Hannay)), key=lambda i: abs(psi_mod2pi_Hannay[i]-3.14159))
+
+DLMO_psi_Hannay = model_Hannay.ts[DLMO_index] # closest to psi = 1.30899
+CBTmin_Hannay = model_Hannay.ts[CBTmin_index] # closest to psi = 3.14159
+
+
+
+
+#--------- Find DLMO and CBTmin for Hannay-Breslow 2024 -----------
+
+# By Hannay model definition 
+psi_mod2pi_HannayBreslow = np.mod(model_HannayBreslow.results[0:240,1],2*np.pi)
+
+DLMO_index = min(range(len(psi_mod2pi_HannayBreslow)), key=lambda i: abs(psi_mod2pi_HannayBreslow[i]-1.30899))
+CBTmin_index = min(range(len(psi_mod2pi_HannayBreslow)), key=lambda i: abs(psi_mod2pi_HannayBreslow[i]-3.14159))
+
+DLMO_psi_HannayBreslow = model_HannayBreslow.ts[DLMO_index] # closest to psi = 1.30899
+CBTmin_HannayBreslow = model_HannayBreslow.ts[CBTmin_index] # closest to psi = 3.14159
+
+# By threshold definition (10 pg/mL in plasma)
+DLMO_threshold = 10
+
+plasma_mel_concentrations = model_HannayBreslow.results[60:240,4]/4.3 # converting output to pg/mL
+times = model_HannayBreslow.ts[60:240] # defining times from first 24hrs 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_HannayBreslow = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMOff_HannayBreslow = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
 
 
 
@@ -397,17 +434,14 @@ model_HannayBreslow.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=
 
 # Plotting R
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,0],lw=3,color='forestgreen')
-plt.plot(model_Hannay.ts,model_Hannay.results[:,0],lw=2,linestyle='dashed')
-#plt.axvline(x=20.6+24)
-#plt.axvline(x=5.7+24)
-#plt.axvline(15)
+plt.plot(model_Hannay.ts,model_Hannay.results[:,0],lw=2,color='black',linestyle='dashed')
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.legend(['Hannay-Breslow 2024','Hannay 2019'])
 #plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
 
-
+'''
 # Plotting psi
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,1],lw=3,color='mediumturquoise')
 plt.plot(model_Hannay.ts,model_Hannay.results[:,1],lw=2,linestyle='dashed')
@@ -416,11 +450,13 @@ plt.ylabel("Psi, Mean Phase (radians)")
 plt.legend(['Hannay-Breslow 2024','Hannay 2019'])
 plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
+'''
 
 # Plotting psi mod 2pi
 plt.plot(model_HannayBreslow.ts,np.mod(model_HannayBreslow.results[:,1],2*np.pi),'.',markersize=10,color='mediumturquoise')
-plt.plot(model_Hannay.ts,np.mod(model_Hannay.results[:,1],2*np.pi),'.',markersize=5)
-plt.axvline(x=21.2,color='black',linestyle='dashed') # Checking DLMO
+plt.plot(model_Hannay.ts,np.mod(model_Hannay.results[:,1],2*np.pi),'.',markersize=3,color='black')
+plt.axvline(DLMO_psi_HannayBreslow,color='grey')
+plt.axvline(DLMO_psi_Hannay,color='black',linestyle='dashed')
 plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axhline(5*np.pi/12)
 #plt.axhline(np.pi)
@@ -428,16 +464,16 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(CBTmin)
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
-#plt.axvline(15)
+#plt.axvline(21)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
-plt.legend(['Hannay-Breslow 2024','Hannay 2019','DLMO'])
+plt.legend(['Hannay-Breslow 2024','Hannay 2019','Hannay-Breslow DLMO','Hannay DLMO'])
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting n
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,2],lw=3,color='goldenrod')
-plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=3,linestyle='dashed')
+plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=2,linestyle='dashed',color='black')
 #plt.axvline(x=7)
 #plt.axvline(x=23)
 plt.xlabel("Clock Time (hours)")
@@ -451,9 +487,9 @@ plt.show()
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,3]/4.3,lw=3,color='mediumblue')
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,4]/4.3,lw=3,color='darkorchid')
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,5]/4.3,lw=3,color='hotpink')
-plt.axvline(x=8.1,color='black',linestyle='dotted') # Checking DLMOff
-plt.axvline(x=21.2,color='black',linestyle='dashed') # Checking DLMO
-#plt.axvline(x=20.6+24) # Checking pineal on 
+plt.axvline(x=DLMOff_HannayBreslow,color='grey',linestyle='dashed') # Checking DLMOff
+plt.axvline(x=DLMO_H2_HannayBreslow,color='grey') # Checking DLMO
+#plt.axvline(x=20) # Checking pineal on 
 #plt.axvline(x=5.7+24) # Checking pineal off
 plt.axhline(10, color='black',lw=1)
 plt.xlabel("Clock Time (hours)")
