@@ -78,7 +78,8 @@ class HannayBreslowModel(object):
 # Set the light schedule (timings and intensities)
     def light(self,t,schedule):
         
-        if schedule == 1: # standard 16:8 schedule 
+        # Standard 16:8 schedule
+        if schedule == 1:  
             full_light = 1000
             dim_light = 300
             wake_time = 7
@@ -91,9 +92,121 @@ class HannayBreslowModel(object):
 
             return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
         
-        elif schedule == 2: # Constant darkness 
+        # Constant Dark schedule
+        elif schedule == 2: 
             
             return 0
+        
+        # Night Owl schedule
+        elif schedule == 3:  
+            full_light = 1000
+            dim_light = 300 # reduced light
+            wake_time = 10
+            sleep_time = 2
+            sun_up = 8
+            sun_down = 19
+
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+            
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        
+        # Morning Lark schedule
+        elif schedule == 4:  
+            full_light = 1000
+            dim_light = 300 # reduced light
+            wake_time = 4
+            sleep_time = 20
+            sun_up = 8
+            sun_down = 19
+
+            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+            
+            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        
+        # Standard -> Night Owl -> Standard schedule
+        elif schedule == 5:
+            if 0 < t <= 12: # Standard
+                full_light = 1000
+                dim_light = 300
+                wake_time = 7
+                sleep_time = 23
+                sun_up = 8
+                sun_down = 19
+                
+                is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+                sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+                return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+           
+            elif 12 < t <= 36: # Night Owl
+                full_light = 1000
+                dim_light = 300 # reduced light
+                wake_time = 10
+                sleep_time = 2
+                sun_up = 8
+                sun_down = 19
+
+                is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+                sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+                
+                return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        
+            else: # Standard
+                full_light = 1000
+                dim_light = 300
+                wake_time = 7
+                sleep_time = 23
+                sun_up = 8
+                sun_down = 19
+                
+                is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+                sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+                return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+        
+        # Standard -> Morning Lark -> Standard schedule 
+        elif schedule == 6: 
+                if 0 < t <= 12: # Standard
+                    full_light = 1000
+                    dim_light = 300
+                    wake_time = 7
+                    sleep_time = 23
+                    sun_up = 8
+                    sun_down = 19
+                    
+                    is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+                    sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+                    return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+              
+                elif 12 < t <= 36: # Morning Lark
+                    full_light = 1000
+                    dim_light = 300 # reduced light
+                    wake_time = 4
+                    sleep_time = 20
+                    sun_up = 8
+                    sun_down = 19
+
+                    is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+                    sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+                    
+                    return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))            
+               
+                else: # Standard 
+                    full_light = 1000
+                    dim_light = 300
+                    wake_time = 7
+                    sleep_time = 23
+                    sun_up = 8
+                    sun_down = 19
+                    
+                    is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+                    sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
+
+                    return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+            
         
 
 # Define the alpha(L) function 
@@ -254,7 +367,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 #model = HannayBreslowModel()
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
+#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=6) 
 
 
 
@@ -264,7 +377,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin dosage to a mg amount
 
 model = HannayBreslowModel()
-model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=6, melatonin_dosage=3.0,schedule=1) 
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=6) 
 
 
 
@@ -288,6 +401,8 @@ plasma_mel, = np.where(plasma_mel_concentrations>=DLMO_threshold) # finding all 
 DLMO_H2 = times[plasma_mel[0]-1] # finding the time corresponding to the first index below threshold, DLMO
 DLMOff = times[plasma_mel[-1]+1] # finding the time corresponding to the last index below threshold, DLMOff
 
+# Normally 400:600
+# Switch it to 450 for schedule 5 and 6:00
 
 #--------- Plot Model Output -------------------
 
@@ -334,7 +449,7 @@ plt.plot(model.ts,model.results[:,0],lw=3,color='forestgreen')
 #plt.axvline(x=5.7)
 #plt.axvline(x=8.1)
 #plt.axvline(5.7+24)
-plt.axvline(6,lw=3,color='hotpink')
+plt.axvline(15,lw=3,color='hotpink')
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 #plt.title("Time Trace of R, Collective Amplitude")
@@ -358,7 +473,7 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(x=8.1)
-plt.axvline(6,lw=3,color='hotpink')
+plt.axvline(15,lw=3,color='hotpink')
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.legend(["DLMO"])
