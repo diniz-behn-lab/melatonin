@@ -202,7 +202,7 @@ G = 33.75
 alpha_0 = 0.05
 p = 1.5
 I_0 = 9325
-light = 12
+light = 5#12
 
 Bhat = G*(alpha_0*pow(light, p)/(pow(light, p) + I_0)) # Corresponds to a dim light response
 
