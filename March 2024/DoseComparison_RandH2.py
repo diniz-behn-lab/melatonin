@@ -109,9 +109,9 @@ class HannayBreslowModel(object):
         
         if melatonin_timing == None:
             return 0 # set exogenous melatonin to zero
-        else: 
+        else:
             t = np.mod(t,24)
-            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
+            if melatonin_timing-0.1 <= t <= melatonin_timing+0.4:#+0.3:
                 sigma = np.sqrt(0.002)
                 mu = melatonin_timing+0.1
 
@@ -239,7 +239,7 @@ class HannayBreslowModel(object):
 
 
  
-
+timing = 1
 
 
 #--------- Run the model to find initial conditions ---------------
@@ -248,57 +248,77 @@ model_IC = HannayBreslowModel() # defining model as a new object built with the 
 model_IC.integrateModel(24*50,schedule=1) # use the integrateModel method with the object model
 IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
-
+'''
 
 #--------- Run the model without exogenous melatonin ---------------
 
 model_none = HannayBreslowModel()
-model_none.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model_none.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
 #--------- Run the model with 0.1 mg exogenous melatonin ---------------
 
 model_01 = HannayBreslowModel()
-model_01.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.1,schedule=2) 
+model_01.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=0.1,schedule=2) 
 
 
 
 #--------- Run the model with 0.3 mg exogenous melatonin ---------------
 
 model_03 = HannayBreslowModel()
-model_03.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.3,schedule=2) 
+model_03.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=0.3,schedule=2) 
 
 
 
 #--------- Run the model with 0.5 mg exogenous melatonin ---------------
 
 model_05 = HannayBreslowModel()
-model_05.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=0.5,schedule=2) 
+model_05.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=0.5,schedule=2) 
 
 
 
 #--------- Run the model with 1.0 mg exogenous melatonin ---------------
 
 model_1 = HannayBreslowModel()
-model_1.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=1.0,schedule=2) 
+model_1.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=1.0,schedule=2) 
 
 
 
 #--------- Run the model with 2.0 mg exogenous melatonin ---------------
 
 model_2 = HannayBreslowModel()
-model_2.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=2.0,schedule=2) 
+model_2.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=2.0,schedule=2) 
 
-
+'''
 
 #--------- Run the model with 3.0 mg exogenous melatonin ---------------
 
 model_3 = HannayBreslowModel()
-model_3.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=2) 
+model_3.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=3.0,schedule=2) 
+
+
+'''
+#--------- Run the model with 4.0 mg exogenous melatonin ---------------
+
+model_4 = HannayBreslowModel()
+model_4.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=4.0,schedule=2) 
 
 
 
+#--------- Run the model with 5.0 mg exogenous melatonin ---------------
+
+model_5 = HannayBreslowModel()
+model_5.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=5.0,schedule=2) 
+
+
+
+#--------- Run the model with 6.0 mg exogenous melatonin ---------------
+
+model_6 = HannayBreslowModel()
+model_6.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=timing, melatonin_dosage=6.0,schedule=2) 
+
+'''
 
 #--------- Plot Model Output -------------------
 
@@ -306,13 +326,16 @@ model_3.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatoni
 
 
 # Plotting H2 (melatonin concentration, pg/mL)
-plt.plot(model_none.ts,model_none.results[:,4]/4.3,lw=2)
-plt.plot(model_01.ts,model_01.results[:,4]/4.3,lw=2)
-plt.plot(model_03.ts,model_03.results[:,4]/4.3,lw=2)
-plt.plot(model_05.ts,model_05.results[:,4]/4.3,lw=2)
-plt.plot(model_1.ts,model_1.results[:,4]/4.3,lw=2)
-plt.plot(model_2.ts,model_2.results[:,4]/4.3,lw=2)
+#plt.plot(model_none.ts,model_none.results[:,4]/4.3,lw=2)
+#plt.plot(model_01.ts,model_01.results[:,4]/4.3,lw=2)
+#plt.plot(model_03.ts,model_03.results[:,4]/4.3,lw=2)
+#plt.plot(model_05.ts,model_05.results[:,4]/4.3,lw=2)
+#plt.plot(model_1.ts,model_1.results[:,4]/4.3,lw=2)
+#plt.plot(model_2.ts,model_2.results[:,4]/4.3,lw=2)
 plt.plot(model_3.ts,model_3.results[:,4]/4.3,lw=2)
+#plt.plot(model_4.ts,model_4.results[:,4]/4.3,lw=2)
+#plt.plot(model_5.ts,model_5.results[:,4]/4.3,lw=2)
+#plt.plot(model_6.ts,model_6.results[:,4]/4.3,lw=2)
 plt.axhline(70, linestyle='dashed',color = 'black')
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
@@ -321,7 +344,7 @@ plt.legend(["None","0.1 mg", "0.3 mg", "0.5 mg", "1.0 mg", "2.0 mg", "3.0 mg"])
 plt.show()
 
 
-
+'''
 # Plotting R
 plt.plot(model_none.ts,model_none.results[:,0],lw=2)
 plt.plot(model_01.ts,model_01.results[:,0],lw=2)
@@ -330,27 +353,34 @@ plt.plot(model_05.ts,model_05.results[:,0],lw=2)
 plt.plot(model_1.ts,model_1.results[:,0],lw=2)
 plt.plot(model_2.ts,model_2.results[:,0],lw=2)
 plt.plot(model_3.ts,model_3.results[:,0],lw=2)
+plt.plot(model_4.ts,model_4.results[:,0],lw=2)
+plt.plot(model_5.ts,model_5.results[:,0],lw=2)
+plt.plot(model_6.ts,model_6.results[:,0],lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Time Trace of R, Collective Amplitude")
-plt.legend(["None","0.1 mg", "0.3 mg", "0.5 mg", "1.0 mg", "2.0 mg", "3.0 mg"])
+plt.legend(["None","0.1 mg", "0.3 mg", "0.5 mg", "1.0 mg", "2.0 mg", "3.0 mg", "4.0 mg", "5.0 mg", "6.0 mg"])
 plt.show()
+
 
 
 # Plotting R, zoomed in
-plt.plot(model_none.ts[150:240],model_none.results[150:240,0],lw=2)
-plt.plot(model_01.ts[150:240],model_01.results[150:240,0],lw=2)
-plt.plot(model_03.ts[150:240],model_03.results[150:240,0],lw=2)
-plt.plot(model_05.ts[150:240],model_05.results[150:240,0],lw=2)
-plt.plot(model_1.ts[150:240],model_1.results[150:240,0],lw=2)
-plt.plot(model_2.ts[150:240],model_2.results[150:240,0],lw=2)
-plt.plot(model_3.ts[150:240],model_3.results[150:240,0],lw=2)
+plt.plot(model_none.ts[timing*10:timing*10+100],model_none.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_01.ts[timing*10:timing*10+100],model_01.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_03.ts[timing*10:timing*10+100],model_03.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_05.ts[timing*10:timing*10+100],model_05.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_1.ts[timing*10:timing*10+100],model_1.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_2.ts[timing*10:timing*10+100],model_2.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_3.ts[timing*10:timing*10+100],model_3.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_4.ts[timing*10:timing*10+100],model_4.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_5.ts[timing*10:timing*10+100],model_5.results[timing*10:timing*10+100,0],lw=2)
+plt.plot(model_6.ts[timing*10:timing*10+100],model_6.results[timing*10:timing*10+100,0],lw=2)
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Time Trace of R, Collective Amplitude")
-plt.legend(["None","0.1 mg", "0.3 mg", "0.5 mg", "1.0 mg", "2.0 mg", "3.0 mg"])
+plt.legend(["None","0.1 mg", "0.3 mg", "0.5 mg", "1.0 mg", "2.0 mg", "3.0 mg", "4.0 mg", "5.0 mg", "6.0 mg"])
 plt.show()
 
-
+'''
 
 
