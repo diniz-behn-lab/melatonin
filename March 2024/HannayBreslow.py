@@ -254,8 +254,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*3,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -264,8 +264,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=2) 
 
 
 
