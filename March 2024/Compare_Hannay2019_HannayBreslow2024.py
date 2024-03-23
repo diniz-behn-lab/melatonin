@@ -433,11 +433,11 @@ DLMOff_HannayBreslow = times[plasma_mel[0]] # finding the time corresponding to 
 #--------- Plot Model Output -------------------
 
 # Plotting R
-plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,0],lw=3,color='forestgreen')
-plt.plot(model_Hannay.ts,model_Hannay.results[:,0],lw=2,color='black',linestyle='dashed')
+plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,0],lw=5,color='forestgreen')
+plt.plot(model_Hannay.ts,model_Hannay.results[:,0],lw=3,color='black',linestyle='dashed')
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
-plt.legend(['Hannay-Breslow 2024','Hannay 2019'])
+plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
 #plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
 
@@ -453,10 +453,14 @@ plt.show()
 '''
 
 # Plotting psi mod 2pi
-plt.plot(model_HannayBreslow.ts,np.mod(model_HannayBreslow.results[:,1],2*np.pi),'.',markersize=10,color='mediumturquoise')
-plt.plot(model_Hannay.ts,np.mod(model_Hannay.results[:,1],2*np.pi),'.',markersize=3,color='black')
-plt.axvline(DLMO_psi_HannayBreslow,color='grey')
-plt.axvline(DLMO_psi_Hannay,color='black',linestyle='dashed')
+plt.plot(model_HannayBreslow.ts[0:141],np.mod(model_HannayBreslow.results[0:141,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
+plt.plot(model_Hannay.ts[0:143],np.mod(model_Hannay.results[0:143,1],2*np.pi),color='black',lw=3,linestyle='dashed') # '.',markersize=3,
+plt.plot(model_HannayBreslow.ts[142:381],np.mod(model_HannayBreslow.results[142:381,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
+plt.plot(model_HannayBreslow.ts[382:479],np.mod(model_HannayBreslow.results[382:479,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
+plt.plot(model_Hannay.ts[144:382],np.mod(model_Hannay.results[144:382,1],2*np.pi),color='black',lw=3,linestyle='dashed') # '.',markersize=3,
+plt.plot(model_Hannay.ts[383:479],np.mod(model_Hannay.results[383:479,1],2*np.pi),color='black',lw=3,linestyle='dashed') # '.',markersize=3,
+#plt.axvline(DLMO_psi_HannayBreslow,color='grey')
+#plt.axvline(DLMO_psi_Hannay,color='black',linestyle='dashed')
 plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axhline(5*np.pi/12)
 #plt.axhline(np.pi)
@@ -467,18 +471,18 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(21)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
-plt.legend(['Hannay-Breslow 2024','Hannay 2019','Hannay-Breslow DLMO','Hannay DLMO'])
+plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting n
-plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,2],lw=3,color='goldenrod')
-plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=2,linestyle='dashed',color='black')
+plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,2],lw=5,color='goldenrod')
+plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=3,linestyle='dashed',color='black')
 #plt.axvline(x=7)
 #plt.axvline(x=23)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Proportion of Activated Photoreceptors")
-plt.legend(['Hannay-Breslow 2024','Hannay 2019'])
+plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
 #plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
