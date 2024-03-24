@@ -137,7 +137,7 @@ plt.show()
 
 # Macroscopic PRC to melatonin
 Mhat = 0.5*0.019513
-R = 0.83
+R = 0.83 # THIS CHOICE MATTERS !!!
 macro_prc = lambda phi: epsilon*Mhat-B1*Mhat*0.5*(pow(R,3.0)+1.0/R)*np.sin(phi+theta1)-B2*Mhat*0.5*(1.0+pow(R,8.0))*np.sin(2.0*phi+theta2)
 macro_response = macro_prc(phi)
 
@@ -202,7 +202,7 @@ G = 33.75
 alpha_0 = 0.05
 p = 1.5
 I_0 = 9325
-light = 5#12
+light = 1000#5#12 # THIS CHOICE DOES NOT SEEM TO MATTER FOR THE CROSS CORRELATION
 
 Bhat = G*(alpha_0*pow(light, p)/(pow(light, p) + I_0)) # Corresponds to a dim light response
 
@@ -224,9 +224,9 @@ max_advance_time = abs(12*phi_rel_to_DLMO[max_advance_idx]/np.pi)
 max_delay_time = abs(12*phi_rel_to_DLMO[max_delay_idx]/np.pi)
 text_str = "Max advance at {:.2} hours \n before DLMO".format(max_advance_time)
 props = dict(boxstyle='round', facecolor='white', alpha=0.8)
-plt.text(-5.2,0.002,text_str,bbox=props)
+plt.text(-5.2,0.35,text_str,bbox=props)
 text_str = "Max delay at {:.2} hours \n after DLMO".format(max_delay_time)
-plt.text(2.75,-0.003,text_str,bbox=props)
+plt.text(2.75,-0.55,text_str,bbox=props)
 plt.show()
 
 
@@ -250,4 +250,52 @@ plt.xlim((-12,12))
 plt.ylabel('Cross Correlation')
 plt.title("Melatonin-Light PRC Correlation")
 plt.grid()
+plt.show()
+
+
+# ------------- Shelby Plotting ----------------------
+
+# Macroscopic Light PRC 
+
+max_advance_idx = np.argmax(macro_light_response)
+max_delay_idx = np.argmin(macro_light_response)
+plt.plot(12*phi_rel_to_DLMO[phi_argsort]/np.pi,macro_light_response[phi_argsort],lw=5,color='goldenrod') # PRC 
+plt.plot(12*phi_rel_to_DLMO[phi_argsort]/np.pi, np.zeros_like(macro_light_response),'k--') # Line at 0
+plt.plot(list(repeat(12*phi_rel_to_DLMO[max_advance_idx]/np.pi,2)), [0,macro_light_response[max_advance_idx]],'o--',color='black') # Line of max advance 
+plt.plot(list(repeat(12*phi_rel_to_DLMO[max_delay_idx]/np.pi,2)), [0,macro_light_response[max_delay_idx]],'o--',color='black') # Line of max delay
+plt.xlabel("Time Relative to DLMO (hours)")
+plt.ylabel("Phase Response (radians/hour)")
+plt.title("Macroscopic Light Phase Response Curve")
+plt.xlim((-12,12))
+max_advance_time_light = abs(12*phi_rel_to_DLMO[max_advance_idx]/np.pi)
+max_delay_time_light = abs(12*phi_rel_to_DLMO[max_delay_idx]/np.pi)
+plt.show()
+
+# Macroscopic Melatonin PRC
+
+max_advance_idx = np.argmax(macro_response)
+max_delay_idx = np.argmin(macro_response)
+plt.plot(12*phi_rel_to_DLMO[phi_argsort]/np.pi,macro_response[phi_argsort],lw=5,color='mediumorchid')
+plt.plot(12*phi_rel_to_DLMO[phi_argsort]/np.pi, np.zeros_like(macro_response),'k--')
+plt.plot(list(repeat(12*phi_rel_to_DLMO[max_advance_idx]/np.pi,2)), [0,macro_response[max_advance_idx]],'ko--')
+plt.plot(list(repeat(12*phi_rel_to_DLMO[max_delay_idx]/np.pi,2)), [0,macro_response[max_delay_idx]],'ko--')
+plt.xlabel("Time Relative to DLMO (hours)")
+plt.ylabel("Phase Response (radians/hour)")
+plt.title("Macroscopic Melatonin Phase Response Curve")
+plt.xlim((-12,12))
+max_advance_time_mel = abs(12*phi_rel_to_DLMO[max_advance_idx]/np.pi)
+max_delay_time_mel = abs(12*phi_rel_to_DLMO[max_delay_idx]/np.pi)
+plt.show()
+
+
+
+# Cross Correlation
+plt.plot(12*phi/np.pi,cross_cor,lw=5,color='forestgreen')
+plt.plot(12*phi/np.pi,np.zeros_like(phi),'k--')
+plt.plot(list(repeat(12*phi[max_alignment_idx]/np.pi,2)), [0,cross_cor[max_alignment_idx]],'ko--')
+hours_out = -12*phi[max_alignment_idx]/np.pi
+plt.xlabel('Phase Delay (hours)')
+plt.xlim((-12,12))
+plt.ylabel('Cross Correlation')
+plt.title("Melatonin-Light PRC Correlation")
 plt.show()
