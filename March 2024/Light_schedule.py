@@ -10,7 +10,7 @@ Code to generate plot of light level
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+'''
 #------------- Standard Light Schedule (16:8) --------------
 
 j = 2 # Number of days to be plotted
@@ -124,7 +124,7 @@ plt.plot(range(0,n),WyattBaseline_lightschedule)
 plt.title("Wyatt 2006 Light:Dark Schedule")
 plt.show()
 
-'''
+
 #------------------- Burgess 2008 Ultradian Light Schedule ------------
 
 j = 1 # Number of days to be plotted
@@ -229,7 +229,7 @@ plt.axvline(100)
 #plt.axvline(6.5)
 plt.show()
 
-'''
+
 
 
 # ---------- Zeitzer 2 Days of Protocol ----------
@@ -380,6 +380,254 @@ plt.ylabel('Light Intensity (lux)')
 plt.legend(['DLMO','Exogenous Melatonin Dose'])
 #plt.axvline(6.5)
 plt.show()        
+
+'''
+ 
+
+# ---------- Dawson 1995 7 Days of Protocol ----------
+# Intervention 1: Bright Light
+j = 7
+
+n = j*24
+
+DawsonProtocol_lightschedule = list()
+
+for t in range(0,n): 
+    wake = 1000
+    dim = 50
+    dark = 0
+    free_time = 500 # Not a controlled level in the study
+    bright_light = 4000 # Intervention, set to 50 for placebo 
+    
+    if 0 <= t < 24*1: # Enter the lab
+    
+        if t < 7:
+            lux = dark
+        else: 
+            lux = wake
+            
+        DawsonProtocol_lightschedule.append(lux)
+
+    elif 24*1 <= t < 24*2: # Adaption Day, first baseline DLMO assessement 
+        t = np.mod(t,24)
+        if t < 8:
+            lux = dark
+        elif 8 <= t < 16:
+            lux = wake
+        elif 16<= t < 23: 
+            lux = dim
+        else:
+            lux = dark
+            
+        DawsonProtocol_lightschedule.append(lux)
         
+    elif 24*2 <= t <  24*3: # Baseline Day, second baseline DLMO assessment
+        t = np.mod(t,24)
+        if t < 9: 
+            lux = dark
+        elif 9 <= t < 16:
+            lux = wake
+        elif 16 <= t < 23:
+            lux = dim
+        else:
+            lux = wake
+            
+        DawsonProtocol_lightschedule.append(lux)
         
+    elif 24*3 <= t <  24*4: # Day 1
+        t = np.mod(t,24)
+        if t < 4:
+            lux = bright_light
+        elif 4 <= t < 7:
+            lux = wake
+        elif 7 <= t < 9:
+            lux = dim 
+        elif 9 <= t < 17:
+            lux = dark
+        elif 17 <= t < 23:
+            lux = free_time
+        else: 
+            lux = wake
+            
+        DawsonProtocol_lightschedule.append(lux)
+    
+    elif 24*4 <= t <  24*5: # Day 2
+        t = np.mod(t,24)
+        if t < 4:
+            lux = bright_light
+        elif 4 <= t < 7:
+            lux = wake
+        elif 7 <= t < 9:
+            lux = dim 
+        elif 9 <= t < 17:
+            lux = dark
+        elif 17 <= t < 23:
+            lux = free_time
+        else: 
+            lux = wake
+            
+        DawsonProtocol_lightschedule.append(lux)
+    
+    elif 24*5 <= t <  24*6: # Day 3
+        t = np.mod(t,24)
+        if t < 4:
+            lux = bright_light
+        elif 4 <= t < 7:
+            lux = wake
+        elif 7 <= t < 9:
+            lux = dim 
+        elif 9 <= t < 17:
+            lux = dark
+        else: 
+            lux = dim
+            
+        DawsonProtocol_lightschedule.append(lux)
+    
+    elif 24*6 <= t <  24*7: # Day 4
+        lux = dim
+        
+        DawsonProtocol_lightschedule.append(lux)
+    
+
+plt.plot(range(0,n),DawsonProtocol_lightschedule,color='goldenrod')
+plt.xlabel('Time (hours)')
+plt.ylabel('Light Intensity (lux)')
+plt.title("Dawson 1995 Protocol")
+plt.axvline(24,linestyle='dashed',color='grey')
+plt.axvline(24*2,linestyle='dashed',color='grey')
+plt.axvline(24*3,linestyle='dashed',color='grey')
+plt.axvline(24*4,linestyle='dashed',color='grey')
+plt.axvline(24*5,linestyle='dashed',color='grey')
+plt.axvline(24*6,linestyle='dashed',color='grey')
+#plt.axvspan(21.25+(24*3), 3.75+(24*4), facecolor='gold', alpha=0.4)
+#plt.axvspan(21.25+(24*2), 3.75+(24*3), facecolor='grey', alpha=0.4)
+#plt.axvline(7+24,color='orange')
+#plt.axvline(23,color='orange')
+#plt.legend(['CBTmin'])
+plt.show()       
+    
+
+# ---------- Dawson 1995 7 Days of Protocol ----------
+# Intervention 2: Exogenous Melatonin
+j = 7
+
+n = j*24
+
+DawsonProtocol_lightschedule = list()
+
+for t in range(0,n): 
+    wake = 1000
+    dim = 50
+    dark = 0
+    free_time = 500 # Not a controlled level in the study
+    
+    if 0 <= t < 24*1: # Enter the lab
+    
+        if t < 7:
+            lux = dark
+        else: 
+            lux = wake
+            
+        DawsonProtocol_lightschedule.append(lux)
+
+    elif 24*1 <= t < 24*2: # Adaption Day, first baseline DLMO assessement 
+        t = np.mod(t,24)
+        if t < 8:
+            lux = dark
+        elif 8 <= t < 16:
+            lux = wake
+        elif 16<= t < 23: 
+            lux = dim
+        else:
+            lux = dark
+            
+        DawsonProtocol_lightschedule.append(lux)
+        
+    elif 24*2 <= t <  24*3: # Baseline Day, second baseline DLMO assessment
+        t = np.mod(t,24)
+        if t < 9: 
+            lux = dark
+        elif 9 <= t < 16:
+            lux = wake
+        elif 16 <= t < 23:
+            lux = dim
+        else:
+            lux = wake
+            
+        DawsonProtocol_lightschedule.append(lux)
+        
+    elif 24*3 <= t <  24*4: # Day 1
+        t = np.mod(t,24)
+        if t < 7:
+            lux = wake
+        elif 7 <= t < 9:
+            lux = dim 
+        elif 9 <= t < 17:
+            lux = dark
+        elif 17 <= t < 23:
+            lux = free_time
+        else: 
+            lux = wake
+            
+        DawsonProtocol_lightschedule.append(lux)
+    
+    elif 24*4 <= t <  24*5: # Day 2
+        t = np.mod(t,24)
+        if t < 7:
+            lux = wake
+        elif 7 <= t < 9:
+            lux = dim 
+        elif 9 <= t < 17:
+            lux = dark
+        elif 17 <= t < 23:
+            lux = free_time
+        else: 
+            lux = wake
+            
+        DawsonProtocol_lightschedule.append(lux)
+    
+    elif 24*5 <= t <  24*6: # Day 3
+        t = np.mod(t,24)
+        if t < 7:
+            lux = wake
+        elif 7 <= t < 9:
+            lux = dim 
+        elif 9 <= t < 17:
+            lux = dark
+        else: 
+            lux = dim
+            
+        DawsonProtocol_lightschedule.append(lux)
+    
+    elif 24*6 <= t <  24*7: # Day 4
+        lux = dim
+        
+        DawsonProtocol_lightschedule.append(lux)
+    
+
+plt.plot(range(0,n),DawsonProtocol_lightschedule,color='goldenrod')
+plt.xlabel('Time (hours)')
+plt.ylabel('Light Intensity (lux)')
+plt.title("Dawson 1995 Protocol")
+plt.axvline(24,linestyle='dashed',color='grey')
+plt.axvline(24*2,linestyle='dashed',color='grey')
+plt.axvline(24*3,linestyle='dashed',color='grey')
+plt.axvline(24*4,linestyle='dashed',color='grey')
+plt.axvline(24*5,linestyle='dashed',color='grey')
+plt.axvline(24*6,linestyle='dashed',color='grey')
+plt.axvline(8+24*3,color='hotpink')
+plt.axvline(8+24*4,color='hotpink')
+plt.axvline(8+24*5,color='hotpink')
+plt.axvline(11+24*3,color='hotpink')
+plt.axvline(11+24*4,color='hotpink')
+plt.axvline(11+24*5,color='hotpink')
+plt.axvline(14+24*3,color='hotpink')
+plt.axvline(14+24*4,color='hotpink')
+plt.axvline(14+24*5,color='hotpink')
+#plt.axvspan(21.25+(24*3), 3.75+(24*4), facecolor='gold', alpha=0.4)
+#plt.axvspan(21.25+(24*2), 3.75+(24*3), facecolor='grey', alpha=0.4)
+#plt.axvline(7+24,color='orange')
+#plt.axvline(23,color='orange')
+#plt.legend(['CBTmin'])
+plt.show()           
  
