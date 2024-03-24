@@ -254,8 +254,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -264,8 +264,8 @@ model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=3.0,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=22, melatonin_dosage=0.5,schedule=2) 
 
 
 
@@ -312,7 +312,7 @@ plt.show()
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
 plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
 plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
-plt.plot(model.ts,model.results[:,5]/4.3,lw=3,color='hotpink')
+#plt.plot(model.ts,model.results[:,5]/4.3,lw=3,color='hotpink')
 plt.axvline(x=DLMOff,color='black',linestyle='dotted') # Checking DLMOff
 plt.axvline(x=DLMO_H2,color='black',linestyle='dashed') # Checking DLMO
 #plt.axvline(x=20.6) # Checking pineal on 
