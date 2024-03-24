@@ -98,6 +98,169 @@ class HannayBreslowModel(object):
             
             return 0
         
+        elif schedule == 3: # Dawson 1995 - Bright light intervention
+            wake = 1000
+            wake_shift = 600
+            dim = 275
+            dark = 0
+            free_time = 500 # Not a controlled level in the study
+            bright_light = 7000 # Intervention, set to 50 for placebo 
+
+            
+            if 0 <= t < 24*1: # Enter the lab
+                if t < 7:
+                    lux = dark
+                    
+                else: 
+                    lux = wake
+                    
+            elif 24*1 <= t < 24*2: # Adaption Day, first baseline DLMO assessement 
+                t = np.mod(t,24)
+                if t < 8:
+                    lux = dark
+                elif 8 <= t < 16:
+                    lux = wake
+                elif 16 <= t < 23: 
+                    lux = dim
+                else:
+                    lux = dark
+                
+            elif 24*2 <= t <  24*3: # Baseline Day, second baseline DLMO assessment
+                t = np.mod(t,24)
+                if t < 9: 
+                    lux = dark
+                elif 9 <= t < 16:
+                    lux = wake
+                elif 16 <= t < 23:
+                    lux = dim
+                else:
+                    lux = wake_shift
+                
+            elif 24*3 <= t <  24*4: # Day 1
+                t = np.mod(t,24)
+                if t < 4:
+                    lux = bright_light
+                elif 4 <= t < 7:
+                    lux = wake_shift
+                elif 7 <= t < 9:
+                    lux = dim 
+                elif 9 <= t < 17:
+                    lux = dark
+                elif 17 <= t < 23:
+                    lux = free_time
+                else: 
+                    lux = wake_shift
+            
+            elif 24*4 <= t <  24*5: # Day 2
+                t = np.mod(t,24)
+                if t < 4:
+                    lux = bright_light
+                elif 4 <= t < 7:
+                    lux = wake_shift
+                elif 7 <= t < 9:
+                    lux = dim 
+                elif 9 <= t < 17:
+                    lux = dark
+                elif 17 <= t < 23:
+                    lux = free_time
+                else: 
+                    lux = wake_shift
+            
+            elif 24*5 <= t <  24*6: # Day 3
+                t = np.mod(t,24)
+                if t < 4:
+                    lux = bright_light
+                elif 4 <= t < 7:
+                    lux = wake_shift
+                elif 7 <= t < 9:
+                    lux = dim 
+                elif 9 <= t < 17:
+                    lux = dark
+                else: 
+                    lux = dim
+            
+            elif 24*6 <= t <=  24*7: # Day 4
+                lux = dim
+            
+            return lux 
+        
+        elif schedule == 4: # Dawson 1995 - exogenous melatonin intervention
+            wake = 1000
+            wake_shift = 600
+            dim = 275
+            dark = 0
+            free_time = 500 # Not a controlled level in the study, but does not matter in the model
+            
+            if 0 <= t < 24*1: # Enter the lab
+            
+                if t < 7:
+                    lux = dark
+                else: 
+                    lux = wake
+
+            elif 24*1 <= t < 24*2: # Adaption Day, first baseline DLMO assessement 
+                t = np.mod(t,24)
+                if t < 8:
+                    lux = dark
+                elif 8 <= t < 16:
+                    lux = wake
+                elif 16<= t < 23: 
+                    lux = dim
+                else:
+                    lux = dark
+                
+            elif 24*2 <= t <  24*3: # Baseline Day, second baseline DLMO assessment
+                t = np.mod(t,24)
+                if t < 9: 
+                    lux = dark
+                elif 9 <= t < 16:
+                    lux = wake
+                elif 16 <= t < 23:
+                    lux = dim
+                else:
+                    lux = wake_shift
+                
+            elif 24*3 <= t <  24*4: # Day 1
+                t = np.mod(t,24)
+                if t < 7:
+                    lux = wake_shift
+                elif 7 <= t < 9:
+                    lux = dim 
+                elif 9 <= t < 17:
+                    lux = dark
+                elif 17 <= t < 23:
+                    lux = free_time
+                else: 
+                    lux = wake_shift
+            
+            elif 24*4 <= t <  24*5: # Day 2
+                t = np.mod(t,24)
+                if t < 7:
+                    lux = wake_shift
+                elif 7 <= t < 9:
+                    lux = dim 
+                elif 9 <= t < 17:
+                    lux = dark
+                elif 17 <= t < 23:
+                    lux = free_time
+                else: 
+                    lux = wake_shift
+            
+            elif 24*5 <= t <  24*6: # Day 3
+                t = np.mod(t,24)
+                if t < 7:
+                    lux = wake_shift
+                elif 7 <= t < 9:
+                    lux = dim 
+                elif 9 <= t < 17:
+                    lux = dark
+                else: 
+                    lux = dim
+            
+            elif 24*6 <= t <=  24*7: # Day 4
+                lux = dim
+        
+        return lux
 
 # Define the alpha(L) function 
     def alpha0(self,t,schedule):
@@ -254,8 +417,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*7,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=3) 
 
 
 
@@ -264,8 +427,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=22, melatonin_dosage=0.5,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=22, melatonin_dosage=0.5,schedule=2) 
 
 
 
@@ -283,12 +446,28 @@ CBTmin = model.ts[CBTmin_index] # closest to psi = 3.14159
 # By threshold definition (10 pg/mL in plasma)
 DLMO_threshold = 10
 
-plasma_mel_concentrations = model.results[60:240,4]/4.3 # converting output to pg/mL
-times = model.ts[60:240] # defining times from first 24hrs 
+# Baseline DLMO 1
+plasma_mel_concentrations = model.results[300:480,4]/4.3 # converting output to pg/mL
+times = model.ts[300:480] # defining times from first 24hrs 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
-DLMO_H2 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_B1 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
 
+# Baseline DLMO 2
+plasma_mel_concentrations = model.results[550:700,4]/4.3 # converting output to pg/mL
+times = model.ts[550:700] # defining times from first 24hrs 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_B2 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+
+# Average the two baseline measurements 
+DLMO_av_baseline = (np.mod(DLMO_H2_B1,24) + np.mod(DLMO_H2_B2,24))/2
+
+
+# Final DLMO 
+plasma_mel_concentrations = model.results[1400:1500,4]/4.3 # converting output to pg/mL
+times = model.ts[1400:1500] # defining times from first 24hrs 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Final = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 
 #--------- Plot Model Output -------------------
 
@@ -314,7 +493,9 @@ plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
 plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
 #plt.plot(model.ts,model.results[:,5]/4.3,lw=3,color='hotpink')
 plt.axvline(x=DLMOff,color='black',linestyle='dotted') # Checking DLMOff
-plt.axvline(x=DLMO_H2,color='black',linestyle='dashed') # Checking DLMO
+plt.axvline(x=DLMO_H2_B1,color='black',linestyle='dashed') # Checking DLMO
+plt.axvline(x=DLMO_H2_B2,color='black',linestyle='dashed') # Checking DLMO
+plt.axvline(x=DLMO_H2_Final,color='black',linestyle='dashed') # Checking DLMO
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(5.7+24)
