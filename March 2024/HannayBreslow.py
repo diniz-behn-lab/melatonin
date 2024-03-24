@@ -359,6 +359,8 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(x=8.1)
 #plt.axvline(15)
+#plt.axvline(x=7)
+#plt.axvline(x=23)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.legend(["DLMO"])
