@@ -97,6 +97,184 @@ class HannayBreslowModel(object):
             
             return 0
         
+        elif schedule == 3: # Burke 2013 with light intervention 
+            wake = 1000
+            dim = 2
+            dark = 0
+            bright = 3000
+            
+            if 0 <= t < 24*1: # Enter the lab
+                if t < 7:
+                    lux = dark
+                elif 7 <= t < 19: 
+                    lux = wake
+                elif 19 <= t < 23:
+                    lux = dim
+                else:
+                    lux = dark
+
+            elif 24*1 <= t < 24*2: # Start of CR1 (28 h)
+                t = np.mod(t,24)
+                if t < 7:
+                    lux = dark
+                else:
+                    lux = dim
+                
+            elif 24*2 <= t <  24*3: 
+                t = np.mod(t,24)
+                if t < 11: 
+                    lux = dim
+                elif 11 <= t < 16:
+                    lux = dark
+                elif 16 <= t < 23:
+                    lux = dim
+                else:
+                    lux = dark
+                    
+            elif 24*3 <= t <  24*4: # Light intervention and start of CR2 (19h)
+                t = np.mod(t,24)
+                if t < 6:
+                    lux = dark
+                elif 6 <= t < 9:
+                    lux = bright 
+                else: 
+                    lux = dim
+            
+            elif 24*4 <= t <= 24*5: # Released from lab
+                t = np.mod(t,24)
+                if t < 4:
+                    lux = dim
+                elif 4 <= t < 10:
+                    lux = dark 
+                else: 
+                    lux = wake
+            
+            return lux
+        
+        elif schedule == 4: # Burke 2013 without light intervention 
+            wake = 1000
+            dim = 2
+            dark = 0
+            
+            if 0 <= t < 24*1: # Enter the lab
+                if t < 7:
+                    lux = dark
+                elif 7 <= t < 19: 
+                    lux = wake
+                elif 19 <= t < 23:
+                    lux = dim
+                else:
+                    lux = dark
+
+            elif 24*1 <= t < 24*2: # Start of CR1 (28 h)
+                t = np.mod(t,24)
+                if t < 7:
+                    lux = dark
+                else:
+                    lux = dim
+                
+            elif 24*2 <= t <  24*3: 
+                t = np.mod(t,24)
+                if t < 11: 
+                    lux = dim
+                elif 11 <= t < 16:
+                    lux = dark
+                elif 16 <= t < 23:
+                    lux = dim
+                else:
+                    lux = dark
+                    
+            elif 24*3 <= t <  24*4: # Start of CR2 (19h)
+                t = np.mod(t,24)
+                if t < 7:
+                    lux = dark
+                else: 
+                    lux = dim
+            
+            elif 24*4 <= t <= 24*5: # Released from lab
+                t = np.mod(t,24)
+                if t < 2:
+                    lux = dim
+                elif 2 <= t < 10:
+                    lux = dark 
+                else: 
+                    lux = wake
+            
+            return lux
+        
+        elif schedule == 5: # Burke 2013 without light intervention extended to 7 days
+            wake = 1000
+            dim = 2
+            dark = 0
+            
+            if 0 <= t < 24*1: # Enter the lab
+                if t < 7:
+                    lux = dark
+                elif 7 <= t < 19: 
+                    lux = wake
+                elif 19 <= t < 23:
+                    lux = dim
+                else:
+                    lux = dark
+
+            elif 24*1 <= t < 24*2: # Start of CR1 (28 h)
+                t = np.mod(t,24)
+                if t < 7:
+                    lux = dark
+                else:
+                    lux = dim
+                
+            elif 24*2 <= t <  24*3:# ex mel
+                t = np.mod(t,24)
+                if t < 11: 
+                    lux = dim
+                elif 11 <= t < 16:
+                    lux = dark
+                elif 16 <= t < 23:
+                    lux = dim
+                else:
+                    lux = dark
+                    
+            elif 24*3 <= t <  24*4: # ex mel
+                t = np.mod(t,24)
+                if t < 11: 
+                    lux = dim
+                elif 11 <= t < 16:
+                    lux = dark
+                elif 16 <= t < 23:
+                    lux = dim
+                else:
+                    lux = dark
+                    
+            elif 24*4 <= t <  24*5: # ex mel
+                t = np.mod(t,24)
+                if t < 11: 
+                    lux = dim
+                elif 11 <= t < 16:
+                    lux = dark
+                elif 16 <= t < 23:
+                    lux = dim
+                else:
+                    lux = dark
+                    
+            elif 24*5 <= t <  24*6: # Start of CR2 (19h)
+                t = np.mod(t,24)
+                if t < 7:
+                    lux = dark
+                else: 
+                    lux = dim
+            
+            elif 24*6 <= t <= 24*7: # Released from lab
+                t = np.mod(t,24)
+                if t < 4:
+                    lux = dim
+                elif 4 <= t < 10:
+                    lux = dark 
+                else: 
+                    lux = wake
+            
+            return lux
+        
 
 # Define the alpha(L) function 
     def alpha0(self,t,schedule):
@@ -111,28 +289,31 @@ class HannayBreslowModel(object):
         if melatonin_timing == None:
             return 0 # set exogenous melatonin to zero
         else: 
-            t = np.mod(t,24)
-            if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
-                sigma = np.sqrt(0.002)
-                mu = melatonin_timing+0.1
+            if 64 <= t <= 125:#66:
+                t = np.mod(t,24)
+                if melatonin_timing-0.1 <= t <= melatonin_timing+0.4:#+0.3:
+                    sigma = np.sqrt(0.002)
+                    mu = melatonin_timing+0.1
 
-                ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
-
-                x = np.arange(0, 1, 0.01)
-                melatonin_values = self.max_value(x, sigma)
-                max_value = max(melatonin_values)
-                #print(max_value)
+                    ex_mel = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(t-mu,2))/(2*pow(sigma,2))) # Guassian function
+                    
+                    x = np.arange(0, 1, 0.01)
+                    melatonin_values = self.max_value(x, sigma)
+                    max_value = max(melatonin_values)
+                    #print(max_value)
                 
-                converted_dose = self.mg_conversion(melatonin_dosage)
-                #print(converted_dose)
+                    converted_dose = self.mg_conversion(melatonin_dosage)
+                    #print(converted_dose)
             
-                normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
-                dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
+                    normalize_ex_mel = (1/max_value)*ex_mel # normalize the values so the max is 1
+                    dose_ex_mel = (converted_dose)*normalize_ex_mel # multiply by the dosage so the max = dosage
             
-                return dose_ex_mel        
-            else: 
+                    return dose_ex_mel        
+                else: 
+                    return 0
+            else:
                 return 0
-    
+            
 # Generate the curve for a 24h melatonin schedule so that the max value can be determined      
     def max_value(self, time, sigma):
         mu = 1/2
@@ -253,8 +434,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*7,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=5) 
 
 
 
@@ -263,30 +444,62 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=22, melatonin_dosage=0.5,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*7,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=5) 
 
 
 
 #--------- Find DLMO and CBTmin -----------
 
 # By Hannay model definition 
-psi_mod2pi = np.mod(model.results[0:240,1],2*np.pi)
+psi_mod2pi_Baseline = np.mod(model.results[330:500,1],2*np.pi)
 
-DLMO_index = min(range(len(psi_mod2pi)), key=lambda i: abs(psi_mod2pi[i]-1.30899))
-CBTmin_index = min(range(len(psi_mod2pi)), key=lambda i: abs(psi_mod2pi[i]-3.14159))
+DLMO_index = min(range(len(psi_mod2pi_Baseline)), key=lambda i: abs(psi_mod2pi_Baseline[i]-1.30899))
+CBTmin_index = min(range(len(psi_mod2pi_Baseline)), key=lambda i: abs(psi_mod2pi_Baseline[i]-3.14159))
 
-DLMO_psi = model.ts[DLMO_index] # closest to psi = 1.30899
-CBTmin = model.ts[CBTmin_index] # closest to psi = 3.14159
+DLMO_psi_Baseline = model.ts[DLMO_index+330] # closest to psi = 1.30899
+CBTmin_Baseline = model.ts[CBTmin_index+330] # closest to psi = 3.14159
+
+
+# By Hannay model definition 
+psi_mod2pi_Final = np.mod(model.results[810:980,1],2*np.pi)
+
+DLMO_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-1.30899))
+CBTmin_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-3.14159))
+
+DLMO_psi_Final = model.ts[DLMO_index+810] # closest to psi = 1.30899
+CBTmin_Final = model.ts[CBTmin_index+810] # closest to psi = 3.14159
+
+
 
 # By threshold definition (10 pg/mL in plasma)
 DLMO_threshold = 10
 
-plasma_mel_concentrations = model.results[60:240,4]/4.3 # converting output to pg/mL
-times = model.ts[60:240] # defining times from first 24hrs 
+# Baseline DLMO
+plasma_mel_concentrations = model.results[330:500,4]/4.3 # converting output to pg/mL
+times = model.ts[330:500] # defining times from first 24hrs 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
-DLMO_H2 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
-DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
+DLMO_H2_Baseline = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+#DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
+
+
+# Final DLMO
+plasma_mel_concentrations = model.results[810:980,4]/4.3 # converting output to pg/mL
+times = model.ts[810:980] # defining times from first 24hrs 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Final = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+#DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
+
+
+# Final DLMO
+plasma_mel_concentrations = model.results[1320:1400,4]/4.3 # converting output to pg/mL
+times = model.ts[1320:1400] # defining times from first 24hrs 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Final = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+#DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
+
+# Calculate Phase Shift 
+phase_shift = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
 
 
 #--------- Plot Model Output -------------------
@@ -312,17 +525,19 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
 plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
 #plt.plot(model.ts,model.results[:,5]/4.3,lw=3,color='hotpink')
-plt.axvline(x=DLMOff,color='black',linestyle='dotted') # Checking DLMOff
-plt.axvline(x=DLMO_H2,color='black',linestyle='dashed') # Checking DLMO
+plt.axvline(x=DLMO_H2_Baseline,color='black',linestyle='dashed') 
+plt.axvline(x=DLMO_H2_Final,color='black',linestyle='dashdot') 
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(5.7+24)
 #plt.axvline(CBTmin,color='grey')
+plt.axvline(65.25,color='hotpink')
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.axhline(10, color='black',lw=1)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 #plt.title("Melatonin Concentrations (pg/mL)")
-plt.legend(["Pineal","Plasma","Exogenous","DLMOff","DLMO"])
+plt.legend(["Pineal","Plasma","Baseline DLMO","Final DLMO"],loc='upper left')
 plt.show()
 
 
@@ -334,6 +549,8 @@ plt.plot(model.ts,model.results[:,0],lw=3,color='forestgreen')
 #plt.axvline(x=8.1)
 #plt.axvline(15)
 #plt.axvline(5.7+24)
+plt.axvline(65.25,color='hotpink')
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 #plt.title("Time Trace of R, Collective Amplitude")
@@ -349,7 +566,8 @@ plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting psi mod 2pi
-plt.axvline(x=DLMO_psi,color='black',linestyle='dashed') # Checking DLMO
+plt.axvline(x=DLMO_psi_Baseline,color='black',linestyle='dashed')
+plt.axvline(x=DLMO_psi_Final,color='black',linestyle='dashdot') # Checking DLMO
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'.',markersize=10,color='mediumturquoise')
 plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axhline(np.pi)
@@ -360,9 +578,11 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(15)
 #plt.axvline(x=7)
 #plt.axvline(x=23)
+plt.axvline(65.25,color='hotpink')
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
-plt.legend(["DLMO"])
+plt.legend(["Baseline DLMO","Final DLMO"],loc='upper left')
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
@@ -372,6 +592,8 @@ plt.show()
 plt.plot(model.ts,model.results[:,2],lw=3,color='goldenrod')
 #plt.axvline(x=7)
 #plt.axvline(x=23)
+plt.axvline(65.25,color='hotpink')
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("n, Proportion of Activated Photoreceptors")
 #plt.title("Time Trace of Photoreceptor Activation")
