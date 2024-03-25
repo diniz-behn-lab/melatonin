@@ -179,7 +179,7 @@ class HannayBreslowModel(object):
                     lux = dim
                 elif 11 <= t < 16:
                     lux = dark
-                elif 16 <= t < 23:
+                elif 16 <= t < 23: #16 <= t < 23:
                     lux = dim
                 else:
                     lux = dark
@@ -289,9 +289,9 @@ class HannayBreslowModel(object):
         if melatonin_timing == None:
             return 0 # set exogenous melatonin to zero
         else: 
-            if 64 <= t <= 125:#66:
+            if 60 <= t <= 66:#64 <= t <= 66:
                 t = np.mod(t,24)
-                if melatonin_timing-0.1 <= t <= melatonin_timing+0.4:#+0.3:
+                if melatonin_timing-0.1 <= t <= melatonin_timing+0.3:
                     sigma = np.sqrt(0.002)
                     mu = melatonin_timing+0.1
 
@@ -434,8 +434,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-model = HannayBreslowModel()
-model.integrateModel(24*7,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=5) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
 
 
 
@@ -444,8 +444,8 @@ model.integrateModel(24*7,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*7,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=5) 
+model = HannayBreslowModel()
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=15.25, melatonin_dosage=5.0,schedule=4) 
 
 
 
@@ -490,13 +490,14 @@ plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all 
 DLMO_H2_Final = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 #DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
 
-
+'''
 # Final DLMO
 plasma_mel_concentrations = model.results[1320:1400,4]/4.3 # converting output to pg/mL
 times = model.ts[1320:1400] # defining times from first 24hrs 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2_Final = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 #DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
+'''
 
 # Calculate Phase Shift 
 phase_shift = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
@@ -531,8 +532,9 @@ plt.axvline(x=DLMO_H2_Final,color='black',linestyle='dashdot')
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(5.7+24)
 #plt.axvline(CBTmin,color='grey')
-plt.axvline(65.25,color='hotpink')
-plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.axvline(63,color='hotpink') # 15 h dose
+#plt.axvline(65.25,color='hotpink') # 17.25 h dose
+#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.axhline(10, color='black',lw=1)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
@@ -549,8 +551,9 @@ plt.plot(model.ts,model.results[:,0],lw=3,color='forestgreen')
 #plt.axvline(x=8.1)
 #plt.axvline(15)
 #plt.axvline(5.7+24)
-plt.axvline(65.25,color='hotpink')
-plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.axvline(63,color='hotpink') # 15 h dose
+#plt.axvline(65.25,color='hotpink') # 17.25 h dose
+#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 #plt.title("Time Trace of R, Collective Amplitude")
@@ -578,8 +581,9 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(15)
 #plt.axvline(x=7)
 #plt.axvline(x=23)
-plt.axvline(65.25,color='hotpink')
-plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.axvline(63,color='hotpink') # 15 h dose
+#plt.axvline(65.25,color='hotpink') # 17.25 h dose
+#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.legend(["Baseline DLMO","Final DLMO"],loc='upper left')
@@ -592,8 +596,9 @@ plt.show()
 plt.plot(model.ts,model.results[:,2],lw=3,color='goldenrod')
 #plt.axvline(x=7)
 #plt.axvline(x=23)
-plt.axvline(65.25,color='hotpink')
-plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.axvline(63,color='hotpink') # 15 h dose
+#plt.axvline(65.25,color='hotpink') # 17.25 h dose
+#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("n, Proportion of Activated Photoreceptors")
 #plt.title("Time Trace of Photoreceptor Activation")
