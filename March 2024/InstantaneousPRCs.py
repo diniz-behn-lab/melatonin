@@ -137,7 +137,7 @@ plt.show()
 
 # Macroscopic PRC to melatonin
 Mhat = 0.5*0.019513
-R = 0.83 # THIS CHOICE MATTERS !!!
+R = 0.88#0.83 # THIS CHOICE MATTERS !!!
 macro_prc = lambda phi: epsilon*Mhat-B1*Mhat*0.5*(pow(R,3.0)+1.0/R)*np.sin(phi+theta1)-B2*Mhat*0.5*(1.0+pow(R,8.0))*np.sin(2.0*phi+theta2)
 macro_response = macro_prc(phi)
 
