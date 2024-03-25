@@ -445,7 +445,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin dosage to a mg amount
 
 model = HannayBreslowModel()
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=15.25, melatonin_dosage=5.0,schedule=4) 
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
 
 
 
@@ -532,10 +532,11 @@ plt.axvline(x=DLMO_H2_Final,color='black',linestyle='dashdot')
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(5.7+24)
 #plt.axvline(CBTmin,color='grey')
-plt.axvline(63,color='hotpink') # 15 h dose
-#plt.axvline(65.25,color='hotpink') # 17.25 h dose
-#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+#plt.axvline(63,color='hotpink') # 15 h dose
+plt.axvline(65.25,color='hotpink') # 17.25 h dose
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.axhline(10, color='black',lw=1)
+plt.ylim([-3,73])
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 #plt.title("Melatonin Concentrations (pg/mL)")
@@ -551,9 +552,9 @@ plt.plot(model.ts,model.results[:,0],lw=3,color='forestgreen')
 #plt.axvline(x=8.1)
 #plt.axvline(15)
 #plt.axvline(5.7+24)
-plt.axvline(63,color='hotpink') # 15 h dose
-#plt.axvline(65.25,color='hotpink') # 17.25 h dose
-#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+#plt.axvline(63,color='hotpink') # 15 h dose
+plt.axvline(65.25,color='hotpink') # 17.25 h dose
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 #plt.title("Time Trace of R, Collective Amplitude")
@@ -581,9 +582,9 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(15)
 #plt.axvline(x=7)
 #plt.axvline(x=23)
-plt.axvline(63,color='hotpink') # 15 h dose
-#plt.axvline(65.25,color='hotpink') # 17.25 h dose
-#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+#plt.axvline(63,color='hotpink') # 15 h dose
+plt.axvline(65.25,color='hotpink') # 17.25 h dose
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.legend(["Baseline DLMO","Final DLMO"],loc='upper left')
