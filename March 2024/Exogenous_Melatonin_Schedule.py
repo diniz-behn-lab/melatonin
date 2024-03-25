@@ -198,7 +198,7 @@ plt.show()
 
 # Guassian function 
 T = np.linspace(0,1,100)
-sigma = np.sqrt(0.002)
+sigma = np.sqrt(0.0002)#np.sqrt(0.002)
 mu = 1/2
 
 Guassian = (1/sigma*np.sqrt(2*np.pi))*np.exp((-pow(T-mu,2))/(2*pow(sigma,2)))
