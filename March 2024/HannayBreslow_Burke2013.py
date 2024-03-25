@@ -186,8 +186,10 @@ class HannayBreslowModel(object):
                     
             elif 24*3 <= t <  24*4: # Start of CR2 (19h)
                 t = np.mod(t,24)
-                if t < 7:
+                if t < 6:
                     lux = dark
+                elif 6 <= t < 9:
+                    lux = dim 
                 else: 
                     lux = dim
             
@@ -259,8 +261,10 @@ class HannayBreslowModel(object):
                     
             elif 24*5 <= t <  24*6: # Start of CR2 (19h)
                 t = np.mod(t,24)
-                if t < 7:
+                if t < 6:
                     lux = dark
+                elif 6 <= t < 9:
+                    lux = dim 
                 else: 
                     lux = dim
             
@@ -435,7 +439,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 #model = HannayBreslowModel()
-#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=5) 
 
 
 
@@ -445,7 +449,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin dosage to a mg amount
 
 model = HannayBreslowModel()
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=4) 
 
 
 
@@ -469,6 +473,17 @@ CBTmin_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Fi
 
 DLMO_psi_Final = model.ts[DLMO_index+810] # closest to psi = 1.30899
 CBTmin_Final = model.ts[CBTmin_index+810] # closest to psi = 3.14159
+
+'''
+# By Hannay model definition 
+psi_mod2pi_Final = np.mod(model.results[1320:1400,1],2*np.pi)
+
+DLMO_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-1.30899))
+CBTmin_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-3.14159))
+
+DLMO_psi_Final = model.ts[DLMO_index+1320] # closest to psi = 1.30899
+CBTmin_Final = model.ts[CBTmin_index+1320] # closest to psi = 3.14159
+'''
 
 
 
@@ -534,7 +549,9 @@ plt.axvline(x=DLMO_H2_Final,color='black',linestyle='dashdot')
 #plt.axvline(CBTmin,color='grey')
 #plt.axvline(63,color='hotpink') # 15 h dose
 plt.axvline(65.25,color='hotpink') # 17.25 h dose
-plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.axvline(65.25+24,color='hotpink') # 17.25 h dose
+plt.axvline(65.25+24+24,color='hotpink') # 17.25 h dose
+#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.axhline(10, color='black',lw=1)
 plt.ylim([-3,73])
 plt.xlabel("Clock Time (hours)")
@@ -554,7 +571,9 @@ plt.plot(model.ts,model.results[:,0],lw=3,color='forestgreen')
 #plt.axvline(5.7+24)
 #plt.axvline(63,color='hotpink') # 15 h dose
 plt.axvline(65.25,color='hotpink') # 17.25 h dose
-plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.axvline(65.25+24,color='hotpink') # 17.25 h dose
+plt.axvline(65.25+24+24,color='hotpink') # 17.25 h dose
+#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 #plt.title("Time Trace of R, Collective Amplitude")
@@ -584,7 +603,9 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(x=23)
 #plt.axvline(63,color='hotpink') # 15 h dose
 plt.axvline(65.25,color='hotpink') # 17.25 h dose
-plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.axvline(65.25+24,color='hotpink') # 17.25 h dose
+plt.axvline(65.25+24+24,color='hotpink') # 17.25 h dose
+#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Psi, Mean Phase (radians)")
 plt.legend(["Baseline DLMO","Final DLMO"],loc='upper left')
