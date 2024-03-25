@@ -381,7 +381,6 @@ plt.legend(['DLMO','Exogenous Melatonin Dose'])
 #plt.axvline(6.5)
 plt.show()        
 
-'''
  
 
 # ---------- Dawson 1995 7 Days of Protocol ----------
@@ -629,5 +628,98 @@ plt.axvline(14+24*5,color='hotpink')
 #plt.axvline(7+24,color='orange')
 #plt.axvline(23,color='orange')
 #plt.legend(['CBTmin'])
-plt.show()           
+plt.show()     
+
+
+'''
+
+# ---------- Burke 2013 5 Day Protocol ----------
+# Intervention 1: Bright morning light 
+j = 5
+
+n = j*24
+
+BurkeProtocol_lightschedule = list()
+
+for t in range(0,n): 
+    wake = 1000
+    dim = 2
+    dark = 0
+    bright = 3000
+    
+    if 0 <= t < 24*1: # Enter the lab
+        if t < 7:
+            lux = dark
+        elif 7 <= t < 19: 
+            lux = wake
+        elif 19 <= t < 23:
+            lux = dim
+        else:
+            lux = dark
+            
+        BurkeProtocol_lightschedule.append(lux)
+
+    elif 24*1 <= t < 24*2: # Start of CR1 (28 h)
+        t = np.mod(t,24)
+        if t < 7:
+            lux = dark
+        else:
+            lux = dim
+            
+        BurkeProtocol_lightschedule.append(lux)
+        
+    elif 24*2 <= t <  24*3: 
+        t = np.mod(t,24)
+        if t < 11: 
+            lux = dim
+        elif 11 <= t < 16:
+            lux = dark
+        elif 16 <= t < 23:
+            lux = dim
+        else:
+            lux = dark
+            
+        BurkeProtocol_lightschedule.append(lux)
+        
+    elif 24*3 <= t <  24*4: # Light intervention and start of CR2 (19h)
+        t = np.mod(t,24)
+        if t < 6:
+            lux = dark
+        elif 6 <= t < 9:
+            lux = bright 
+        else: 
+            lux = dim
+            
+        BurkeProtocol_lightschedule.append(lux)
+    
+    elif 24*4 <= t <  24*5: # Day 2
+        t = np.mod(t,24)
+        if t < 4:
+            lux = dim
+        elif 4 <= t < 10:
+            lux = dark 
+        else: 
+            lux = wake
+            
+        BurkeProtocol_lightschedule.append(lux)
+    
+    
+
+plt.plot(range(0,n),BurkeProtocol_lightschedule,color='goldenrod')
+plt.xlabel('Time (hours)')
+plt.ylabel('Light Intensity (lux)')
+plt.title("Burke 2013 Protocol")
+plt.axvline(24,linestyle='dashed',color='grey')
+plt.axvline(24*2,linestyle='dashed',color='grey')
+plt.axvline(24*3,linestyle='dashed',color='grey')
+plt.axvline(24*4,linestyle='dashed',color='grey')
+plt.axvline(17.25+(24*2),color='hotpink')
+#plt.axvspan(21.25+(24*3), 3.75+(24*4), facecolor='gold', alpha=0.4)
+#plt.axvspan(21.25+(24*2), 3.75+(24*3), facecolor='grey', alpha=0.4)
+#plt.axvline(7+24,color='orange')
+#plt.axvline(23,color='orange')
+#plt.legend(['CBTmin'])
+plt.show()     
+      
  
+
