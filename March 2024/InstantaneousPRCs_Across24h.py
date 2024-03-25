@@ -15,8 +15,9 @@ model entrained and the light changing dynamically
 
 import numpy as np
 import matplotlib.pyplot as plt
-from itertools import repeat
 
+#from itertools import repeat
+'''
 
 # Create array of light levels 
 
@@ -185,7 +186,7 @@ for t in range(0,24):
 plt.plot(np.linspace(0,23,24),Hours_Out)
 plt.show()
 
-
+'''
 
 # ---- Do it again, but with finer resolution -----------
 
@@ -758,10 +759,12 @@ for t in range(0,240):
     Hours_Out.append(hours_out)
     
 plt.rcParams.update({'font.size': 15})
-plt.plot(np.linspace(0,230,240)/10,Hours_Out,lw=3,color='mediumturquoise')
+plt.plot(np.linspace(0,239,240)/10,Hours_Out,lw=3,color='mediumturquoise')
 plt.xlabel("Clock Time (hours)")
 plt.ylabel("Hours Out of Phase (h)")
-plt.ylim([10.7,12.1])
+plt.title("Correlation Across the Day")
+plt.ylim([10.7,11.2])
+plt.xlim([7.5,22.5])
 
 maximum = max(Hours_Out)
 minimum = min(Hours_Out)

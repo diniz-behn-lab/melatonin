@@ -139,8 +139,8 @@ plt.show()
 
 
 # Macroscopic PRC to melatonin
-Mhat = 0.5*0.019513
-R = 0.83 # THIS CHOICE MATTERS !!!
+Mhat = 0.019513/(1 + np.exp((301 - 4.10668)/(17.5))) 
+R = 0.75969 # 0.83 # THIS CHOICE MATTERS !!!
 macro_prc = lambda phi: epsilon*Mhat-B1*Mhat*0.5*(pow(R,3.0)+1.0/R)*np.sin(phi+theta1)-B2*Mhat*0.5*(1.0+pow(R,8.0))*np.sin(2.0*phi+theta2)
 macro_response = macro_prc(phi)
 
@@ -274,7 +274,7 @@ max_advance_time_light = abs(12*phi_rel_to_DLMO[max_advance_idx]/np.pi)
 max_delay_time_light = abs(12*phi_rel_to_DLMO[max_delay_idx]/np.pi)
 plt.show()
 
-'''
+
 # Macroscopic Melatonin PRC
 
 max_advance_idx = np.argmax(macro_response)
@@ -290,7 +290,7 @@ plt.xlim((-12,12))
 max_advance_time_mel = abs(12*phi_rel_to_DLMO[max_advance_idx]/np.pi)
 max_delay_time_mel = abs(12*phi_rel_to_DLMO[max_delay_idx]/np.pi)
 plt.show()
-'''
+
 
 
 # Cross Correlation
