@@ -16,7 +16,7 @@ Plotting the instantaneous phase response curves to light and melatonin
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+'''
 psi = np.linspace(0,2*np.pi,100)
 
 # ---------------- Instantaneous PRC to Light -----------
@@ -92,11 +92,14 @@ plt.legend(["Melatonin PRC","Light PRC","DLMO","CBTmin"])
 plt.xlabel('Psi')
 plt.ylabel('Instantaneous Phase Response')
 plt.show()
-
+'''
 
 # ----------- Modified from Will's code: prcs_galore.py ------
 
 from itertools import repeat
+
+# Corrected Hsat and sigma_M 
+x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!! 
 
 B1 = x[0]
 theta1 = x[1] 
@@ -271,6 +274,7 @@ max_advance_time_light = abs(12*phi_rel_to_DLMO[max_advance_idx]/np.pi)
 max_delay_time_light = abs(12*phi_rel_to_DLMO[max_delay_idx]/np.pi)
 plt.show()
 
+'''
 # Macroscopic Melatonin PRC
 
 max_advance_idx = np.argmax(macro_response)
@@ -286,7 +290,7 @@ plt.xlim((-12,12))
 max_advance_time_mel = abs(12*phi_rel_to_DLMO[max_advance_idx]/np.pi)
 max_delay_time_mel = abs(12*phi_rel_to_DLMO[max_delay_idx]/np.pi)
 plt.show()
-
+'''
 
 
 # Cross Correlation
