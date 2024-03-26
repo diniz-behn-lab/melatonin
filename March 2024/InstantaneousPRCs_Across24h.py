@@ -766,7 +766,7 @@ plt.title("Correlation Across the Day")
 plt.ylim([10.7,11.2])
 plt.xlim([7.5,22.5])
 
-maximum = max(Hours_Out)
-minimum = min(Hours_Out)
+maximum = max(Hours_Out[75:225])
+minimum = min(Hours_Out[75:225])
 
 
