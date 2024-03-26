@@ -438,8 +438,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-model = HannayBreslowModel()
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
 
 
 
@@ -448,8 +448,8 @@ model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=4) 
+model = HannayBreslowModel()
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
 
 
 
@@ -520,6 +520,8 @@ phase_shift = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
 
 #--------- Plot Model Output -------------------
 
+plt.rcParams.update({'font.size': 15})
+
 '''
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
@@ -570,13 +572,14 @@ plt.plot(model.ts,model.results[:,0],lw=5,color='forestgreen')
 #plt.axvline(15)
 #plt.axvline(5.7+24)
 #plt.axvline(63,color='hotpink') # 15 h dose
-#plt.axvline(65.25,color='mediumvioletred',lw=3) # 17.25 h dose
+plt.axvline(65.25,color='mediumvioletred',lw=3) # 17.25 h dose
 #plt.axvline(65.25+24,color='hotpink') # 17.25 h dose
 #plt.axvline(65.25+24+24,color='hotpink') # 17.25 h dose
-#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.ylim([0.675,0.899])
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
-plt.title("DLP")
+plt.title("BLM")
 plt.show()
 
 
