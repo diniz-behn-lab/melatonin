@@ -439,7 +439,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=3) 
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
 
 
 
@@ -449,7 +449,7 @@ model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin dosage to a mg amount
 
 #model = HannayBreslowModel()
-#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=4) 
 
 
 
@@ -563,20 +563,20 @@ plt.show()
 
 
 # Plotting R
-plt.plot(model.ts,model.results[:,0],lw=3,color='forestgreen')
+plt.plot(model.ts,model.results[:,0],lw=5,color='forestgreen')
 #plt.axvline(x=20.6)
 #plt.axvline(x=5.7)
 #plt.axvline(x=8.1)
 #plt.axvline(15)
 #plt.axvline(5.7+24)
 #plt.axvline(63,color='hotpink') # 15 h dose
-#plt.axvline(65.25,color='hotpink') # 17.25 h dose
+#plt.axvline(65.25,color='mediumvioletred',lw=3) # 17.25 h dose
 #plt.axvline(65.25+24,color='hotpink') # 17.25 h dose
 #plt.axvline(65.25+24+24,color='hotpink') # 17.25 h dose
-plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
-plt.xlabel("Clock Time (hours)")
+#plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
-plt.title("BLP")
+plt.title("DLP")
 plt.show()
 
 

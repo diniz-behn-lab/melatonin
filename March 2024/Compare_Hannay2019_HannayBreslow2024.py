@@ -435,8 +435,8 @@ DLMOff_HannayBreslow = times[plasma_mel[0]] # finding the time corresponding to 
 # Plotting R
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,0],lw=5,color='forestgreen')
 plt.plot(model_Hannay.ts,model_Hannay.results[:,0],lw=3,color='black',linestyle='dashed')
-plt.xlabel("Clock Time (hours)")
-plt.ylabel("R, Collective Amplitude")
+plt.xlabel("Time (hours)")
+plt.ylabel("$R$, Collective Amplitude")
 plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
 #plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
@@ -461,7 +461,7 @@ plt.plot(model_Hannay.ts[144:382],np.mod(model_Hannay.results[144:382,1],2*np.pi
 plt.plot(model_Hannay.ts[383:479],np.mod(model_Hannay.results[383:479,1],2*np.pi),color='black',lw=3,linestyle='dashed') # '.',markersize=3,
 #plt.axvline(DLMO_psi_HannayBreslow,color='grey')
 #plt.axvline(DLMO_psi_Hannay,color='black',linestyle='dashed')
-plt.axhline(5*np.pi/12, color='black',lw=1)
+plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axhline(5*np.pi/12)
 #plt.axhline(np.pi)
 #plt.axvline(DLMO)
@@ -469,8 +469,8 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(21)
-plt.xlabel("Clock Time (hours)")
-plt.ylabel("Psi, Mean Phase (radians)")
+plt.xlabel("Time (hours)")
+plt.ylabel("$\Psi$, Mean Phase (radians)")
 plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
@@ -480,8 +480,8 @@ plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,2],lw=5,color='gol
 plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=3,linestyle='dashed',color='black')
 #plt.axvline(x=7)
 #plt.axvline(x=23)
-plt.xlabel("Clock Time (hours)")
-plt.ylabel("Proportion of Activated Photoreceptors")
+plt.xlabel("Time (hours)")
+plt.ylabel("$n$, Activated Photoreceptors")
 plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
 #plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
@@ -496,7 +496,7 @@ plt.axvline(x=DLMO_H2_HannayBreslow,color='grey') # Checking DLMO
 #plt.axvline(x=20) # Checking pineal on 
 #plt.axvline(x=5.7+24) # Checking pineal off
 plt.axhline(10, color='black',lw=1)
-plt.xlabel("Clock Time (hours)")
+plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 #plt.title("Melatonin Concentrations (pg/mL)")
 plt.legend(["Pineal","Plasma","Exogenous","DLMOff","DLMO"])

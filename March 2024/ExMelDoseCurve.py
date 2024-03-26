@@ -24,10 +24,10 @@ y = [45, 150, 400, 2000, 6500] # pg/mL (plasma)
 x_line = np.linspace(0,10,100);
 y_line = 5.3861*pow(x_line,3) - 30.502*pow(x_line,2) + 415.01*(x_line) + 14.06;
 
-plt.plot(x_line,y_line,lw=3,color='hotpink')
-plt.plot(x,y,'o',color='black')
+plt.plot(x_line,y_line,lw=5,color='mediumvioletred')
+plt.plot(x,y,'o',color='black',markersize=8)
 plt.yscale('log')
 plt.ylim([10,10000])
 plt.title('Exogenous Melatonin Dosing Curve')
 plt.xlabel('Exogenous Melatonin Dose (mg)')
-plt.ylabel('Peak Plasma Melatonin Concentration (pg/mL)')
+plt.ylabel('Plasma Melatonin (pg/mL)')

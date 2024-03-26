@@ -255,7 +255,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*1,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -310,20 +310,21 @@ plt.show()
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
-plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
-plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
-#plt.plot(model.ts,model.results[:,5]/4.3,lw=3,color='hotpink')
-plt.axvline(x=DLMOff,color='black',linestyle='dotted') # Checking DLMOff
-plt.axvline(x=DLMO_H2,color='black',linestyle='dashed') # Checking DLMO
+plt.plot(model.ts,model.results[:,3]/4.3,lw=5,color='darkblue')
+plt.plot(model.ts,model.results[:,4]/4.3,lw=5,color='mediumpurple')
+plt.plot(model.ts,model.results[:,5]/4.3,lw=5,color='mediumvioletred')
+plt.axvline(x=DLMOff,color='black',linestyle='dotted',lw=3) # Checking DLMOff
+plt.axvline(x=DLMO_H2,color='black',linestyle='dashed',lw=3) # Checking DLMO
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(5.7+24)
 #plt.axvline(CBTmin,color='grey')
-plt.axhline(10, color='black',lw=1)
-plt.xlabel("Clock Time (hours)")
+plt.axhline(10, color='black',lw=2)
+plt.ylim(-3,75)
+plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-#plt.title("Melatonin Concentrations (pg/mL)")
-plt.legend(["Pineal","Plasma","Exogenous","DLMOff","DLMO"])
+plt.title("Constant Dark Condition")
+plt.legend(["Pineal","Plasma","Exogenous","DLMOff","DLMO"],loc='upper right')
 plt.show()
 
 
@@ -350,9 +351,9 @@ plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting psi mod 2pi
-plt.axvline(x=DLMO_psi,color='black',linestyle='dashed') # Checking DLMO
+plt.axvline(x=DLMO_psi,color='black',linestyle='dashed',lw=3) # Checking DLMO
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'.',markersize=10,color='mediumturquoise')
-plt.axhline(5*np.pi/12, color='black',lw=1)
+plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axhline(np.pi)
 #plt.axvline(CBTmin)
 #plt.axvline(x=20.6) # Checking pineal on 
@@ -361,8 +362,8 @@ plt.axhline(5*np.pi/12, color='black',lw=1)
 #plt.axvline(15)
 #plt.axvline(x=7)
 #plt.axvline(x=23)
-plt.xlabel("Clock Time (hours)")
-plt.ylabel("Psi, Mean Phase (radians)")
+plt.xlabel("Time (hours)")
+plt.ylabel("$\Psi$, Mean Phase (radians)")
 plt.legend(["DLMO"])
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()

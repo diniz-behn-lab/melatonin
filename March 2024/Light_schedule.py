@@ -10,7 +10,7 @@ Code to generate plot of light level
 import numpy as np
 import matplotlib.pyplot as plt
 
-'''
+
 #------------- Standard Light Schedule (16:8) --------------
 
 j = 2 # Number of days to be plotted
@@ -33,13 +33,15 @@ for t in range(0, n):
     standard_lightschedule.append(is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up)))
 
         
-plt.plot(range(0,n),standard_lightschedule,color='goldenrod')
-plt.title("Standard Light:Dark Schedule (16:8)")
+plt.plot(range(0,n),standard_lightschedule,color='black',lw=3)
+plt.title("Standard Light:Dark Schedule")
+plt.xlabel('Time (hours)')
+plt.ylabel('Light Intensity (lux)')
 #plt.axvline(7)
 plt.show()
 
 
-    
+'''
 #------------- Light at Night Light Schedule (16:8) --------------
 
 j = 2 # Number of days to be plotted
@@ -266,7 +268,7 @@ plt.axvline(24,linestyle='dashed')
 #plt.axvline(6.5)
 plt.show()
 
-
+'''
 
 # ---------- Zeitzer 5 Days of Protocol ----------
 
@@ -308,15 +310,16 @@ for t in range(0,n):
         else:
             ZeitzerProtocol_lightschedule.append(dim_light)
     
-plt.axvline(4+(24*4),color='black',linestyle='dashdot')
-plt.plot(range(0,n),ZeitzerProtocol_lightschedule,color='goldenrod')
+plt.axvline(4+(24*4),linestyle='dashed',lw=3,color='darkgrey')
+plt.plot(range(0,n),ZeitzerProtocol_lightschedule,color='black',lw=3)
+plt.axvline(4+(24*4),linestyle='dashed',lw=3,color='darkgrey')
 plt.xlabel('Time (hours)')
 plt.ylabel('Light Intensity (lux)')
-plt.title("Zeitzer 2000 Protocol Light:Dark Schedule")
-plt.axvline(24,linestyle='dashed',color='grey')
-plt.axvline(24*2,linestyle='dashed',color='grey')
-plt.axvline(24*3,linestyle='dashed',color='grey')
-plt.axvline(24*4,linestyle='dashed',color='grey')
+plt.title("Zeitzer 2000 Protocol")
+#plt.axvline(24,linestyle='dashed',color='grey')
+#plt.axvline(24*2,linestyle='dashed',color='grey')
+#plt.axvline(24*3,linestyle='dashed',color='grey')
+#plt.axvline(24*4,linestyle='dashed',color='grey')
 plt.axvspan(21.25+(24*3), 3.75+(24*4), facecolor='gold', alpha=0.4)
 plt.axvspan(21.25+(24*2), 3.75+(24*3), facecolor='grey', alpha=0.4)
 #plt.axvline(7+24,color='orange')
@@ -366,22 +369,24 @@ for t in range(0,n):
        
 plt.axvline(21,color='black',linestyle='dashed')        
 plt.axvline(dose_time+24,color='hotpink')       
-plt.plot(range(0,n),BurgessProtocol_lightschedule,color='goldenrod')
-plt.title("Burgess 2008/2010 Protocol Light:Dark Schedule")
-plt.axvline(dose_time+24+24,color='hotpink')
-plt.axvline(dose_time+24+24+24,color='hotpink')
-plt.axvline(24,linestyle='dashed',color='grey')
-plt.axvline(24*2,linestyle='dashed',color='grey')
-plt.axvline(24*3,linestyle='dashed',color='grey')
-plt.axvline(24*4,linestyle='dashed',color='grey')
-plt.ylim([-1, 70])
+plt.plot(range(0,n),BurgessProtocol_lightschedule,color='black',lw=3)
+plt.title("Burgess 2008/2010 Protocol")
+plt.axvline(dose_time+24,color='hotpink',lw=3)  
+plt.axvline(dose_time+24+24,color='hotpink',lw=3)
+plt.axvline(dose_time+24+24+24,color='hotpink',lw=3)
+#plt.axvline(24,linestyle='dashed',color='grey')
+#plt.axvline(24*2,linestyle='dashed',color='grey')
+#plt.axvline(24*3,linestyle='dashed',color='grey')
+#plt.axvline(24*4,linestyle='dashed',color='grey')
+plt.ylim([-1, 60])
 plt.xlabel('Time (hours)')
 plt.ylabel('Light Intensity (lux)')
-plt.legend(['DLMO','Exogenous Melatonin Dose'])
+plt.legend(['Baseline DLMO','3.0/0.5mg melatonin'])
 #plt.axvline(6.5)
 plt.show()        
 
  
+'''
 
 # ---------- Dawson 1995 7 Days of Protocol ----------
 # Intervention 1: Bright Light
@@ -704,21 +709,21 @@ for t in range(0,n):
         BurkeProtocol_lightschedule.append(lux)
     
     
-
-plt.plot(range(0,n),BurkeProtocol_lightschedule,color='goldenrod')
+plt.axvline(17.25+(24*2),color='hotpink',lw=3)
+plt.plot(range(0,n),BurkeProtocol_lightschedule,color='black',lw=3)
 plt.xlabel('Time (hours)')
 plt.ylabel('Light Intensity (lux)')
 plt.title("Burke 2013 Protocol")
-plt.axvline(24,linestyle='dashed',color='grey')
-plt.axvline(24*2,linestyle='dashed',color='grey')
-plt.axvline(24*3,linestyle='dashed',color='grey')
-plt.axvline(24*4,linestyle='dashed',color='grey')
-plt.axvline(17.25+(24*2),color='hotpink')
+#plt.axvline(24,linestyle='dashed',color='grey')
+#plt.axvline(24*2,linestyle='dashed',color='grey')
+#plt.axvline(24*3,linestyle='dashed',color='grey')
+#plt.axvline(24*4,linestyle='dashed',color='grey')
+plt.axvline(17.25+(24*2),color='hotpink',lw=3)
 plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 #plt.axvspan(21.25+(24*2), 3.75+(24*3), facecolor='grey', alpha=0.4)
 #plt.axvline(7+24,color='orange')
 #plt.axvline(23,color='orange')
-#plt.legend(['CBTmin'])
+plt.legend(['5.0mg melatonin'],loc='upper left')
 plt.show()     
       
  

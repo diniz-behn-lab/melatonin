@@ -783,7 +783,7 @@ ExMel_times = [0,1,2,3,5,6,7,8,10,11,12,13,16,17,19,20,21,22,23]
 
 # Plot PRC points
 #plt.plot(ExMel_times,phase_shifts_corrected,'o')
-plt.plot(ExMel_times,phase_shifts_corrected, lw=2)
+plt.plot(ExMel_times,phase_shifts_corrected, lw=5)
 plt.axhline(0,color='black',linestyle='dashed')
 #plt.axvline(21.1)
 plt.axvline(x=20.7,color='grey',linestyle='dashed') # Burgess 2010 fitted peak (max phase advance)
@@ -792,7 +792,7 @@ plt.axvline(x=20.7,color='grey',linestyle='dashed') # Burgess 2010 fitted peak (
 plt.axvline(x=13.6,color='grey',linestyle='dashed') # Burgess 2010 fitted trough (max phase delay)
 plt.xlabel("Time Since DLMO (hours)")
 plt.ylabel("Phase Shift (hours)")
-plt.title("3 Pulse Melatonin (0.5mg) Phase Response Curve")
+plt.title("Simulated 3 Pulse PRC to 0.5 mg Melatonin")
 plt.show()
 
 
@@ -873,16 +873,17 @@ Burgess_2010_PRC_times = [15.5,
 
     
 plt.plot(Burgess_2010_PRC_times, Burgess_2010_PRC, 'o',color='black')
-plt.plot(ExMel_times,phase_shifts_corrected, lw=3,color='mediumturquoise')
-plt.title("3 Pulse PRC To 0.5mg Exogenous Melatonin")
+plt.title("Simulated 3 Pulse PRC to 0.5 mg Melatonin")
 plt.xlabel("Time After DLMO (hours)")
 plt.ylabel("Phase Shift (hours)")
-plt.axhline(y=0,color='black',linestyle='dashed')
-plt.axvline(x=20.7,color='grey',linestyle='dashed') # Burgess 2010 fitted peak (max phase advance)
-plt.axhline(y=1.5,color='grey',linestyle='dashed') # Burgess 2010 fitted max advance 
-plt.axhline(y=-1.3,color='grey',linestyle='dashed') # Burgess 2010 fitted max delay
-plt.axvline(x=13.6,color='grey',linestyle='dashed') # Burgess 2010 fitted trough (max phase delay)
-plt.legend(["Burgess 2010 Data", "Model"])
+plt.axhline(y=0,color='black',linestyle='dashed',lw=3)
+plt.axvline(x=20.7,color='grey',linestyle='dashed',lw=3) # Burgess 2010 fitted peak (max phase advance)
+plt.axhline(y=1.5,color='grey',linestyle='dashed',lw=3) # Burgess 2010 fitted max advance 
+plt.axhline(y=-1.3,color='grey',linestyle='dashed',lw=3) # Burgess 2010 fitted max delay
+plt.axvline(x=13.6,color='grey',linestyle='dashed',lw=3) # Burgess 2010 fitted trough (max phase delay)
+plt.plot(ExMel_times,phase_shifts_corrected, lw=5,color='mediumturquoise')
+plt.plot(Burgess_2010_PRC_times, Burgess_2010_PRC, 'o',color='black')
+#plt.legend(["Burgess 2010 Data", "Model"])
 plt.show()
 
 
