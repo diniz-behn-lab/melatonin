@@ -255,7 +255,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
 
 
 
@@ -323,8 +323,8 @@ plt.axhline(10, color='black',lw=2)
 plt.ylim(-3,75)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Constant Dark Condition")
-plt.legend(["Pineal","Plasma","Exogenous","DLMOff","DLMO"],loc='upper right')
+plt.title("Standard Light:Dark Schedule")
+plt.legend(["Pineal","Plasma","Exogenous","Melatonin Offset","Melatonin Onset"],loc='upper right')
 plt.show()
 
 
