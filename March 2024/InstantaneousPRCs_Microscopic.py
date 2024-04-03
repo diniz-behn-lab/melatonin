@@ -180,6 +180,6 @@ plt.plot(list(repeat(12*phi[max_alignment_idx]/np.pi,2)), [0,cross_cor[max_align
 hours_out = -12*phi[max_alignment_idx]/np.pi
 plt.xlabel('Phase Delay (hours)')
 plt.xlim((-12,12))
-plt.ylabel('Cross Correlation')
+plt.ylabel('Cross-correlation')
 plt.title("Melatonin-Light PRC Correlation")
 plt.show()
