@@ -364,7 +364,7 @@ plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("$\Psi$, Mean Phase (radians)")
-plt.legend(["DLMO"])
+plt.legend(["Melatonin Onset"])
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 

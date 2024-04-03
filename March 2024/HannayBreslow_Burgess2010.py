@@ -881,7 +881,7 @@ plt.axvline(x=20.7,color='grey',linestyle='dashed',lw=3) # Burgess 2010 fitted p
 plt.axhline(y=1.5,color='grey',linestyle='dashed',lw=3) # Burgess 2010 fitted max advance 
 plt.axhline(y=-1.3,color='grey',linestyle='dashed',lw=3) # Burgess 2010 fitted max delay
 plt.axvline(x=13.6,color='grey',linestyle='dashed',lw=3) # Burgess 2010 fitted trough (max phase delay)
-plt.plot(ExMel_times,phase_shifts_corrected, lw=5,color='mediumturquoise')
+plt.plot(ExMel_times,phase_shifts_corrected, 'o-',color='mediumturquoise')
 plt.plot(Burgess_2010_PRC_times, Burgess_2010_PRC, 'o',color='black')
 #plt.legend(["Burgess 2010 Data", "Model"])
 plt.show()
