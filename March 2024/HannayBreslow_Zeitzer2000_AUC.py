@@ -605,8 +605,9 @@ Lux_2 = [3,
          9100
          ]
 
-
-plt.plot(Lux,melatonin_suppression, lw=5,color='goldenrod') # Fitted curve
+plt.rcParams.update({'font.size': 15})
+#plt.plot(Lux,melatonin_suppression, lw=5,color='goldenrod') # Fitted curve
+plt.plot(Lux,melatonin_suppression, '-o',color='goldenrod') # Fitted curve
 plt.plot(Lux_2, Zeitzer_2000, 'o',color='black') # Data points
 plt.xscale('log')
 plt.title("Illuminance Response Curve")
