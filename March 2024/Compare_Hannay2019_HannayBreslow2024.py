@@ -431,13 +431,15 @@ DLMOff_HannayBreslow = times[plasma_mel[0]] # finding the time corresponding to 
 
 
 #--------- Plot Model Output -------------------
+plt.rcParams.update({'font.size': 15})
+
 
 # Plotting R
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,0],lw=5,color='forestgreen')
 plt.plot(model_Hannay.ts,model_Hannay.results[:,0],lw=3,color='black',linestyle='dashed')
 plt.xlabel("Time (hours)")
 plt.ylabel("$R$, Collective Amplitude")
-plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
+plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper left')
 #plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
 
@@ -471,7 +473,7 @@ plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axvline(21)
 plt.xlabel("Time (hours)")
 plt.ylabel("$\Psi$, Mean Phase (radians)")
-plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
+plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper left')
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
@@ -482,7 +484,7 @@ plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=3,linestyle='dashed',color
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("$n$, Activated Photoreceptors")
-plt.legend(['Hannay-Breslow 2024','Hannay 2019'],loc='upper left')
+plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper left')
 #plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 

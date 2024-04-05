@@ -291,6 +291,7 @@ DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first inde
 
 
 #--------- Plot Model Output -------------------
+plt.rcParams.update({'font.size': 15})
 
 '''
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
