@@ -542,7 +542,7 @@ melatonin_suppression = [percent_supp_3, percent_supp_15, percent_supp_20, perce
 
 
 # Make array of administration times for plotting PRC 
-Lux = [3,15,25,50,60,106,120,130,170,175,300,360,400,550,650,2000,3000,4000,7000,9000,9100]
+Lux = [3,15,20,50,60,90,106,130,160,175,300,375,400,550,650,1500,3000,3700,7000,8100,9100]
 
 # Plot PRC points
 #plt.plot(Lux,melatonin_suppression,'o')
