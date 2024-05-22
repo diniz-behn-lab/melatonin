@@ -35,12 +35,12 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.101)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 # radians, I determined 
-        self.psi_off = 3.5779  # radians, I determined
+        self.psi_on = 1.2566 # radians, I determined 
+        self.psi_off = 3.6128 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 301 # Scaled for our peak concentration #861 # Breslow 2013
@@ -354,19 +354,20 @@ plt.show()
 plt.plot(model.ts,model.results[:,3]/4.3,lw=5,color='darkblue')
 plt.plot(model.ts,model.results[:,4]/4.3,lw=5,color='mediumpurple')
 plt.plot(model.ts,model.results[:,5]/4.3,lw=5,color='mediumvioletred')
-plt.axvline(x=DLMOff,color='black',linestyle='dotted',lw=3) # Checking DLMOff
 plt.axvline(x=DLMO_H2,color='black',linestyle='dashed',lw=3) # Checking DLMO
+plt.axvline(x=DLMOff,color='black',linestyle='dotted',lw=3) # Checking DLMOff
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
-#plt.axvline(5.7+24)
+#plt.axhline(70)
 #plt.axvline(CBTmin,color='grey')
 plt.axhline(10, color='black',lw=2)
 plt.ylim(-3,75)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
+#plt.title("Constant Dark Condition")
+#plt.legend(["Pineal","Plasma","Exogenous","DLMO","DLMOff","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
 plt.title("Standard Light:Dark Schedule")
-#plt.legend(["Pineal","Plasma","Exogenous","Melatonin Offset","Melatonin Onset"],loc='upper right')
-plt.legend(["Pineal","Plasma","Exogenous","Melatonin Offset","Melatonin Onset","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
+plt.legend(["Pineal","Plasma","Exogenous","Melatonin Onset","Melatonin Offset","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
 plt.show()
 
 
@@ -407,8 +408,10 @@ plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("$\Psi$, Mean Phase (radians)")
+#plt.title("Constant Dark Condition")
+#plt.legend(["DLMO","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
+plt.title("Standard Light:Dark Schedule")
 plt.legend(["Melatonin Onset","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
-#plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 
