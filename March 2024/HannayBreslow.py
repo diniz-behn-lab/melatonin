@@ -255,7 +255,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
 
 
 
@@ -394,6 +394,7 @@ plt.show()
 
 # Plotting psi mod 2pi
 plt.axvline(x=DLMO_psi,color='black',linestyle='dashed',lw=3) # Checking DLMO
+plt.axhline(5*np.pi/12, color='black',lw=2)
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'.',markersize=10,color='mediumturquoise')
 plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axhline(np.pi)
@@ -406,7 +407,7 @@ plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("$\Psi$, Mean Phase (radians)")
-plt.legend(["Melatonin Onset"])
+plt.legend(["Melatonin Onset","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
