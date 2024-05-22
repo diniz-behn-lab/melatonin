@@ -460,16 +460,33 @@ elif psi_value_1 > 3.14159:
  
 
 
+
+
+## DLMO 
 # By threshold definition (10 pg/mL in plasma)
+# Updated (May 2024) to perform a linear interpolation 
 DLMO_threshold = 10
 
 plasma_mel_concentrations = model_HannayBreslow.results[60:240,4]/4.3 # converting output to pg/mL
 times = model_HannayBreslow.ts[60:240] # defining times from first 24hrs 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
-DLMO_H2_HannayBreslow = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
-DLMOff_HannayBreslow = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
+DLMO_H2_HannayBreslow_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_HannayBreslow_above10 = DLMO_H2_HannayBreslow_below10+0.1
+
+DLMO_H2_HannayBreslow = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_HannayBreslow_below10, DLMO_H2_HannayBreslow_above10])
 
 
+## DLMOff
+# By threshold definition (10 pg/mL in plasma)
+# Updated (May 2024) to perform a linear interpolation 
+plasma_mel_concentrations = model_HannayBreslow.results[240:400,4]/4.3 # converting output to pg/mL
+times = model_HannayBreslow.ts[240:400] # defining times from second 24hrs 
+plasma_mel, = np.where(plasma_mel_concentrations>=DLMO_threshold) # finding all the indices where concentration is above 10pg/mL
+DLMOff_H2_HannayBreslow_above10 = times[plasma_mel[-1]] # finding the time corresponding to the last index above threshold, DLMO
+DLMOff_H2_HannayBreslow_below10 = DLMOff_H2_HannayBreslow_above10+0.1
+
+DLMOff_HannayBreslow = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMOff_H2_HannayBreslow_above10, DLMOff_H2_HannayBreslow_below10])
+DLMOff_mod = np.mod(DLMOff_HannayBreslow,24)
 
 
 
@@ -482,7 +499,7 @@ plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,0],lw=5,color='for
 plt.plot(model_Hannay.ts,model_Hannay.results[:,0],lw=3,color='black',linestyle='dashed')
 plt.xlabel("Time (hours)")
 plt.ylabel("$R$, Collective Amplitude")
-plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper left')
+plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper center', bbox_to_anchor=(0.5, 1.3))
 #plt.title("Time Trace of R, Collective Amplitude")
 plt.show()
 
@@ -516,7 +533,7 @@ plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axvline(21)
 plt.xlabel("Time (hours)")
 plt.ylabel("$\Psi$, Mean Phase (radians)")
-plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper left')
+plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper center', bbox_to_anchor=(0.5, 1.3))
 #plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
@@ -527,7 +544,7 @@ plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=3,linestyle='dashed',color
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("$n$, Activated Photoreceptors")
-plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper left')
+plt.legend(['Light + Melatonin','Light (Hannay 2019)'],loc='upper center', bbox_to_anchor=(0.5, 1.3))
 #plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
 
