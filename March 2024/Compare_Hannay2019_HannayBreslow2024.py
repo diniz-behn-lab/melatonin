@@ -157,12 +157,12 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.101)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 #1.13446401 # radians, I determined 
-        self.psi_off = 3.5779  # radians, I determined
+        self.psi_on = 1.2566 # radians, I determined 
+        self.psi_off = 3.6128 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 301 # Scaled from Breslow 2013
@@ -395,14 +395,35 @@ model_HannayBreslow.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=
 #--------- Find DLMO and CBTmin for Hannay 2019 -----------
 
 # By Hannay model definition 
+# Updated (May 2024) to perform a linear interpolation 
 psi_mod2pi_Hannay = np.mod(model_Hannay.results[0:240,1],2*np.pi)
 
 DLMO_index = min(range(len(psi_mod2pi_Hannay)), key=lambda i: abs(psi_mod2pi_Hannay[i]-1.30899))
 CBTmin_index = min(range(len(psi_mod2pi_Hannay)), key=lambda i: abs(psi_mod2pi_Hannay[i]-3.14159))
 
-DLMO_psi_Hannay = model_Hannay.ts[DLMO_index] # closest to psi = 1.30899
-CBTmin_Hannay = model_Hannay.ts[CBTmin_index] # closest to psi = 3.14159
+DLMO_psi_Hannay_1 = model_Hannay.ts[DLMO_index] # closest to psi = 1.30899
+psi_value_1 = psi_mod2pi_Hannay[DLMO_index]
+if psi_value_1 < 1.30899:
+    psi_value_2 = psi_mod2pi_Hannay[DLMO_index + 1]
+    DLMO_psi_Hannay_2 = model_Hannay.ts[DLMO_index + 1]
+    DLMO_psi_Hannay = np.interp(1.30899, [psi_value_1, psi_value_2], [DLMO_psi_Hannay_1, DLMO_psi_Hannay_2])   
+elif psi_value_1 > 1.30899:
+    psi_value_2 = psi_mod2pi_Hannay[DLMO_index - 1]
+    DLMO_psi_Hannay_2 = model_Hannay.ts[DLMO_index - 1]
+    DLMO_psi_Hannay = np.interp(1.30899, [psi_value_2, psi_value_1], [DLMO_psi_Hannay_2, DLMO_psi_Hannay_1])
+ 
 
+CBTmin_psi_Hannay_1 = model_Hannay.ts[CBTmin_index] # closest to psi = 3.14159
+psi_value_1 = psi_mod2pi_Hannay[CBTmin_index]
+if psi_value_1 < 3.14159:
+    psi_value_2 = psi_mod2pi_Hannay[CBTmin_index + 1]
+    CBTmin_psi_Hannay_2 = model_Hannay.ts[CBTmin_index + 1]
+    CBTmin_Hannay = np.interp(3.14159, [psi_value_1, psi_value_2], [CBTmin_psi_Hannay_1, CBTmin_psi_Hannay_2])   
+elif psi_value_1 > 3.14159:
+    psi_value_2 = psi_mod2pi_Hannay[CBTmin_index - 1]
+    CBTmin_psi_Hannay_2 = model_Hannay.ts[CBTmin_index - 1]
+    CBTmin_Hannay = np.interp(3.14159, [psi_value_2, psi_value_1], [CBTmin_psi_Hannay_2, CBTmin_psi_Hannay_1])
+ 
 
 
 
