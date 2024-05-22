@@ -255,7 +255,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -272,13 +272,36 @@ model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 #--------- Find DLMO and CBTmin -----------
 
 # By Hannay model definition 
+# Updated (May 2024) to perform a linear interpolation 
 psi_mod2pi = np.mod(model.results[0:240,1],2*np.pi)
 
 DLMO_index = min(range(len(psi_mod2pi)), key=lambda i: abs(psi_mod2pi[i]-1.30899))
 CBTmin_index = min(range(len(psi_mod2pi)), key=lambda i: abs(psi_mod2pi[i]-3.14159))
 
-DLMO_psi = model.ts[DLMO_index] # closest to psi = 1.30899
-CBTmin = model.ts[CBTmin_index] # closest to psi = 3.14159
+DLMO_psi_1 = model.ts[DLMO_index] # time closest to psi = 1.30899
+psi_value_1 = psi_mod2pi[DLMO_index]
+if psi_value_1 < 1.30899:
+    psi_value_2 = psi_mod2pi[DLMO_index + 1]
+    DLMO_psi_2 = model.ts[DLMO_index + 1]
+    DLMO_psi = np.interp(1.30899, [psi_value_1, psi_value_2], [DLMO_psi_1, DLMO_psi_2])   
+elif psi_value_1 > 1.30899:
+    psi_value_2 = psi_mod2pi[DLMO_index - 1]
+    DLMO_psi_2 = model.ts[DLMO_index - 1]
+    DLMO_psi = np.interp(1.30899, [psi_value_2, psi_value_1], [DLMO_psi_2, DLMO_psi_1])
+ 
+
+
+CBTmin_psi_1 = model.ts[CBTmin_index] # closest to psi = 3.14159
+psi_value_1 = psi_mod2pi[CBTmin_index]
+if psi_value_1 < 3.14159:
+    psi_value_2 = psi_mod2pi[CBTmin_index + 1]
+    CBTmin_psi_2 = model.ts[CBTmin_index + 1]
+    CBTmin = np.interp(3.14159, [psi_value_1, psi_value_2], [CBTmin_psi_1, CBTmin_psi_2])   
+elif psi_value_1 > 3.14159:
+    psi_value_2 = psi_mod2pi[CBTmin_index - 1]
+    CBTmin_psi_2 = model.ts[CBTmin_index - 1]
+    CBTmin = np.interp(3.14159, [psi_value_2, psi_value_1], [CBTmin_psi_2, CBTmin_psi_1])
+ 
 
 ## DLMO 
 # By threshold definition (10 pg/mL in plasma)
@@ -342,7 +365,8 @@ plt.ylim(-3,75)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Standard Light:Dark Schedule")
-plt.legend(["Pineal","Plasma","Exogenous","Melatonin Offset","Melatonin Onset"],loc='upper right')
+#plt.legend(["Pineal","Plasma","Exogenous","Melatonin Offset","Melatonin Onset"],loc='upper right')
+plt.legend(["Pineal","Plasma","Exogenous","Melatonin Offset","Melatonin Onset","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
 plt.show()
 
 
