@@ -435,8 +435,30 @@ psi_mod2pi_HannayBreslow = np.mod(model_HannayBreslow.results[0:240,1],2*np.pi)
 DLMO_index = min(range(len(psi_mod2pi_HannayBreslow)), key=lambda i: abs(psi_mod2pi_HannayBreslow[i]-1.30899))
 CBTmin_index = min(range(len(psi_mod2pi_HannayBreslow)), key=lambda i: abs(psi_mod2pi_HannayBreslow[i]-3.14159))
 
-DLMO_psi_HannayBreslow = model_HannayBreslow.ts[DLMO_index] # closest to psi = 1.30899
-CBTmin_HannayBreslow = model_HannayBreslow.ts[CBTmin_index] # closest to psi = 3.14159
+DLMO_psi_HannayBreslow_1 = model_HannayBreslow.ts[DLMO_index] # closest to psi = 1.30899
+psi_value_1 = psi_mod2pi_HannayBreslow[DLMO_index]
+if psi_value_1 < 1.30899:
+    psi_value_2 = psi_mod2pi_HannayBreslow[DLMO_index + 1]
+    DLMO_psi_HannayBreslow_2 = model_HannayBreslow.ts[DLMO_index + 1]
+    DLMO_psi_HannayBreslow = np.interp(1.30899, [psi_value_1, psi_value_2], [DLMO_psi_HannayBreslow_1, DLMO_psi_HannayBreslow_2])   
+elif psi_value_1 > 1.30899:
+    psi_value_2 = psi_mod2pi_HannayBreslow[DLMO_index - 1]
+    DLMO_psi_HannayBreslow_2 = model_HannayBreslow.ts[DLMO_index - 1]
+    DLMO_psi_HannayBreslow = np.interp(1.30899, [psi_value_2, psi_value_1], [DLMO_psi_HannayBreslow_2, DLMO_psi_HannayBreslow_1])
+ 
+
+CBTmin_psi_HannayBreslow_1 = model_HannayBreslow.ts[CBTmin_index] # closest to psi = 3.14159
+psi_value_1 = psi_mod2pi_HannayBreslow[CBTmin_index]
+if psi_value_1 < 3.14159:
+    psi_value_2 = psi_mod2pi_HannayBreslow[CBTmin_index + 1]
+    CBTmin_psi_HannayBreslow_2 = model_HannayBreslow.ts[CBTmin_index + 1]
+    CBTmin_HannayBreslow = np.interp(3.14159, [psi_value_1, psi_value_2], [CBTmin_psi_HannayBreslow_1, CBTmin_psi_HannayBreslow_2])   
+elif psi_value_1 > 3.14159:
+    psi_value_2 = psi_mod2pi_HannayBreslow[CBTmin_index - 1]
+    CBTmin_psi_HannayBreslow_2 = model_HannayBreslow.ts[CBTmin_index - 1]
+    CBTmin_HannayBreslow = np.interp(3.14159, [psi_value_2, psi_value_1], [CBTmin_psi_HannayBreslow_2, CBTmin_psi_HannayBreslow_1])
+ 
+
 
 # By threshold definition (10 pg/mL in plasma)
 DLMO_threshold = 10
