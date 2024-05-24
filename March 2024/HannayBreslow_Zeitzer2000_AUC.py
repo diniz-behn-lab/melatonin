@@ -48,13 +48,13 @@ class HannayBreslowModel(object):
         self.beta_IP = (7.83e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
-
-        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
+        
+        self.a = (0.101)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 # radians, I determined # 1.48352986 to show example of pineal not turning on before light exposure
-        self.psi_off = 3.5779  # radians, I determined
+        self.psi_on = 1.2566 # radians, I determined 
+        self.psi_off = 3.6128 # radians, I determined
         
         # Differential evolution: 
             # Switched to L2 norm
