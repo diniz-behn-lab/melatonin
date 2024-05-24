@@ -62,7 +62,15 @@ class HannayBreslowModel(object):
                 # 4.92083843, Error = 0.8007471773658505
                 # 4.7564997,  Error = 0.8007471773658505
                 # 4.80942936, Error = 0.8007471773658505
-        self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
+                
+            # May 2024: 
+                # 4.30803961, Error = 0.8013463196068211
+                # 4.13626687, Error = 0.8013463196068211
+                # 4.17281273, Error = 0.8013463196068211
+                # 4.89859818, Error = 0.8013463196068211
+                # 4.9227852,  Error = 0.8013463196068211
+                # 4.78868687, Error = 0.8013463196068211
+        self.m = 4.7887 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
