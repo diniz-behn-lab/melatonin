@@ -145,7 +145,8 @@ class HannayBreslowModel(object):
         x_line = melatonin_dosage
         #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
         #y_line = 7500
-        y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
+        #y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
+        y_line = x_line
         return y_line
 
         
@@ -265,7 +266,7 @@ model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin dosage to a mg amount
 
 #model = HannayBreslowModel()
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=22, melatonin_dosage=0.5,schedule=2) 
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=1000000,schedule=2) 
 
 
 
@@ -358,10 +359,10 @@ plt.axvline(x=DLMO_H2,color='black',linestyle='dashed',lw=3) # Checking DLMO
 plt.axvline(x=DLMOff,color='black',linestyle='dotted',lw=3) # Checking DLMOff
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
-#plt.axhline(70)
+#plt.axhline(2000)
 #plt.axvline(CBTmin,color='grey')
 plt.axhline(10, color='black',lw=2)
-plt.ylim(-3,75)
+#plt.ylim(-3,75)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Constant Dark Condition")
