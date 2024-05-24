@@ -45,7 +45,7 @@ class HannayBreslowModel(object):
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 301 # Scaled for our peak concentration #861 # Breslow 2013
         self.sigma_M = 17.5 # Scaled for our peak concentration #50 # Breslow 2013
-        self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.7887 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -255,7 +255,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -364,10 +364,10 @@ plt.axhline(10, color='black',lw=2)
 plt.ylim(-3,75)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-#plt.title("Constant Dark Condition")
-#plt.legend(["Pineal","Plasma","Exogenous","DLMO","DLMOff","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
-plt.title("Standard Light:Dark Schedule")
-plt.legend(["Pineal","Plasma","Exogenous","Melatonin Onset","Melatonin Offset","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
+plt.title("Constant Dark Condition")
+plt.legend(["Pineal","Plasma","Exogenous","DLMO","DLMOff","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.title("Standard Light:Dark Schedule")
+#plt.legend(["Pineal","Plasma","Exogenous","Melatonin Onset","Melatonin Offset","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
 plt.show()
 
 
@@ -408,10 +408,10 @@ plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("$\Psi$, Mean Phase (radians)")
-#plt.title("Constant Dark Condition")
-#plt.legend(["DLMO","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
-plt.title("Standard Light:Dark Schedule")
-plt.legend(["Melatonin Onset","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
+plt.title("Constant Dark Condition")
+plt.legend(["DLMO","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.title("Standard Light:Dark Schedule")
+#plt.legend(["Melatonin Onset","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
 plt.show()
 
 
