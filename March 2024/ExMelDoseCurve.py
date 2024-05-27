@@ -19,10 +19,10 @@ import matplotlib.pyplot as plt
 #-------- Plot the curve and the data -----
 
 x = [0.1, 0.3, 1, 5, 10]
-y = [45, 150, 400, 2000, 6500] # pg/mL (plasma)
+y = [45, 150, 400, 1900, 6500] # pg/mL (plasma)
 
 x_line = np.linspace(0,10,100);
-y_line = 5.3861*pow(x_line,3) - 30.502*pow(x_line,2) + 415.01*(x_line) + 14.06;
+y_line = 6.413*pow(x_line,3) - 41.94*pow(x_line,2) + 426.9*(x_line) + 12.36;
 
 plt.plot(x_line,y_line,lw=5,color='mediumvioletred')
 plt.plot(x,y,'o',color='black',markersize=8)

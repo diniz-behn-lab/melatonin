@@ -146,7 +146,7 @@ class HannayBreslowModel(object):
         #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
         #y_line = 7500
         #y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
-        y_line = x_line
+        y_line = 962.48*pow(x_line,3) - 6316.5*pow(x_line,2) + 66719*x_line + 1975.9 # Cubic fit to 5 points (May 2024)
         return y_line
 
         
@@ -255,8 +255,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -265,8 +265,8 @@ model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatoni
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=1000000,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=10.0,schedule=2) 
 
 
 
@@ -321,8 +321,8 @@ DLMO_H2 = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],p
 ## DLMOff
 # By threshold definition (10 pg/mL in plasma)
 # Updated (May 2024) to perform a linear interpolation 
-plasma_mel_concentrations = model.results[240:400,4]/4.3 # converting output to pg/mL
-times = model.ts[240:400] # defining times from second 24hrs 
+plasma_mel_concentrations = model.results[240:350,4]/4.3 # converting output to pg/mL
+times = model.ts[240:350] # defining times from second 24hrs 
 plasma_mel, = np.where(plasma_mel_concentrations>=DLMO_threshold) # finding all the indices where concentration is above 10pg/mL
 DLMOff_H2_above10 = times[plasma_mel[-1]] # finding the time corresponding to the last index above threshold, DLMO
 DLMOff_H2_below10 = DLMOff_H2_above10+0.1
@@ -359,7 +359,7 @@ plt.axvline(x=DLMO_H2,color='black',linestyle='dashed',lw=3) # Checking DLMO
 plt.axvline(x=DLMOff,color='black',linestyle='dotted',lw=3) # Checking DLMOff
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
-#plt.axhline(2000)
+plt.axhline(6500)
 #plt.axvline(CBTmin,color='grey')
 plt.axhline(10, color='black',lw=2)
 #plt.ylim(-3,75)
