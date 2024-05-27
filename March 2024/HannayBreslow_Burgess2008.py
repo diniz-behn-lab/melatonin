@@ -36,17 +36,17 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.101)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 # radians, I determined 
-        self.psi_off = 3.5779  # radians, I determined
+        self.psi_on = 1.2566 # radians, I determined 
+        self.psi_off = 3.6128 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 301 # Scaled for our peak concentration #861 # Breslow 2013
         self.sigma_M = 17.5 # Scaled for our peak concentration #50 # Breslow 2013
-        self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.7887 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -187,7 +187,8 @@ class HannayBreslowModel(object):
         x_line = melatonin_dosage
         #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
         #y_line = 70000
-        y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
+        #y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
+        y_line = 962.48*pow(x_line,3) - 6316.5*pow(x_line,2) + 66719*x_line + 1975.9 # Cubic fit to 5 points (May 2024)
         return y_line
 
         
@@ -857,7 +858,7 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-#model = model_placebo
+model = model_placebo
 #model = model_0 # Clock time: 21:00
 #model = model_2 # Clock time: 23:00
 #model = model_3 # Clock time: 0:00
@@ -874,7 +875,7 @@ plt.show()
 #model = model_19 # Clock time: 16:00
 #model = model_21 # Clock time: 18:00
 #model = model_22 # Clock time: 19:00
-model = model_23 # Clock time: 20:00
+#model = model_23 # Clock time: 20:00
 
 check = 20
 
