@@ -297,23 +297,32 @@ model_placebo = HannayBreslowModel()
 model_placebo.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) # run the model from entrained ICs
 
 # Calculate shift due to protocol
+# Updated (May 2024) to perform a linear interpolation 
 # Baseline day 
 baseline_plasma_mel = model_placebo.results[0:240,4]/4.3 # converting output to pg/mL
 baseline_times = model_placebo.ts[0:240] # defining times from first 24hrs 
 baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
-baseline_DLMO = baseline_times[baseline[-1]] # finding the time corresponding to the last index below threshold, DLMO
+baseline_DLMO_below10 = baseline_times[baseline[-1]] # finding the time corresponding to the last index below threshold
+baseline_DLMO_above10 = baseline_DLMO_below10+0.1
+baseline_DLMO = np.interp(DLMO_threshold, [baseline_plasma_mel[baseline[-1]],baseline_plasma_mel[baseline[-1]+1]], [baseline_DLMO_below10, baseline_DLMO_above10])
+#print("Baseline")
 #print(baseline_DLMO)
 
 # Final day 
 final_plasma_mel = model_placebo.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_placebo.ts[960:1199] # defining times from last 24hrs
 final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
-DLMOff = np.mod(final_times[final[0]],24) # finding the time corresponding to the last index below threshold, DLMOff
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
+
+#DLMOff = np.mod(final_times[final[0]],24) # finding the time corresponding to the last index below threshold, DLMOff
 #print(final_DLMO)
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
 phase_shift_placebo = baseline_DLMO - final_DLMO
+
+#print(phase_shift_placebo)
 
 
 
@@ -329,8 +338,10 @@ model_0.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=0, melatonin
 # Final day 
 final_plasma_mel = model_0.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_0.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 0h")
 #print(final_DLMO)
 
@@ -352,8 +363,10 @@ model_2.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=2, melatonin
 # Final day 
 final_plasma_mel = model_2.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_2.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 2h")
 #print(final_DLMO)
 
@@ -375,8 +388,10 @@ model_3.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=3, melatonin
 # Final day 
 final_plasma_mel = model_3.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_3.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 3h")
 #print(final_DLMO)
 
@@ -398,8 +413,10 @@ model_4.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=4, melatonin
 # Final day 
 final_plasma_mel = model_4.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_4.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 4h")
 #print(final_DLMO)
 
@@ -421,8 +438,10 @@ model_7.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=7, melatonin
 # Final day 
 final_plasma_mel = model_7.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_7.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 7h")
 #print(final_DLMO)
 
@@ -444,8 +463,10 @@ model_10.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=10, melaton
 # Final day 
 final_plasma_mel = model_10.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_10.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 10h")
 #print(final_DLMO)
 
@@ -467,8 +488,10 @@ model_11.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=11, melaton
 # Final day 
 final_plasma_mel = model_11.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_11.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 11h")
 #print(final_DLMO)
 
@@ -490,8 +513,10 @@ model_12.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=12, melaton
 # Final day 
 final_plasma_mel = model_12.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_12.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 12h")
 #print(final_DLMO)
 
@@ -513,8 +538,10 @@ model_13.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=13, melaton
 # Final day 
 final_plasma_mel = model_13.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_13.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 13h")
 #print(final_DLMO)
 
@@ -536,8 +563,10 @@ model_15.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=15, melaton
 # Final day 
 final_plasma_mel = model_15.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_15.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 15h")
 #print(final_DLMO)
 
@@ -559,8 +588,10 @@ model_16.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=16, melaton
 # Final day 
 final_plasma_mel = model_16.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_16.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 16h")
 #print(final_DLMO)
 
@@ -582,8 +613,10 @@ model_17.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17, melaton
 # Final day 
 final_plasma_mel = model_17.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_17.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 17h")
 #print(final_DLMO)
 
@@ -605,8 +638,10 @@ model_18.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=18, melaton
 # Final day 
 final_plasma_mel = model_18.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_18.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 18h")
 #print(final_DLMO)
 
@@ -628,8 +663,10 @@ model_19.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=19, melaton
 # Final day 
 final_plasma_mel = model_19.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_19.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 19h")
 #print(final_DLMO)
 
@@ -651,8 +688,10 @@ model_21.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=21, melaton
 # Final day 
 final_plasma_mel = model_21.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_21.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 21h")
 #print(final_DLMO)
 
@@ -674,8 +713,10 @@ model_22.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=22, melaton
 # Final day 
 final_plasma_mel = model_22.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_22.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 22h")
 #print(final_DLMO)
 
@@ -697,8 +738,10 @@ model_23.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=23, melaton
 # Final day 
 final_plasma_mel = model_23.results[960:1199,4]/4.3 # converting output to pg/mL
 final_times = model_23.ts[960:1199] # defining times from last 24hrs
-final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+final_DLMO_above10 = final_DLMO_below10+0.1
+final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 23h")
 #print(final_DLMO)
 
@@ -858,9 +901,9 @@ plt.show()
 #--------- Plot Model Output -------------------
 
 # pick one to plot 
-model = model_placebo
+#model = model_placebo
 #model = model_0 # Clock time: 21:00
-#model = model_2 # Clock time: 23:00
+model = model_2 # Clock time: 23:00
 #model = model_3 # Clock time: 0:00
 #model = model_4 # Clock time: 1:00
 #model = model_7 # Clock time: 4:00
@@ -877,7 +920,7 @@ model = model_placebo
 #model = model_22 # Clock time: 19:00
 #model = model_23 # Clock time: 20:00
 
-check = 20
+check = 23
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -912,7 +955,7 @@ plt.plot(model.ts[0:240],model.results[0:240,3]/4.3,lw=2)
 plt.plot(model.ts[0:240],model.results[0:240,4]/4.3,lw=2)
 plt.plot(model.ts[0:240],model.results[0:240,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold, linestyle='dashed')
-plt.axvline(21.1)
+plt.axvline(baseline_DLMO)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title("Baseline Day Melatonin Concentrations (DLMO = 10pg/mL)")
@@ -966,8 +1009,8 @@ plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,3]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,4]/4.3,lw=2)
 plt.plot(np.mod(model.ts[960:1199],24),model.results[960:1199,5]/4.3,lw=2)
 plt.axhline(DLMO_threshold, linestyle='dashed')
-#plt.axvline(21.5)
-#plt.ylim(0, 50)
+#plt.axvline(20.867)
+#plt.ylim(0, 70)
 #plt.xlim(15, 24)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
