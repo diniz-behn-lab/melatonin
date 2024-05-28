@@ -345,8 +345,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_2.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_2.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_2 = baseline_DLMO - final_DLMO 
@@ -367,8 +369,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_3.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_3.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_3 = baseline_DLMO - final_DLMO 
@@ -389,8 +393,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_4.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_4.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_4 = baseline_DLMO - final_DLMO
@@ -411,8 +417,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_7.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_7.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_7 = baseline_DLMO - final_DLMO 
@@ -433,8 +441,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_10.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_10.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_10 = baseline_DLMO - final_DLMO
@@ -455,8 +465,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_11.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_11.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_11 = baseline_DLMO - final_DLMO 
@@ -477,8 +489,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_12.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_12.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_12 = baseline_DLMO - final_DLMO 
@@ -499,8 +513,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_13.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_13.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_13 = baseline_DLMO - final_DLMO
@@ -521,8 +537,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_15.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_15.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_15 = baseline_DLMO - final_DLMO
@@ -543,8 +561,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_16.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_16.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_16 = baseline_DLMO - final_DLMO
@@ -565,8 +585,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_17.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_17.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
     
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_17 = baseline_DLMO - final_DLMO
@@ -587,8 +609,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_18.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_18.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_18 = baseline_DLMO - final_DLMO 
@@ -609,8 +633,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_19.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_19.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_19 = baseline_DLMO - final_DLMO
@@ -631,8 +657,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_21.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_21.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_21 = baseline_DLMO - final_DLMO
@@ -653,8 +681,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_22.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_22.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_22 = baseline_DLMO - final_DLMO
@@ -675,8 +705,10 @@ def run_HannayBreslow_PRC(params):
     # Final day 
     final_plasma_mel = model_23.results[960:1199,4]/4.3 # converting output to pg/mL
     final_times = model_23.ts[960:1199] # defining times from last 24hrs
-    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below threshold
-    final_DLMO = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold, DLMO
+    final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices where concentration is below 4pg/mL
+    final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
+    final_DLMO_above10 = final_DLMO_below10+0.1
+    final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
     # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
     phase_shift_23 = baseline_DLMO - final_DLMO
