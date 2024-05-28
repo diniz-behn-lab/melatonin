@@ -76,8 +76,11 @@ class HannayBreslowModel(object):
             #x = [0, 0, 0, 0, 0] 
         # Fitting to the cubic dose curve 
         # Corrected Hsat and sigma_M 
-        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        ##x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
         #x = [-1.08465998, -0.08352192,  0.17752519, -1.24471854,  0.01725839] # Error = 3.701634773988374 # Optimization terminated successfully!!
+        
+        # Updated for linear interpolation (May 2024)
+        x = [-1.00356684, -0.01949989, -0.56044428,  0.60146017,  0.07781353] # Error = 3.7152403300234877 # Optimization terminated successfully!!
         self.B_1 = x[0]
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -923,7 +926,7 @@ plt.show()
 # pick one to plot 
 #model = model_placebo
 #model = model_0 # Clock time: 21:00
-model = model_2 # Clock time: 23:00
+#model = model_2 # Clock time: 23:00
 #model = model_3 # Clock time: 0:00
 #model = model_4 # Clock time: 1:00
 #model = model_7 # Clock time: 4:00
@@ -932,7 +935,7 @@ model = model_2 # Clock time: 23:00
 #model = model_12 # Clock time: 9:00
 #model = model_13 # Clock time: 10:00
 #model = model_15 # Clock time: 12:00
-#model = model_16 # Clock time: 13:00
+model = model_16 # Clock time: 13:00
 #model = model_17 # Clock time: 14:00
 #model = model_18 # Clock time: 15:00
 #model = model_19 # Clock time: 16:00
@@ -940,7 +943,7 @@ model = model_2 # Clock time: 23:00
 #model = model_22 # Clock time: 19:00
 #model = model_23 # Clock time: 20:00
 
-check = 23
+check = 13
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -993,7 +996,7 @@ plt.axvline(check+24+1,color='grey',linestyle='dashed')
 plt.axhline(1000, color='grey',linestyle='dashed')
 #plt.axvline(22+24)
 plt.xlabel("Time (hours)")
-plt.ylabel("Melatonin Concentration (pg/mL)")
+plt.ylabel("Melatonin (pg/mL)")
 plt.title("Day 1 Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma"])
 plt.show()
