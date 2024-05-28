@@ -307,6 +307,7 @@ baseline_DLMO_above10 = baseline_DLMO_below10+0.1
 baseline_DLMO = np.interp(DLMO_threshold, [baseline_plasma_mel[baseline[-1]],baseline_plasma_mel[baseline[-1]+1]], [baseline_DLMO_below10, baseline_DLMO_above10])
 #print("Baseline")
 #print(baseline_DLMO)
+#print(baseline_DLMO_below10)
 
 # Final day 
 final_plasma_mel = model_placebo.results[960:1199,4]/4.3 # converting output to pg/mL
@@ -317,7 +318,9 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 
 #DLMOff = np.mod(final_times[final[0]],24) # finding the time corresponding to the last index below threshold, DLMOff
+#print("Placebo")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
 phase_shift_placebo = baseline_DLMO - final_DLMO
@@ -344,6 +347,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 0h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -369,6 +373,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 2h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -394,6 +399,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 3h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -419,6 +425,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 4h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -444,6 +451,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 7h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
@@ -469,6 +477,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 10h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -494,6 +503,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 11h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -519,6 +529,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 12h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -544,6 +555,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 13h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -569,6 +581,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 15h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
@@ -594,6 +607,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 16h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -619,6 +633,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 17h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -644,6 +659,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 18h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -669,6 +685,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 19h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
@@ -694,6 +711,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 21h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -719,6 +737,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 22h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -744,6 +763,7 @@ final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
 #print("Final - 23h")
 #print(final_DLMO)
+#print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
