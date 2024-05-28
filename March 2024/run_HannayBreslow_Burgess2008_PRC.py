@@ -272,7 +272,8 @@ def run_HannayBreslow_PRC(params):
     
     #--------- Set initial conditions --------------- 
 
-    IC = ([0.83445, 2.05732, 0.470153, 119.167, 164.406, 0])
+    IC = ([0.831374, 2.08969, 0.470197, 120.292, 165.101, 0])
+
     
 
     # ------- Set the DLMO threshold that determines DLMO time ----------
