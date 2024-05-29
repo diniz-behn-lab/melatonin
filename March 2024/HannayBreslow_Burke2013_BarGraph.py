@@ -37,7 +37,7 @@ font = {'weight' : 'normal',
 
 plt.rc('font', **font)
    
-model = [-0.2, 0.2, 0.8, 1.3] 
+model = [-0.24, 0.16, 0.8, 1.23] 
 Burke2013 = [-0.43, 0.19, 0.27, 0.7] 
 
 # SD
