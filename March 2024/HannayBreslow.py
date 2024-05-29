@@ -70,7 +70,10 @@ class HannayBreslowModel(object):
         ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
         # Corrected Hsat and sigma_M 
-        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        #x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        
+        # Updated for linear interpolation (May 2024)
+        x = [-1.00356684, -0.01949989, -0.56044428,  0.60146017,  0.07781353] # Error = 3.7152403300234877 # Optimization terminated successfully!!
         self.B_1 = x[0] 
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -255,8 +258,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 #--------- Run the model without exogenous melatonin ---------------
 
-#model = HannayBreslowModel()
-#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model = HannayBreslowModel()
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
 
 
 
@@ -265,8 +268,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=10.0,schedule=2) 
+#model = HannayBreslowModel()
+#model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=10.0,schedule=2) 
 
 
 
@@ -359,16 +362,16 @@ plt.axvline(x=DLMO_H2,color='black',linestyle='dashed',lw=3) # Checking DLMO
 plt.axvline(x=DLMOff,color='black',linestyle='dotted',lw=3) # Checking DLMOff
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
-plt.axhline(6500)
+#plt.axhline(6500)
 #plt.axvline(CBTmin,color='grey')
 plt.axhline(10, color='black',lw=2)
 #plt.ylim(-3,75)
 plt.xlabel("Time (hours)")
 plt.ylabel("Melatonin Concentration (pg/mL)")
-plt.title("Constant Dark Condition")
-plt.legend(["Pineal","Plasma","Exogenous","DLMO","DLMOff","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
-#plt.title("Standard Light:Dark Schedule")
-#plt.legend(["Pineal","Plasma","Exogenous","Melatonin Onset","Melatonin Offset","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.title("Constant Dark Condition")
+#plt.legend(["Pineal","Plasma","Exogenous","DLMO","DLMOff","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
+plt.title("Standard Light:Dark Schedule")
+plt.legend(["Pineal","Plasma","Exogenous","Melatonin Onset","Melatonin Offset","10 pg/mL Threshold"],loc='center left', bbox_to_anchor=(1, 0.5))
 plt.show()
 
 
@@ -409,10 +412,10 @@ plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axvline(x=23)
 plt.xlabel("Time (hours)")
 plt.ylabel("$\Psi$, Mean Phase (radians)")
-plt.title("Constant Dark Condition")
-plt.legend(["DLMO","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
-#plt.title("Standard Light:Dark Schedule")
-#plt.legend(["Melatonin Onset","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.title("Constant Dark Condition")
+#plt.legend(["DLMO","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
+plt.title("Standard Light:Dark Schedule")
+plt.legend(["Melatonin Onset","$\Psi = 5\pi/12$"],loc='center left', bbox_to_anchor=(1, 0.5))
 plt.show()
 
 
