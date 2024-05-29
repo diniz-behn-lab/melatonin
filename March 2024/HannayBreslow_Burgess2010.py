@@ -308,9 +308,9 @@ baseline, = np.where(baseline_plasma_mel<=DLMO_threshold) # finding all the indi
 baseline_DLMO_below10 = baseline_times[baseline[-1]] # finding the time corresponding to the last index below threshold
 baseline_DLMO_above10 = baseline_DLMO_below10+0.1
 baseline_DLMO = np.interp(DLMO_threshold, [baseline_plasma_mel[baseline[-1]],baseline_plasma_mel[baseline[-1]+1]], [baseline_DLMO_below10, baseline_DLMO_above10])
-#print("Baseline")
-#print(baseline_DLMO)
-#print(baseline_DLMO_below10)
+print("Baseline")
+print(baseline_DLMO)
+print(baseline_DLMO_below10)
 
 # Final day 
 final_plasma_mel = model_placebo.results[960:1199,4]/4.3 # converting output to pg/mL
@@ -341,9 +341,9 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
 final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
-#print("Final - 0h")
-#print(final_DLMO)
-#print(final_DLMO_below10)
+print("Final - 0h")
+print(final_DLMO)
+print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -367,9 +367,9 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
 final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
-#print("Final - 1h")
-#print(final_DLMO)
-#print(final_DLMO_below10)
+print("Final - 1h")
+print(final_DLMO)
+print(final_DLMO_below10)
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
 phase_shift_1 = baseline_DLMO - final_DLMO 
@@ -392,9 +392,9 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
 final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
-#print("Final - 2h")
-#print(final_DLMO)
-#print(final_DLMO_below10)
+print("Final - 2h")
+print(final_DLMO)
+print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -418,9 +418,9 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
 final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
-#print("Final - 3h")
-#print(final_DLMO)
-#print(final_DLMO_below10)
+print("Final - 3h")
+print(final_DLMO)
+print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -444,9 +444,9 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
 final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
-#print("Final - 5h")
-#print(final_DLMO)
-#print(final_DLMO_below10)
+print("Final - 5h")
+print(final_DLMO)
+print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -470,9 +470,9 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
 final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
-#print("Final - 6h")
-#print(final_DLMO)
-#print(final_DLMO_below10)
+print("Final - 6h")
+print(final_DLMO)
+print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance)
@@ -496,9 +496,9 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
 final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
-#print("Final - 7h")
-#print(final_DLMO)
-#print(final_DLMO_below10)
+print("Final - 7h")
+print(final_DLMO)
+print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
@@ -522,9 +522,9 @@ final, = np.where(final_plasma_mel<=DLMO_threshold) # finding all the indices wh
 final_DLMO_below10 = np.mod(final_times[final[-1]],24) # finding the time corresponding to the last index below threshold
 final_DLMO_above10 = final_DLMO_below10+0.1
 final_DLMO = np.interp(DLMO_threshold, [final_plasma_mel[final[-1]],final_plasma_mel[final[-1]+1]], [final_DLMO_below10, final_DLMO_above10])
-#print("Final - 8h")
-#print(final_DLMO)
-#print(final_DLMO_below10)
+print("Final - 8h")
+print(final_DLMO)
+print(final_DLMO_below10)
 
 
 # Calculate phase shift (baseline - final; negative = delay, positive = advance) 
@@ -970,15 +970,15 @@ plt.show()
 #model = model_11 # Clock time: 8:00
 #model = model_12 # Clock time: 9:00
 #model = model_13 # Clock time: 10:00
-#model = model_16 # Clock time: 13:00
+model = model_16 # Clock time: 13:00
 #model = model_17 # Clock time: 14:00
 #model = model_19 # Clock time: 16:00
 #model = model_20 # Clock time: 17:00
 #model = model_21 # Clock time: 18:00
 #model = model_22 # Clock time: 19:00
-model = model_23 # Clock time: 20:00
+#model = model_23 # Clock time: 20:00
 
-check = 20
+check = 13
 
 
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
@@ -1030,7 +1030,7 @@ plt.axvline(check+24,color='grey')
 plt.axvline(check+24+1,color='grey',linestyle='dashed')
 plt.axhline(200, color='grey',linestyle='dashed')
 plt.xlabel("Time (hours)")
-plt.ylabel("Melatonin Concentration (pg/mL)")
+plt.ylabel("Melatonin (pg/mL)")
 plt.title("Day 1 Melatonin Concentrations (DLMO = 10pg/mL)")
 plt.legend(["Pineal","Plasma"])
 plt.show()
