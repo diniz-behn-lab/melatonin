@@ -34,17 +34,17 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.1)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.101)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2217 # radians, I determined 
-        self.psi_off = 3.5779  # radians, I determined
+        self.psi_on = 1.2566 # radians, I determined 
+        self.psi_off = 3.6128 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 301 # Scaled for our peak concentration #861 # Breslow 2013
         self.sigma_M = 17.5 # Scaled for our peak concentration #50 # Breslow 2013
-        self.m = 4.7565 # I determined by fitting to Zeitzer using differential evolution
+        self.m = 4.7887 # I determined by fitting to Zeitzer using differential evolution
         
         
         ## Hannay Model
@@ -68,8 +68,8 @@ class HannayBreslowModel(object):
         
         ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
-        # Corrected Hsat and sigma_M 
-        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        # Updated for linear interpolation (May 2024)
+        x = [-1.00356684, -0.01949989, -0.56044428,  0.60146017,  0.07781353] # Error = 3.7152403300234877 # Optimization terminated successfully!!
         self.B_1 = x[0] 
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -329,7 +329,8 @@ class HannayBreslowModel(object):
         x_line = melatonin_dosage
         #y_line = (56383*x_line) + 3085.1 # 2pts fit (Wyatt 2006)
         #y_line = 7500
-        y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
+        #y_line = 832.37*pow(x_line,3) - 4840.4*pow(x_line,2) + 64949*x_line + 2189.4 # Cubic fit to 5 points
+        y_line = 962.48*pow(x_line,3) - 6316.5*pow(x_line,2) + 66719*x_line + 1975.9 # Cubic fit to 5 points (May 2024)
         return y_line
 
         
@@ -439,7 +440,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 #model = HannayBreslowModel()
-#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
+#model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=3) 
 
 
 
@@ -456,23 +457,57 @@ model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melaton
 #--------- Find DLMO and CBTmin -----------
 
 # By Hannay model definition 
-psi_mod2pi_Baseline = np.mod(model.results[330:500,1],2*np.pi)
+# Updated (May 2024) to perform a linear interpolation 
+psi_mod2pi_Baseline = np.mod(model.results[330:550,1],2*np.pi)
 
 DLMO_index = min(range(len(psi_mod2pi_Baseline)), key=lambda i: abs(psi_mod2pi_Baseline[i]-1.30899))
 CBTmin_index = min(range(len(psi_mod2pi_Baseline)), key=lambda i: abs(psi_mod2pi_Baseline[i]-3.14159))
 
-DLMO_psi_Baseline = model.ts[DLMO_index+330] # closest to psi = 1.30899
-CBTmin_Baseline = model.ts[CBTmin_index+330] # closest to psi = 3.14159
+DLMO_psi_Baseline_1 = model.ts[DLMO_index + 330] # time closest to psi = 1.30899
+psi_value_Baseline_1 = psi_mod2pi_Baseline[DLMO_index]
+if psi_value_Baseline_1 < 1.30899:
+    psi_value_Baseline_2 = psi_mod2pi_Baseline[DLMO_index + 1]
+    DLMO_psi_Baseline_2 = model.ts[DLMO_index + 1]
+    DLMO_psi_Baseline = np.interp(1.30899, [psi_value_Baseline_1, psi_value_Baseline_2], [DLMO_psi_Baseline_1, DLMO_psi_Baseline_2])   
+elif psi_value_Baseline_1 > 1.30899:
+    psi_value_Baseline_2 = psi_mod2pi_Baseline[DLMO_index - 1]
+    DLMO_psi_Baseline_2 = model.ts[DLMO_index - 1]
+    DLMO_psi_Baseline = np.interp(1.30899, [psi_value_Baseline_2, psi_value_Baseline_1], [DLMO_psi_Baseline_2, DLMO_psi_Baseline_1])
+ 
+
+CBTmin_psi_Baseline_1 = model.ts[CBTmin_index + 330] # closest to psi = 3.14159
+psi_value_Baseline_1 = psi_mod2pi_Baseline[CBTmin_index]
+if psi_value_Baseline_1 < 3.14159:
+    psi_value_Baseline_2 = psi_mod2pi_Baseline[CBTmin_index + 1]
+    CBTmin_psi_Baseline_2 = model.ts[CBTmin_index + 1]
+    CBTmin_Baseline = np.interp(3.14159, [psi_value_Baseline_1, psi_value_Baseline_2], [CBTmin_psi_Baseline_1, CBTmin_psi_Baseline_2])   
+elif psi_value_Baseline_1 > 3.14159:
+    psi_value_Baseline_2 = psi_mod2pi_Baseline[CBTmin_index - 1]
+    CBTmin_psi_Baseline_2 = model.ts[CBTmin_index - 1]
+    CBTmin_Baseline = np.interp(3.14159, [psi_value_Baseline_2, psi_value_Baseline_1], [CBTmin_psi_Baseline_2, CBTmin_psi_Baseline_1])
+ 
+
 
 
 # By Hannay model definition 
+# Updated (May 2024) to perform a linear interpolation 
 psi_mod2pi_Final = np.mod(model.results[810:980,1],2*np.pi)
 
 DLMO_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-1.30899))
 CBTmin_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-3.14159))
 
-DLMO_psi_Final = model.ts[DLMO_index+810] # closest to psi = 1.30899
-CBTmin_Final = model.ts[CBTmin_index+810] # closest to psi = 3.14159
+DLMO_psi_Final_1 = model.ts[DLMO_index + 810] # time closest to psi = 1.30899
+psi_value_Final_1 = psi_mod2pi_Final[DLMO_index]
+if psi_value_Final_1 < 1.30899:
+    psi_value_Final_2 = psi_mod2pi_Final[DLMO_index + 1]
+    DLMO_psi_Final_2 = model.ts[DLMO_index + 1]
+    DLMO_psi_Final = np.interp(1.30899, [psi_value_Final_1, psi_value_Final_2], [DLMO_psi_Final_1, DLMO_psi_Final_2])   
+elif psi_value_Final_1 > 1.30899:
+    psi_value_Final_2 = psi_mod2pi_Final[DLMO_index - 1]
+    DLMO_psi_Final_2 = model.ts[DLMO_index - 1]
+    DLMO_psi_Final = np.interp(1.30899, [psi_value_Final_2, psi_value_Final_1], [DLMO_psi_Final_2, DLMO_psi_Final_1])
+ 
+
 
 '''
 # By Hannay model definition 
@@ -487,23 +522,29 @@ CBTmin_Final = model.ts[CBTmin_index+1320] # closest to psi = 3.14159
 
 
 
+## DLMO 
 # By threshold definition (10 pg/mL in plasma)
+# Updated (May 2024) to perform a linear interpolation 
 DLMO_threshold = 10
 
 # Baseline DLMO
-plasma_mel_concentrations = model.results[330:500,4]/4.3 # converting output to pg/mL
-times = model.ts[330:500] # defining times from first 24hrs 
+plasma_mel_concentrations = model.results[330:550,4]/4.3 # converting output to pg/mL
+times = model.ts[330:550] 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
-DLMO_H2_Baseline = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
-#DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
+DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
 
+DLMO_H2_Baseline = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Baseline_below10, DLMO_H2_Baseline_above10])
 
 # Final DLMO
 plasma_mel_concentrations = model.results[810:980,4]/4.3 # converting output to pg/mL
-times = model.ts[810:980] # defining times from first 24hrs 
+times = model.ts[810:980] 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
-DLMO_H2_Final = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
-#DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
+DLMO_H2_Final_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_Final_above10 = DLMO_H2_Final_below10+0.1
+
+DLMO_H2_Final = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Final_below10, DLMO_H2_Final_above10])
+
 
 '''
 # Final DLMO
@@ -516,6 +557,7 @@ DLMO_H2_Final = times[plasma_mel[-1]] # finding the time corresponding to the la
 
 # Calculate Phase Shift 
 phase_shift = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
+
 
 
 #--------- Plot Model Output -------------------
