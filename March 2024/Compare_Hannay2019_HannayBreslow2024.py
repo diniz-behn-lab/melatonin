@@ -192,7 +192,10 @@ class HannayBreslowModel(object):
         ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
         # Corrected Hsat and sigma_M 
-        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        #x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        
+        # Updated for linear interpolation (May 2024)
+        x = [-1.00356684, -0.01949989, -0.56044428,  0.60146017,  0.07781353] # Error = 3.7152403300234877 # Optimization terminated successfully!!
         self.B_1 = x[0] 
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -515,10 +518,10 @@ plt.show()
 '''
 
 # Plotting psi mod 2pi
-plt.plot(model_HannayBreslow.ts[0:141],np.mod(model_HannayBreslow.results[0:141,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
+plt.plot(model_HannayBreslow.ts[0:143],np.mod(model_HannayBreslow.results[0:143,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
 plt.plot(model_Hannay.ts[0:143],np.mod(model_Hannay.results[0:143,1],2*np.pi),color='black',lw=3,linestyle='dashed') # '.',markersize=3,
-plt.plot(model_HannayBreslow.ts[142:381],np.mod(model_HannayBreslow.results[142:381,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
-plt.plot(model_HannayBreslow.ts[382:479],np.mod(model_HannayBreslow.results[382:479,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
+plt.plot(model_HannayBreslow.ts[144:382],np.mod(model_HannayBreslow.results[144:382,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
+plt.plot(model_HannayBreslow.ts[383:479],np.mod(model_HannayBreslow.results[383:479,1],2*np.pi),color='mediumturquoise',lw=5) #'.',markersize=10
 plt.plot(model_Hannay.ts[144:382],np.mod(model_Hannay.results[144:382,1],2*np.pi),color='black',lw=3,linestyle='dashed') # '.',markersize=3,
 plt.plot(model_Hannay.ts[383:479],np.mod(model_Hannay.results[383:479,1],2*np.pi),color='black',lw=3,linestyle='dashed') # '.',markersize=3,
 #plt.axvline(DLMO_psi_HannayBreslow,color='grey')
