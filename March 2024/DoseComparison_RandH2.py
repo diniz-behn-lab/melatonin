@@ -375,7 +375,7 @@ plt.plot(model_3.ts[timing*10:timing*10+100],model_3.results[timing*10:timing*10
 plt.plot(model_5.ts[timing*10:timing*10+100],model_5.results[timing*10:timing*10+100,4]/4.3,lw=3)
 #plt.plot(model_6.ts[timing*10:timing*10+100],model_6.results[timing*10:timing*10+100,4]/4.3,lw=2)
 #plt.plot(model_10.ts[timing*10:timing*10+100],model_10.results[timing*10:timing*10+100,4]/4.3,lw=2)
-#plt.axhline(70, lw=2,color = 'black')
+plt.axhline(70, lw=2,color = 'black')
 plt.axvline(timing, color = 'black',lw=2,linestyle='dashed')
 plt.axvline(timing+1.5, color = 'black',lw=2,linestyle='dashed')
 plt.xlabel("Time (hours)")
