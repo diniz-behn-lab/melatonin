@@ -70,7 +70,10 @@ class HannayBreslowModel(object):
         ## Melatonin Forcing Parameters   
         # Fitting to the cubic dose curve 
         # Corrected Hsat and sigma_M 
-        x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        #x = [-0.98204363, -0.07764001, -0.7152688,   0.8511226,   0.07833321] # Error = 3.655967724146368 # Optimization terminated successfully!!
+        
+        # Updated for linear interpolation (May 2024)
+        x = [-1.00356684, -0.01949989, -0.56044428,  0.60146017,  0.07781353] # Error = 3.7152403300234877 # Optimization terminated successfully!!
         self.B_1 = x[0] 
         self.theta_M1 = x[1]
         self.B_2 = x[2]
@@ -332,7 +335,7 @@ model_10.integrateModel(24*days,tstart=0.0,initial=IC, melatonin_timing=timing, 
 
 
 #--------- Plot Model Output -------------------
-
+plt.rcParams.update({'font.size': 15})
 
 
 
@@ -375,7 +378,7 @@ plt.plot(model_5.ts[timing*10:timing*10+100],model_5.results[timing*10:timing*10
 plt.axvline(timing, color = 'black',lw=2,linestyle='dashed')
 plt.axvline(timing+1.5, color = 'black',lw=2,linestyle='dashed')
 plt.xlabel("Time (hours)")
-plt.ylabel("Concentration (pg/mL)")
+plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.title(" Plasma Melatonin")
 #plt.legend(["None","0.1 mg", "0.3 mg", "0.5 mg", "1.0 mg", "2.0 mg", "3.0 mg"])
 plt.legend(["None","0.1 mg", "0.3 mg", "0.5 mg", "1.0 mg", "3.0 mg","5.0 mg"])
