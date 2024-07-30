@@ -259,7 +259,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #--------- Run the model without exogenous melatonin ---------------
 
 model = HannayBreslowModel()
-model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=2) 
+model.integrateModel(24*2,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=1) 
 
 
 
@@ -360,8 +360,8 @@ plt.plot(model.ts,model.results[:,4]/4.3,lw=5,color='mediumpurple')
 plt.plot(model.ts,model.results[:,5]/4.3,lw=5,color='mediumvioletred')
 plt.axvline(x=DLMO_H2,color='black',linestyle='dashed',lw=3) # Checking DLMO
 plt.axvline(x=DLMOff,color='black',linestyle='dotted',lw=3) # Checking DLMOff
-#plt.axvline(x=20.6) # Checking pineal on 
-#plt.axvline(x=5.7) # Checking pineal off
+plt.axvline(x=20.87) # Checking pineal on 
+plt.axvline(x=5.8) # Checking pineal off
 #plt.axhline(6500)
 #plt.axvline(CBTmin,color='grey')
 plt.axhline(10, color='black',lw=2)
