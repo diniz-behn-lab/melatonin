@@ -398,10 +398,11 @@ plt.title("Time Trace of Psi, Mean Phase")
 plt.show()
 
 # Plotting psi mod 2pi
-plt.axvline(x=DLMO_psi,color='black',linestyle='dashed',lw=3) # Checking DLMO
+plt.axvline(x=DLMO_H2,color='black',linestyle='dashed',lw=3) # Checking DLMO
 plt.axhline(5*np.pi/12, color='black',lw=2)
 plt.plot(model.ts,np.mod(model.results[:,1],2*np.pi),'.',markersize=10,color='mediumturquoise')
 plt.axhline(5*np.pi/12, color='black',lw=2)
+plt.axvline(x=DLMO_H2,color='black',linestyle='dashed',lw=3) # Checking DLMO
 #plt.axhline(np.pi)
 #plt.axvline(CBTmin)
 #plt.axvline(x=20.6) # Checking pineal on 
