@@ -442,7 +442,8 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 #model = HannayBreslowModel()
 #model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=3) 
 
-
+model_DLP = HannayBreslowModel()
+model_DLP.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
 
 
 #--------- Run the model with exogenous melatonin ---------------
@@ -451,7 +452,6 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 
 model = HannayBreslowModel()
 model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
-
 
 
 #--------- Find DLMO and CBTmin -----------
@@ -608,6 +608,7 @@ plt.show()
 
 # Plotting R
 plt.plot(model.ts,model.results[:,0],lw=5,color='forestgreen')
+plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='black',linestyle='dashed')
 #plt.axvline(x=20.6)
 #plt.axvline(x=5.7)
 #plt.axvline(x=8.1)
