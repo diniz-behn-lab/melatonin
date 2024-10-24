@@ -445,6 +445,9 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 model_DLP = HannayBreslowModel()
 model_DLP.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=4) 
 
+model_BLP = HannayBreslowModel()
+model_BLP.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, melatonin_dosage=None,schedule=3) 
+
 
 #--------- Run the model with exogenous melatonin ---------------
 # Set melatonin_timing to a clock hour 
@@ -608,6 +611,7 @@ plt.show()
 
 # Plotting R
 plt.plot(model.ts,model.results[:,0],lw=5,color='forestgreen')
+plt.plot(model_BLP.ts,model_BLP.results[:,0],lw=3,color='grey')
 plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='black',linestyle='dashed')
 #plt.axvline(x=20.6)
 #plt.axvline(x=5.7)
