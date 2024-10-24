@@ -450,7 +450,7 @@ IC = model_IC.results[-1,:] # get initial conditions from entrained model
 # Set melatonin dosage to a mg amount
 
 model = HannayBreslowModel()
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=15, melatonin_dosage=5.0,schedule=4) 
+model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
 
 
 
@@ -621,7 +621,7 @@ plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.ylim([0.675,0.899])
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
-plt.title("BLM")
+plt.title("Bright Light-Melatonin (BLM)")
 plt.show()
 
 
