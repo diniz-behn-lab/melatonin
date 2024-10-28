@@ -456,6 +456,9 @@ model_BLP.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, mela
 model = HannayBreslowModel()
 model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
 
+model_DLM = HannayBreslowModel()
+model_DLM.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=4) 
+
 
 #--------- Find DLMO and CBTmin -----------
 
@@ -583,7 +586,7 @@ plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 '''
 
-
+'''
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
 plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
 plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
@@ -606,13 +609,14 @@ plt.ylabel("Melatonin Concentration (pg/mL)")
 #plt.title("Melatonin Concentrations (pg/mL)")
 plt.legend(["Pineal","Plasma","Baseline DLMO","Final DLMO"],loc='upper left')
 plt.show()
-
+'''
 
 
 # Plotting R
-plt.plot(model.ts,model.results[:,0],lw=5,color='forestgreen')
-plt.plot(model_BLP.ts,model_BLP.results[:,0],lw=3,color='grey')
-plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='black',linestyle='dashed')
+plt.plot(model.ts,model.results[:,0],lw=6,color='forestgreen')
+plt.plot(model_BLP.ts,model_BLP.results[:,0],lw=3,color='darkgray',linestyle='dashdot') #darkgray
+plt.plot(model_DLM.ts,model_DLM.results[:,0],lw=3,color='dimgrey',linestyle='dashed') #dimgrey
+plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='black',linestyle='dotted') #black
 #plt.axvline(x=20.6)
 #plt.axvline(x=5.7)
 #plt.axvline(x=8.1)
@@ -620,17 +624,16 @@ plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='black',linestyle='dashe
 #plt.axvline(5.7+24)
 #plt.axvline(63,color='hotpink') # 15 h dose
 plt.axvline(65.25,color='mediumvioletred',lw=3) # 17.25 h dose
-#plt.axvline(65.25+24,color='hotpink') # 17.25 h dose
-#plt.axvline(65.25+24+24,color='hotpink') # 17.25 h dose
 plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.ylim([0.675,0.899])
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Bright Light-Melatonin (BLM)")
+plt.legend(["BLM", "BLP", "DLM", "DLP"],loc='lower left')
 plt.show()
 
 
-
+'''
 # Plotting psi
 plt.plot(model.ts,model.results[:,1],lw=2)
 plt.xlabel("Time (hours)")
@@ -675,4 +678,4 @@ plt.xlabel("Clock Time (hours)")
 plt.ylabel("n, Proportion of Activated Photoreceptors")
 #plt.title("Time Trace of Photoreceptor Activation")
 plt.show()
-
+'''
