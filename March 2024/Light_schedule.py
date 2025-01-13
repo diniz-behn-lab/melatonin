@@ -10,6 +10,8 @@ Code to generate plot of light level
 import numpy as np
 import matplotlib.pyplot as plt
 
+plt.rcParams.update({'font.size': 15})
+
 
 #------------- Standard Light Schedule (16:8) --------------
 
@@ -34,6 +36,7 @@ for t in range(0, n):
 
         
 plt.plot(range(0,n),standard_lightschedule,color='black',lw=3)
+plt.xticks(np.arange(0, 52, 6)) 
 plt.title("Standard Light:Dark Schedule")
 plt.xlabel('Time (hours)')
 plt.ylabel('Light Intensity (lux)')
@@ -313,6 +316,7 @@ for t in range(0,n):
 plt.axvline(4+(24*4),linestyle='dashed',lw=3,color='darkgrey')
 plt.plot(range(0,n),ZeitzerProtocol_lightschedule,color='black',lw=3)
 plt.axvline(4+(24*4),linestyle='dashed',lw=3,color='darkgrey')
+plt.xticks(np.arange(0, 122, 24))
 plt.xlabel('Time (hours)')
 plt.ylabel('Light Intensity (lux)')
 plt.title("Zeitzer 2000 Protocol")
@@ -379,6 +383,7 @@ plt.axvline(dose_time+24+24+24,color='mediumvioletred',lw=3)
 #plt.axvline(24*3,linestyle='dashed',color='grey')
 #plt.axvline(24*4,linestyle='dashed',color='grey')
 plt.ylim([-1, 60])
+plt.xticks(np.arange(0, 122, 24))
 plt.xlabel('Time (hours)')
 plt.ylabel('Light Intensity (lux)')
 plt.legend(['Baseline DLMO','3.0/0.5 mg dose'])
@@ -711,6 +716,7 @@ for t in range(0,n):
     
 plt.axvline(17.25+(24*2),color='mediumvioletred',lw=3)
 plt.plot(range(0,n),BurkeProtocol_lightschedule,color='black',lw=3)
+plt.xticks(np.arange(0, 122, 24))
 plt.xlabel('Time (hours)')
 plt.ylabel('Light Intensity (lux)')
 plt.title("Burke 2013 Protocol")
