@@ -906,7 +906,8 @@ Burgess_2008_PRC_times = [0,
 '''
     
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o',color='black')
-plt.title("3 Pulse PRC To 3mg Exogenous Melatonin")
+plt.xticks(np.arange(0, 26, 4))
+plt.title("3 Pulse PRC to 3mg Exogenous Melatonin")
 plt.xlabel("Time After DLMO (hours)")
 plt.ylabel("Phase Shift (hours)")
 plt.axhline(y=0,color='black',linestyle='dashed',lw=3)
