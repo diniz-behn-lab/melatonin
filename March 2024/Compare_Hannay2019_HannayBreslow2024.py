@@ -500,6 +500,7 @@ plt.rcParams.update({'font.size': 15})
 # Plotting R
 plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,0],lw=5,color='forestgreen')
 plt.plot(model_Hannay.ts,model_Hannay.results[:,0],lw=3,color='black',linestyle='dashed')
+plt.xticks(np.arange(0, 50, 6))
 plt.xlabel("Time (hours)")
 plt.ylabel("$R$, Collective Amplitude")
 plt.legend(['Light + Melatonin','Light (Hannay et al. 2019)'],loc='upper center', bbox_to_anchor=(0.5, 1.3))
@@ -540,6 +541,7 @@ plt.axhline(5*np.pi/12, color='black',lw=2)
 #plt.axvline(x=20.6) # Checking pineal on 
 #plt.axvline(x=5.7) # Checking pineal off
 #plt.axvline(21)
+plt.xticks(np.arange(0, 50, 6))
 plt.xlabel("Time (hours)")
 plt.ylabel("$\Psi$, Mean Phase (radians)")
 plt.legend(['Light + Melatonin','Light (Hannay et al. 2019)'],loc='upper center', bbox_to_anchor=(0.5, 1.3))
@@ -557,6 +559,7 @@ plt.plot(model_HannayBreslow.ts,model_HannayBreslow.results[:,2],lw=5,color='gol
 plt.plot(model_Hannay.ts,model_Hannay.results[:,2],lw=3,linestyle='dashed',color='black')
 #plt.axvline(x=7)
 #plt.axvline(x=23)
+plt.xticks(np.arange(0, 50, 6))
 plt.xlabel("Time (hours)")
 plt.ylabel("$n$, Activated Photoreceptors")
 plt.legend(['Light + Melatonin','Light (Hannay et al. 2019)'],loc='upper center', bbox_to_anchor=(0.5, 1.3))

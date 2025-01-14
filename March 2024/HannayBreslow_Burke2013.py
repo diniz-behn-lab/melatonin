@@ -611,8 +611,42 @@ plt.legend(["Pineal","Plasma","Baseline DLMO","Final DLMO"],loc='upper left')
 plt.show()
 '''
 
+# Plotting R - DLP
+plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='forestgreen',linestyle='dotted') #black
+plt.ylim([0.675,0.899])
+plt.xticks(np.arange(0, 122, 24))
+plt.xlabel("Time (hours)")
+plt.ylabel("R, Collective Amplitude")
+plt.title("Dim Light-Placebo (DLP)")
+plt.legend(["DLP"],loc='lower left')
+plt.show()
 
-# Plotting R
+# Plotting R - DLM
+plt.plot(model_DLM.ts,model_DLM.results[:,0],lw=3,color='forestgreen',linestyle='dashed') #dimgrey
+plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='black',linestyle='dotted') #black
+plt.axvline(65.25,color='mediumvioletred',lw=3) # 17.25 h dose
+plt.ylim([0.675,0.899])
+plt.xticks(np.arange(0, 122, 24))
+plt.xlabel("Time (hours)")
+plt.ylabel("R, Collective Amplitude")
+plt.title("Dim Light-Melatonin (DLM)")
+plt.legend(["DLM", "DLP"],loc='lower left')
+plt.show()
+
+# Plotting R - BLP
+plt.plot(model_BLP.ts,model_BLP.results[:,0],lw=3,color='forestgreen',linestyle='dashdot') #darkgray
+plt.plot(model_DLM.ts,model_DLM.results[:,0],lw=3,color='dimgrey',linestyle='dashed') #dimgrey
+plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='black',linestyle='dotted') #black
+plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
+plt.ylim([0.675,0.899])
+plt.xticks(np.arange(0, 122, 24))
+plt.xlabel("Time (hours)")
+plt.ylabel("R, Collective Amplitude")
+plt.title("Bright Light-Placebo (BLP)")
+plt.legend(["BLP", "DLM", "DLP"],loc='lower left')
+plt.show()
+
+# Plotting R - BLM
 plt.plot(model.ts,model.results[:,0],lw=6,color='forestgreen')
 plt.plot(model_BLP.ts,model_BLP.results[:,0],lw=3,color='darkgray',linestyle='dashdot') #darkgray
 plt.plot(model_DLM.ts,model_DLM.results[:,0],lw=3,color='dimgrey',linestyle='dashed') #dimgrey
@@ -626,6 +660,7 @@ plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='black',linestyle='dotte
 plt.axvline(65.25,color='mediumvioletred',lw=3) # 17.25 h dose
 plt.axvspan(78, 81, facecolor='gold', alpha=0.4)
 plt.ylim([0.675,0.899])
+plt.xticks(np.arange(0, 122, 24))
 plt.xlabel("Time (hours)")
 plt.ylabel("R, Collective Amplitude")
 plt.title("Bright Light-Melatonin (BLM)")

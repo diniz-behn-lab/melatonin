@@ -941,6 +941,7 @@ Burgess_2010_PRC_times = [15.5,
 plt.rcParams.update({'font.size': 15})
 
 plt.plot(Burgess_2010_PRC_times, Burgess_2010_PRC, 'o',color='black')
+plt.xticks(np.arange(0, 26, 4))
 plt.title("Simulated 3 Pulse PRC to 0.5 mg Melatonin")
 plt.xlabel("Time After DLMO (hours)")
 plt.ylabel("Phase Shift (hours)")

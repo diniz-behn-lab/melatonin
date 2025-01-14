@@ -130,6 +130,7 @@ plt.plot(12*phi_rel_to_DLMO[phi_argsort]/np.pi,light_response[phi_argsort],lw=5,
 plt.plot(12*phi_rel_to_DLMO[phi_argsort]/np.pi, np.zeros_like(light_response),'k--') # Line at 0
 plt.plot(list(repeat(12*phi_rel_to_DLMO[max_advance_idx]/np.pi,2)), [0,light_response[max_advance_idx]],'o--',color='black') # Line of max advance 
 plt.plot(list(repeat(12*phi_rel_to_DLMO[max_delay_idx]/np.pi,2)), [0,light_response[max_delay_idx]],'o--',color='black') # Line of max delay
+plt.xticks(np.arange(-12, 14, 4))
 plt.xlabel("Time Relative to DLMO (hours)")
 plt.ylabel("Phase Response")
 plt.title("Microscopic Phase Response Curve to Light")
@@ -157,6 +158,7 @@ plt.plot(12*phi_rel_to_DLMO[phi_argsort]/np.pi,response[phi_argsort],lw=5,color=
 plt.plot(12*phi_rel_to_DLMO[phi_argsort]/np.pi, np.zeros_like(response),'k--')
 plt.plot(list(repeat(12*phi_rel_to_DLMO[max_advance_idx]/np.pi,2)), [0,response[max_advance_idx]],'ko--')
 plt.plot(list(repeat(12*phi_rel_to_DLMO[max_delay_idx]/np.pi,2)), [0,response[max_delay_idx]],'ko--')
+plt.xticks(np.arange(-12, 14, 4))
 plt.xlabel("Time Relative to DLMO (hours)")
 plt.ylabel("Phase Response")
 plt.title("Microscopic Phase Response Curve to Melatonin")
@@ -181,6 +183,7 @@ plt.plot(12*phi/np.pi,cross_cor,lw=5,color='forestgreen')
 plt.plot(12*phi/np.pi,np.zeros_like(phi),'k--')
 plt.plot(list(repeat(12*phi[max_alignment_idx]/np.pi,2)), [0,cross_cor[max_alignment_idx]],'ko--')
 hours_out = -12*phi[max_alignment_idx]/np.pi
+plt.xticks(np.arange(-12, 14, 4))
 plt.xlabel('Phase Delay (hours)')
 plt.xlim((-12,12))
 plt.ylabel('Cross-correlation')
