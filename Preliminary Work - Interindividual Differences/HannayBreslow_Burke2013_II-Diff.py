@@ -521,19 +521,6 @@ elif psi_value_Final_1 > 1.30899:
  
 
 
-'''
-# By Hannay model definition 
-psi_mod2pi_Final = np.mod(model.results[1320:1400,1],2*np.pi)
-
-DLMO_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-1.30899))
-CBTmin_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-3.14159))
-
-DLMO_psi_Final = model.ts[DLMO_index+1320] # closest to psi = 1.30899
-CBTmin_Final = model.ts[CBTmin_index+1320] # closest to psi = 3.14159
-'''
-
-
-
 ## DLMO 
 # By threshold definition (10 pg/mL in plasma)
 # Updated (May 2024) to perform a linear interpolation 
@@ -558,19 +545,13 @@ DLMO_H2_Final_above10 = DLMO_H2_Final_below10+0.1
 DLMO_H2_Final = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Final_below10, DLMO_H2_Final_above10])
 
 
-'''
-# Final DLMO
-plasma_mel_concentrations = model.results[1320:1400,4]/4.3 # converting output to pg/mL
-times = model.ts[1320:1400] # defining times from first 24hrs 
-plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
-DLMO_H2_Final = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
-#DLMOff = times[plasma_mel[0]] # finding the time corresponding to the first index below threshold, DLMOff
-'''
 
 # Calculate Phase Shift 
 phase_shift = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
 
 
+
+# ------ Print all four phase shift predictions -
 
 #--------- Plot Model Output -------------------
 
@@ -615,7 +596,7 @@ plt.ylabel("Melatonin Concentration (pg/mL)")
 #plt.title("Melatonin Concentrations (pg/mL)")
 plt.legend(["Pineal","Plasma","Baseline DLMO","Final DLMO"],loc='upper left')
 plt.show()
-'''
+
 
 # Plotting R - DLP
 plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='forestgreen',linestyle='dotted') #black
@@ -674,7 +655,7 @@ plt.legend(["BLM", "BLP", "DLM", "DLP"],loc='lower left')
 plt.show()
 
 
-'''
+
 # Plotting psi
 plt.plot(model.ts,model.results[:,1],lw=2)
 plt.xlabel("Time (hours)")
