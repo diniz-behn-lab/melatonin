@@ -89,8 +89,8 @@ class HannayBreslowModel(object):
         if schedule == 1: # standard 16:8 schedule 
             full_light = 1000
             dim_light = 300
-            wake_time = 7
-            sleep_time = 23
+            wake_time = 10 #7
+            sleep_time = 2 #23
             sun_up = 8
             sun_down = 19
             
@@ -459,67 +459,14 @@ model_BLP.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, mela
 # Set melatonin_timing to a clock hour 
 # Set melatonin dosage to a mg amount
 
-model = HannayBreslowModel()
-model.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
+model_BLM = HannayBreslowModel()
+model_BLM.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
 
 model_DLM = HannayBreslowModel()
 model_DLM.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=4) 
 
-
-#--------- Find DLMO and CBTmin -----------
-
-# By Hannay model definition 
-# Updated (May 2024) to perform a linear interpolation 
-psi_mod2pi_Baseline = np.mod(model.results[330:550,1],2*np.pi)
-
-DLMO_index = min(range(len(psi_mod2pi_Baseline)), key=lambda i: abs(psi_mod2pi_Baseline[i]-1.30899))
-CBTmin_index = min(range(len(psi_mod2pi_Baseline)), key=lambda i: abs(psi_mod2pi_Baseline[i]-3.14159))
-
-DLMO_psi_Baseline_1 = model.ts[DLMO_index + 330] # time closest to psi = 1.30899
-psi_value_Baseline_1 = psi_mod2pi_Baseline[DLMO_index]
-if psi_value_Baseline_1 < 1.30899:
-    psi_value_Baseline_2 = psi_mod2pi_Baseline[DLMO_index + 1]
-    DLMO_psi_Baseline_2 = model.ts[DLMO_index + 1]
-    DLMO_psi_Baseline = np.interp(1.30899, [psi_value_Baseline_1, psi_value_Baseline_2], [DLMO_psi_Baseline_1, DLMO_psi_Baseline_2])   
-elif psi_value_Baseline_1 > 1.30899:
-    psi_value_Baseline_2 = psi_mod2pi_Baseline[DLMO_index - 1]
-    DLMO_psi_Baseline_2 = model.ts[DLMO_index - 1]
-    DLMO_psi_Baseline = np.interp(1.30899, [psi_value_Baseline_2, psi_value_Baseline_1], [DLMO_psi_Baseline_2, DLMO_psi_Baseline_1])
- 
-
-CBTmin_psi_Baseline_1 = model.ts[CBTmin_index + 330] # closest to psi = 3.14159
-psi_value_Baseline_1 = psi_mod2pi_Baseline[CBTmin_index]
-if psi_value_Baseline_1 < 3.14159:
-    psi_value_Baseline_2 = psi_mod2pi_Baseline[CBTmin_index + 1]
-    CBTmin_psi_Baseline_2 = model.ts[CBTmin_index + 1]
-    CBTmin_Baseline = np.interp(3.14159, [psi_value_Baseline_1, psi_value_Baseline_2], [CBTmin_psi_Baseline_1, CBTmin_psi_Baseline_2])   
-elif psi_value_Baseline_1 > 3.14159:
-    psi_value_Baseline_2 = psi_mod2pi_Baseline[CBTmin_index - 1]
-    CBTmin_psi_Baseline_2 = model.ts[CBTmin_index - 1]
-    CBTmin_Baseline = np.interp(3.14159, [psi_value_Baseline_2, psi_value_Baseline_1], [CBTmin_psi_Baseline_2, CBTmin_psi_Baseline_1])
- 
-
-
-
-# By Hannay model definition 
-# Updated (May 2024) to perform a linear interpolation 
-psi_mod2pi_Final = np.mod(model.results[810:980,1],2*np.pi)
-
-DLMO_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-1.30899))
-CBTmin_index = min(range(len(psi_mod2pi_Final)), key=lambda i: abs(psi_mod2pi_Final[i]-3.14159))
-
-DLMO_psi_Final_1 = model.ts[DLMO_index + 810] # time closest to psi = 1.30899
-psi_value_Final_1 = psi_mod2pi_Final[DLMO_index]
-if psi_value_Final_1 < 1.30899:
-    psi_value_Final_2 = psi_mod2pi_Final[DLMO_index + 1]
-    DLMO_psi_Final_2 = model.ts[DLMO_index + 1]
-    DLMO_psi_Final = np.interp(1.30899, [psi_value_Final_1, psi_value_Final_2], [DLMO_psi_Final_1, DLMO_psi_Final_2])   
-elif psi_value_Final_1 > 1.30899:
-    psi_value_Final_2 = psi_mod2pi_Final[DLMO_index - 1]
-    DLMO_psi_Final_2 = model.ts[DLMO_index - 1]
-    DLMO_psi_Final = np.interp(1.30899, [psi_value_Final_2, psi_value_Final_1], [DLMO_psi_Final_2, DLMO_psi_Final_1])
- 
-
+#------------------------------------------------------------------------------
+#--------- Find DLMO for DLP -----------
 
 ## DLMO 
 # By threshold definition (10 pg/mL in plasma)
@@ -527,8 +474,8 @@ elif psi_value_Final_1 > 1.30899:
 DLMO_threshold = 10
 
 # Baseline DLMO
-plasma_mel_concentrations = model.results[330:550,4]/4.3 # converting output to pg/mL
-times = model.ts[330:550] 
+plasma_mel_concentrations = model_DLP.results[330:550,4]/4.3 # converting output to pg/mL
+times = model_DLP.ts[330:550] 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
@@ -536,8 +483,8 @@ DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
 DLMO_H2_Baseline = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Baseline_below10, DLMO_H2_Baseline_above10])
 
 # Final DLMO
-plasma_mel_concentrations = model.results[810:980,4]/4.3 # converting output to pg/mL
-times = model.ts[810:980] 
+plasma_mel_concentrations = model_DLP.results[810:980,4]/4.3 # converting output to pg/mL
+times = model_DLP.ts[810:980] 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2_Final_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMO_H2_Final_above10 = DLMO_H2_Final_below10+0.1
@@ -545,13 +492,104 @@ DLMO_H2_Final_above10 = DLMO_H2_Final_below10+0.1
 DLMO_H2_Final = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Final_below10, DLMO_H2_Final_above10])
 
 
+# Calculate Phase Shift 
+phase_shift_DLP = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
+
+
+#--------- Find DLMO for BLP -----------
+
+## DLMO 
+# By threshold definition (10 pg/mL in plasma)
+# Updated (May 2024) to perform a linear interpolation 
+DLMO_threshold = 10
+
+# Baseline DLMO
+plasma_mel_concentrations = model_BLP.results[330:550,4]/4.3 # converting output to pg/mL
+times = model_BLP.ts[330:550] 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
+
+DLMO_H2_Baseline = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Baseline_below10, DLMO_H2_Baseline_above10])
+
+# Final DLMO
+plasma_mel_concentrations = model_BLP.results[810:980,4]/4.3 # converting output to pg/mL
+times = model_BLP.ts[810:980] 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Final_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_Final_above10 = DLMO_H2_Final_below10+0.1
+
+DLMO_H2_Final = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Final_below10, DLMO_H2_Final_above10])
+
 
 # Calculate Phase Shift 
-phase_shift = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
+phase_shift_BLP = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
 
 
+#--------- Find DLMO for BLM -----------
 
-# ------ Print all four phase shift predictions -
+## DLMO 
+# By threshold definition (10 pg/mL in plasma)
+# Updated (May 2024) to perform a linear interpolation 
+DLMO_threshold = 10
+
+# Baseline DLMO
+plasma_mel_concentrations = model_BLM.results[330:550,4]/4.3 # converting output to pg/mL
+times = model_BLM.ts[330:550] 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
+
+DLMO_H2_Baseline = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Baseline_below10, DLMO_H2_Baseline_above10])
+
+# Final DLMO
+plasma_mel_concentrations = model_BLM.results[810:980,4]/4.3 # converting output to pg/mL
+times = model_BLM.ts[810:980] 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Final_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_Final_above10 = DLMO_H2_Final_below10+0.1
+
+DLMO_H2_Final = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Final_below10, DLMO_H2_Final_above10])
+
+
+# Calculate Phase Shift 
+phase_shift_BLM = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
+
+
+#--------- Find DLMO for DLM -----------
+
+## DLMO 
+# By threshold definition (10 pg/mL in plasma)
+# Updated (May 2024) to perform a linear interpolation 
+DLMO_threshold = 10
+
+# Baseline DLMO
+plasma_mel_concentrations = model_DLM.results[330:550,4]/4.3 # converting output to pg/mL
+times = model_DLM.ts[330:550] 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
+
+DLMO_H2_Baseline = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Baseline_below10, DLMO_H2_Baseline_above10])
+
+# Final DLMO
+plasma_mel_concentrations = model_DLM.results[810:980,4]/4.3 # converting output to pg/mL
+times = model_DLM.ts[810:980] 
+plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
+DLMO_H2_Final_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
+DLMO_H2_Final_above10 = DLMO_H2_Final_below10+0.1
+
+DLMO_H2_Final = np.interp(DLMO_threshold, [plasma_mel_concentrations[plasma_mel[-1]],plasma_mel_concentrations[plasma_mel[-1]+1]], [DLMO_H2_Final_below10, DLMO_H2_Final_above10])
+
+
+# Calculate Phase Shift 
+phase_shift_DLM = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
+
+
+# --------------------------------------------------------------------------
+# ------ Print all four phase shift predictions ------
+
+print([phase_shift_DLP, phase_shift_DLM,phase_shift_BLP,phase_shift_BLM])
 
 #--------- Plot Model Output -------------------
 
