@@ -40,16 +40,16 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.101)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.0725*60*60)#(0.101)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2566 # radians, I determined 
-        self.psi_off = 3.6128 # radians, I determined
+        self.psi_on = 1.6406095 #1.2566 # radians, I determined 
+        self.psi_off = 3.99680399 #3.6128 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
-        self.H_sat = 301 # Scaled for our peak concentration #861 # Breslow 2013
-        self.sigma_M = 17.5 # Scaled for our peak concentration #50 # Breslow 2013
+        self.H_sat = 215 #301 # Scaled for our peak concentration #861 # Breslow 2013
+        self.sigma_M = 12.49 #17.5 # Scaled for our peak concentration #50 # Breslow 2013
         self.m = 4.7887 # I determined by fitting to Zeitzer using differential evolution
         
         
@@ -89,10 +89,10 @@ class HannayBreslowModel(object):
         if schedule == 1: # standard 16:8 schedule 
             full_light = 1000
             dim_light = 300
-            wake_time = 10 #7
-            sleep_time = 2 #23
-            sun_up = 8
-            sun_down = 19
+            wake_time = 8 #7 
+            sleep_time = 24 #23
+            sun_up =  9 #8
+            sun_down = 21 #19
             
             is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
@@ -474,8 +474,8 @@ model_DLM.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, mel
 DLMO_threshold = 10
 
 # Baseline DLMO
-plasma_mel_concentrations = model_DLP.results[330:550,4]/4.3 # converting output to pg/mL
-times = model_DLP.ts[330:550] 
+plasma_mel_concentrations = model_DLP.results[330:500,4]/4.3 # converting output to pg/mL
+times = model_DLP.ts[330:500] 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
@@ -504,8 +504,8 @@ phase_shift_DLP = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
 DLMO_threshold = 10
 
 # Baseline DLMO
-plasma_mel_concentrations = model_BLP.results[330:550,4]/4.3 # converting output to pg/mL
-times = model_BLP.ts[330:550] 
+plasma_mel_concentrations = model_BLP.results[330:500,4]/4.3 # converting output to pg/mL
+times = model_BLP.ts[330:500] 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
@@ -534,8 +534,8 @@ phase_shift_BLP = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
 DLMO_threshold = 10
 
 # Baseline DLMO
-plasma_mel_concentrations = model_BLM.results[330:550,4]/4.3 # converting output to pg/mL
-times = model_BLM.ts[330:550] 
+plasma_mel_concentrations = model_BLM.results[330:500,4]/4.3 # converting output to pg/mL
+times = model_BLM.ts[330:500] 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
@@ -564,8 +564,8 @@ phase_shift_BLM = np.mod(DLMO_H2_Baseline,24) - np.mod(DLMO_H2_Final,24)
 DLMO_threshold = 10
 
 # Baseline DLMO
-plasma_mel_concentrations = model_DLM.results[330:550,4]/4.3 # converting output to pg/mL
-times = model_DLM.ts[330:550] 
+plasma_mel_concentrations = model_DLM.results[330:500,4]/4.3 # converting output to pg/mL
+times = model_DLM.ts[330:500] 
 plasma_mel, = np.where(plasma_mel_concentrations<=DLMO_threshold) # finding all the indices where concentration is below 10pg/mL
 DLMO_H2_Baseline_below10 = times[plasma_mel[-1]] # finding the time corresponding to the last index below threshold, DLMO
 DLMO_H2_Baseline_above10 = DLMO_H2_Baseline_below10+0.1
@@ -595,6 +595,8 @@ print([phase_shift_DLP, phase_shift_DLM,phase_shift_BLP,phase_shift_BLM])
 
 plt.rcParams.update({'font.size': 15})
 
+model = model_DLP
+
 '''
 # Plotting H1, H2, and H3 (melatonin concentrations, pmol/L)
 plt.plot(model.ts,model.results[:,3],lw=2)
@@ -611,7 +613,7 @@ plt.legend(["Pineal","Plasma", "Exogenous"])
 plt.show()
 '''
 
-'''
+
 # Plotting H1, H2, and H3 (melatonin concentrations, pg/mL)
 plt.plot(model.ts,model.results[:,3]/4.3,lw=3,color='mediumblue')
 plt.plot(model.ts,model.results[:,4]/4.3,lw=3,color='darkorchid')
@@ -635,7 +637,7 @@ plt.ylabel("Melatonin Concentration (pg/mL)")
 plt.legend(["Pineal","Plasma","Baseline DLMO","Final DLMO"],loc='upper left')
 plt.show()
 
-
+'''
 # Plotting R - DLP
 plt.plot(model_DLP.ts,model_DLP.results[:,0],lw=3,color='forestgreen',linestyle='dotted') #black
 plt.ylim([0.675,0.899])
