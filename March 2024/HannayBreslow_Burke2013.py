@@ -195,9 +195,9 @@ class HannayBreslowModel(object):
             
             elif 24*4 <= t <= 24*5: # Released from lab
                 t = np.mod(t,24)
-                if t < 2:
+                if t < 4:
                     lux = dim
-                elif 2 <= t < 10:
+                elif 4 <= t < 10:
                     lux = dark 
                 else: 
                     lux = wake
