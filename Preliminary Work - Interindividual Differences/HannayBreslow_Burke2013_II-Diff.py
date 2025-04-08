@@ -82,135 +82,129 @@ class HannayBreslowModel(object):
         self.theta_M2 = x[3]
         self.epsilon = x[4]
         
+        # Light schedule times & intensities
+        self.wake_time = 7
+        self.sleep_time = 23
+        self.wake = 1000 
+        self.dim = 2
+        self.dark = 0
+        self.bright = 3000
+        
         
 # Set the light schedule (timings and intensities)
     def light(self,t,schedule):
         
         if schedule == 1: # standard 16:8 schedule 
-            full_light = 1000
-            dim_light = 300
-            wake_time = 7 
-            sleep_time = 23
+            low_light = 300
             sun_up =  8
             sun_down = 19
             
-            is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
+            is_awake = np.mod(t - self.wake_time,24) <= np.mod(self.sleep_time - self.wake_time,24)
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
 
-            return is_awake*(full_light*sun_is_up + dim_light*(1 - sun_is_up))
+            return is_awake*(self.wake*sun_is_up + low_light*(1 - sun_is_up))
         
         elif schedule == 2: # Constant darkness 
             
             return 0
         
         elif schedule == 3: # Burke 2013 with light intervention 
-            wake = 1000
-            dim = 2
-            dark = 0
-            bright = 3000
-            wake_time = 7 
-            sleep_time = 23
             
             if 0 <= t < 24*1: # Enter the lab 4hrs before habitual sleep
-                if t < wake_time:
-                    lux = dark
-                elif wake_time <= t < sleep_time-4: 
-                    lux = wake
-                elif sleep_time-4 <= t < sleep_time:
-                    lux = dim
+                if t < self.wake_time:
+                    lux = self.dark
+                elif self.wake_time <= t < self.sleep_time-4: 
+                    lux = self.wake
+                elif self.sleep_time-4 <= t < self.sleep_time:
+                    lux = self.dim
                 else:
-                    lux = dark
+                    lux = self.dark
 
             elif 24*1 <= t < 24*2: # Start of CR1 (28 h)
                 t = np.mod(t,24)
-                if t < wake_time:
-                    lux = dark
+                if t < self.wake_time:
+                    lux = self.dark
                 else:
-                    lux = dim
+                    lux = self.dim
                 
             elif 24*2 <= t <  24*3: 
                 t = np.mod(t,24)
-                if t < wake_time+4: # Need 4hrs more of dim to complete the 28h CR
-                    lux = dim
-                elif wake_time+4 <= t < wake_time+9:
-                    lux = dark
-                elif wake_time+9 <= t < sleep_time:
-                    lux = dim
+                if t < self.wake_time+4: # Need 4hrs more of dim to complete the 28h CR
+                    lux = self.dim
+                elif self.wake_time+4 <= t < self.wake_time+9:
+                    lux = self.dark
+                elif self.wake_time+9 <= t < self.sleep_time:
+                    lux = self.dim
                 else:
-                    lux = dark
+                    lux = self.dark
                     
             elif 24*3 <= t <  24*4: # Light intervention and start of CR2 (19h)
                 t = np.mod(t,24)
-                if t < wake_time-1:
-                    lux = dark
-                elif wake_time-1 <= t < wake_time+2:
-                    lux = bright 
+                if t < self.wake_time-1:
+                    lux = self.dark
+                elif self.wake_time-1 <= t < self.wake_time+2:
+                    lux = self.bright 
                 else: 
-                    lux = dim
+                    lux = self.dim
             
-            elif 24*4 <= t <  24*5: # Day 2
+            elif 24*4 <= t <= 24*5: # Released from lab
                 t = np.mod(t,24)
-                if t < wake_time-3:
-                    lux = dim
-                elif wake_time-3 <= t < wake_time+3:
-                    lux = dark 
+                if t < self.wake_time-3:
+                    lux = self.dim
+                elif self.wake_time-3 <= t < self.wake_time+3:
+                    lux = self.dark 
                 else: 
-                    lux = wake
+                    lux = self.wake
             
             return lux
         
         elif schedule == 4: # Burke 2013 without light intervention 
-            wake = 1000
-            dim = 2
-            dark = 0
-            wake_time = 7 
-            sleep_time = 23
             
             if 0 <= t < 24*1: # Enter the lab 4hrs before habitual sleep
-                if t < wake_time:
-                    lux = dark
-                elif wake_time <= t < sleep_time-4: 
-                    lux = wake
-                elif sleep_time-4 <= t < sleep_time:
-                    lux = dim
+                if t < self.wake_time:
+                    lux = self.dark
+                elif self.wake_time <= t < self.sleep_time-4: 
+                    lux = self.wake
+                elif self.sleep_time-4 <= t < self.sleep_time:
+                    lux = self.dim
                 else:
-                    lux = dark
+                    lux = self.dark
 
             elif 24*1 <= t < 24*2: # Start of CR1 (28 h)
                 t = np.mod(t,24)
-                if t < wake_time:
-                    lux = dark
+                if t < self.wake_time:
+                    lux = self.dark
                 else:
-                    lux = dim
+                    lux = self.dim
                 
             elif 24*2 <= t <  24*3: 
                 t = np.mod(t,24)
-                if t < wake_time+4: # Need 4hrs more of dim to complete the 28h CR
-                    lux = dim
-                elif wake_time+4 <= t < wake_time+9:
-                    lux = dark
-                elif wake_time+9 <= t < sleep_time:
-                    lux = dim
+                if t < self.wake_time+4: # Need 4hrs more of dim to complete the 28h CR
+                    lux = self.dim
+                elif self.wake_time+4 <= t < self.wake_time+9:
+                    lux = self.dark
+                elif self.wake_time+9 <= t < self.sleep_time:
+                    lux = self.dim
                 else:
-                    lux = dark
+                    lux = self.dark
                     
             elif 24*3 <= t <  24*4: # Light intervention and start of CR2 (19h)
                 t = np.mod(t,24)
-                if t < wake_time-1:
-                    lux = dark
-                elif wake_time-1 <= t < wake_time+2:
-                    lux = dim 
+                if t < self.wake_time-1:
+                    lux = self.dark
+                elif self.wake_time-1 <= t < self.wake_time+2:
+                    lux = self.dim 
                 else: 
-                    lux = dim
+                    lux = self.dim
             
-            elif 24*4 <= t <  24*5: # Day 2
+            elif 24*4 <= t <= 24*5: # Released from lab
                 t = np.mod(t,24)
-                if t < wake_time-3:
-                    lux = dim
-                elif wake_time-3 <= t < wake_time+3:
-                    lux = dark 
+                if t < self.wake_time-3:
+                    lux = self.dim
+                elif self.wake_time-3 <= t < self.wake_time+3:
+                    lux = self.dark 
                 else: 
-                    lux = wake
+                    lux = self.wake
             
             return lux
         
