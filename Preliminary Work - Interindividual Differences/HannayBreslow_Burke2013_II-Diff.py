@@ -40,16 +40,16 @@ class HannayBreslowModel(object):
         self.beta_CP = (3.35e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
         self.beta_AP = (1.62e-4)*60*60 # converting 1/sec to 1/hr, Breslow 2013
 
-        self.a = (0.0725*60*60)#(0.101)*60*60 # pmol/L/sec converted to hours, I determined
+        self.a = (0.101)*60*60 # pmol/L/sec converted to hours, I determined
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.6406095 #1.2566 # radians, I determined 
-        self.psi_off = 3.99680399 #3.6128 # radians, I determined
+        self.psi_on = 1.2566 # radians, I determined 
+        self.psi_off = 3.6128 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
-        self.H_sat = 215 #301 # Scaled for our peak concentration #861 # Breslow 2013
-        self.sigma_M = 12.49 #17.5 # Scaled for our peak concentration #50 # Breslow 2013
+        self.H_sat = 301 # Scaled for our peak concentration #861 # Breslow 2013
+        self.sigma_M = 17.5 # Scaled for our peak concentration #50 # Breslow 2013
         self.m = 4.7887 # I determined by fitting to Zeitzer using differential evolution
         
         
@@ -89,10 +89,10 @@ class HannayBreslowModel(object):
         if schedule == 1: # standard 16:8 schedule 
             full_light = 1000
             dim_light = 300
-            wake_time = 8 #7 
-            sleep_time = 24 #23
-            sun_up =  9 #8
-            sun_down = 21 #19
+            wake_time = 7 
+            sleep_time = 23
+            sun_up =  8
+            sun_down = 19
             
             is_awake = np.mod(t - wake_time,24) <= np.mod(sleep_time - wake_time,24)
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
@@ -108,49 +108,51 @@ class HannayBreslowModel(object):
             dim = 2
             dark = 0
             bright = 3000
+            wake_time = 7 
+            sleep_time = 23
             
-            if 0 <= t < 24*1: # Enter the lab
-                if t < 7:
+            if 0 <= t < 24*1: # Enter the lab 4hrs before habitual sleep
+                if t < wake_time:
                     lux = dark
-                elif 7 <= t < 19: 
+                elif wake_time <= t < sleep_time-4: 
                     lux = wake
-                elif 19 <= t < 23:
+                elif sleep_time-4 <= t < sleep_time:
                     lux = dim
                 else:
                     lux = dark
 
             elif 24*1 <= t < 24*2: # Start of CR1 (28 h)
                 t = np.mod(t,24)
-                if t < 7:
+                if t < wake_time:
                     lux = dark
                 else:
                     lux = dim
                 
             elif 24*2 <= t <  24*3: 
                 t = np.mod(t,24)
-                if t < 11: 
+                if t < wake_time+4: # Need 4hrs more of dim to complete the 28h CR
                     lux = dim
-                elif 11 <= t < 16:
+                elif wake_time+4 <= t < wake_time+9:
                     lux = dark
-                elif 16 <= t < 23:
+                elif wake_time+9 <= t < sleep_time:
                     lux = dim
                 else:
                     lux = dark
                     
             elif 24*3 <= t <  24*4: # Light intervention and start of CR2 (19h)
                 t = np.mod(t,24)
-                if t < 6:
+                if t < wake_time-1:
                     lux = dark
-                elif 6 <= t < 9:
+                elif wake_time-1 <= t < wake_time+2:
                     lux = bright 
                 else: 
                     lux = dim
             
-            elif 24*4 <= t <= 24*5: # Released from lab
+            elif 24*4 <= t <  24*5: # Day 2
                 t = np.mod(t,24)
-                if t < 4:
+                if t < wake_time-3:
                     lux = dim
-                elif 4 <= t < 10:
+                elif wake_time-3 <= t < wake_time+3:
                     lux = dark 
                 else: 
                     lux = wake
@@ -161,49 +163,51 @@ class HannayBreslowModel(object):
             wake = 1000
             dim = 2
             dark = 0
+            wake_time = 7 
+            sleep_time = 23
             
-            if 0 <= t < 24*1: # Enter the lab
-                if t < 7:
+            if 0 <= t < 24*1: # Enter the lab 4hrs before habitual sleep
+                if t < wake_time:
                     lux = dark
-                elif 7 <= t < 19: 
+                elif wake_time <= t < sleep_time-4: 
                     lux = wake
-                elif 19 <= t < 23:
+                elif sleep_time-4 <= t < sleep_time:
                     lux = dim
                 else:
                     lux = dark
 
             elif 24*1 <= t < 24*2: # Start of CR1 (28 h)
                 t = np.mod(t,24)
-                if t < 7:
+                if t < wake_time:
                     lux = dark
                 else:
                     lux = dim
                 
             elif 24*2 <= t <  24*3: 
                 t = np.mod(t,24)
-                if t < 11: 
+                if t < wake_time+4: # Need 4hrs more of dim to complete the 28h CR
                     lux = dim
-                elif 11 <= t < 16:
+                elif wake_time+4 <= t < wake_time+9:
                     lux = dark
-                elif 16 <= t < 23: #16 <= t < 23:
+                elif wake_time+9 <= t < sleep_time:
                     lux = dim
                 else:
                     lux = dark
                     
-            elif 24*3 <= t <  24*4: # Start of CR2 (19h)
+            elif 24*3 <= t <  24*4: # Light intervention and start of CR2 (19h)
                 t = np.mod(t,24)
-                if t < 6:
+                if t < wake_time-1:
                     lux = dark
-                elif 6 <= t < 9:
+                elif wake_time-1 <= t < wake_time+2:
                     lux = dim 
                 else: 
                     lux = dim
             
-            elif 24*4 <= t <= 24*5: # Released from lab
+            elif 24*4 <= t <  24*5: # Day 2
                 t = np.mod(t,24)
-                if t < 2:
+                if t < wake_time-3:
                     lux = dim
-                elif 2 <= t < 10:
+                elif wake_time-3 <= t < wake_time+3:
                     lux = dark 
                 else: 
                     lux = wake
