@@ -44,8 +44,8 @@ class HannayBreslowModel(object):
         self.delta_M = 600 # sec, Breslow 2013
         self.r = 15.36 # sec, Breslow 2013
         
-        self.psi_on = 1.2566 # radians, I determined 
-        self.psi_off = 3.6128 # radians, I determined
+        self.psi_on = 1.6406095 #1.2566 # radians, I determined 
+        self.psi_off = 3.99680399 #3.6128 # radians, I determined
         
         self.M_max = 0.019513 # Breslow 2013
         self.H_sat = 301 # Scaled for our peak concentration #861 # Breslow 2013
@@ -83,8 +83,8 @@ class HannayBreslowModel(object):
         self.epsilon = x[4]
         
         # Light schedule times & intensities
-        self.wake_time = 7
-        self.sleep_time = 23
+        self.wake_time = 8
+        self.sleep_time = 24
         self.wake = 1000 
         self.dim = 2
         self.dark = 0
@@ -96,8 +96,8 @@ class HannayBreslowModel(object):
         
         if schedule == 1: # standard 16:8 schedule 
             low_light = 300
-            sun_up =  8
-            sun_down = 19
+            sun_up =  9 #8
+            sun_down = 20 #19
             
             is_awake = np.mod(t - self.wake_time,24) <= np.mod(self.sleep_time - self.wake_time,24)
             sun_is_up = np.mod(t - sun_up,24) <= np.mod(sun_down - sun_up,24)
@@ -458,10 +458,10 @@ model_BLP.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=None, mela
 # Set melatonin dosage to a mg amount
 
 model_BLM = HannayBreslowModel()
-model_BLM.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=3) 
+model_BLM.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=24-5.75, melatonin_dosage=5.0,schedule=3) 
 
 model_DLM = HannayBreslowModel()
-model_DLM.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=17.25, melatonin_dosage=5.0,schedule=4) 
+model_DLM.integrateModel(24*5,tstart=0.0,initial=IC, melatonin_timing=24-5.75, melatonin_dosage=5.0,schedule=4) 
 
 #------------------------------------------------------------------------------
 #--------- Find DLMO for DLP -----------

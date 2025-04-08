@@ -38,6 +38,8 @@ font = {'weight' : 'normal',
 plt.rc('font', **font)
    
 model = [-0.24, 0.16, 0.8, 1.23] 
+#[-0.23644603353316285, 0.16099583689388197, 0.8025134255383435, 1.2310223985522342]
+
 Burke2013 = [-0.43, 0.19, 0.27, 0.7] 
 
 # SD
@@ -70,13 +72,12 @@ plt.ylabel("Phase Shift (h)")
 # plt.grid(linestyle='--') 
 plt.xticks(r + width/2,['DLP','DLM','BLP','BLM']) 
 plt.axhline(0,linestyle='dashed',color='black')
-#plt.plot(r + width, [-0.2336755581568042, 0.23274257763995365, 0.6858073254417718, 1.188526950066418],'o',color = 'blue',label = 'Delayed Light History')
-#plt.plot(r + width, [-0.23716934215681107, 0.10075535361085741, 0.8948723974875961, 1.2614399567569663],'o',color = 'red',label = 'Advanced Light History')
-#plt.plot(r + width, [-0.23660555518726056, 0.18660832498951407, 0.7606946917866324, 1.2173625756642181],'o',color = 'purple',label = 'Sun Up =7, Sun down = 23')
+#plt.plot(r + width, [-0.21897837755552274, -0.21897837755552274, 0.7634377932709313, 0.7634377932709313],'o',color = 'blue',label = 'Delayed Light History')
+#plt.plot(r + width, [-0.23676848429042252, 0.17465555156651646, 0.7786504182689384, 1.2250925127694217],'o',color = 'red',label = 'Advanced Light History')
 #plt.plot(r + width, [-0.2294450911619066, 0.16380992318019594, 0.8090005638228916, 1.2395028425216879],'o',color = 'yellow',label = 'Low production')
 #plt.plot(r + width, [-0.18316323309520754, 0.1807228813350079, 0.8679435614973343, 1.2585500980756947],'o',color = 'black',label = 'High production')
-plt.plot(r + width, [-0.1709497169616938, 0.15551370937236442, 0.9327722241789687, 1.28894405393374],'o',color = 'orange',label = 'Early Chronotype')
-plt.plot(r + width, [-0.32191905787230723, 0.1403791183858658, 0.6575592545435711, 1.1548843790439776],'o',color = 'midnightblue',label = 'Late Chronotype')
+plt.plot(r + width, [-0.17115303825973882, -0.17115695697379607, 0.8756813789396247, 0.8765825262056737],'o',color = 'orange',label = 'Early Chronotype')
+plt.plot(r + width, [-0.3234762446624444, -0.3234762446624444, 0.7132851442735699, 0.7132851442735699],'o',color = 'midnightblue',label = 'Late Chronotype')
 #plt.plot(r + width, [-0.31877011448162307, 0.1395872067574544, 0.6628040486751416, 1.1566682699919824],'o',color = 'fuchsia',label = 'Late Chronotype + Low Production')
 plt.legend(loc ='center right', bbox_to_anchor=(1.7, 0.5)) 
 plt.show()
