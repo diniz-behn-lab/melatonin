@@ -621,7 +621,7 @@ plt.xscale('log')
 plt.title("Illuminance Response Curve")
 plt.xlabel("Illuminance (lux)")
 plt.ylabel("Melatonin Suppression (%)")
-#plt.legend(['Model',"Zeitzer 2000"],loc='upper left')
+plt.legend(['Model',"Zeitzer 2000"],loc='lower right')
 plt.show()
 
 
