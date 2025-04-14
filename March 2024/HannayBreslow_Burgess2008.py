@@ -904,6 +904,8 @@ Burgess_2008_PRC_times = [0,
                           23
                           ]
 '''
+   
+plt.rcParams.update({'font.size': 18})
     
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o',color='black')
 plt.xticks(np.arange(0, 26, 4))
@@ -1077,9 +1079,9 @@ plt.ylabel("Phase Shift (hours)")
 #plt.plot(ExMel_times,phase_shifts_corrected, lw=5,color='mediumturquoise')
 plt.plot(ExMel_times,phase_shifts_corrected, '-o',color='mediumturquoise')
 plt.axhline(y=0,color='black',linestyle='dashed',lw=3)
-plt.plot(ExMel_times,phase_shifts_corrected, '-o',color='mediumturquoise')
+#plt.plot(ExMel_times,phase_shifts_corrected, '-o',color='mediumturquoise')
 plt.plot(Burgess_2008_PRC_times, Burgess_2008_PRC, 'o',color='black')
-plt.legend(["Burgess 2008 Fitted Curve", "Burgess 2008 Data", "Model"])
+#plt.legend(["Burgess 2008 Fitted Curve", "Burgess 2008 Data", "Model"])
 plt.show()
 
 
