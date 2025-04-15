@@ -33,7 +33,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 
 font = {'weight' : 'normal',
-        'size'   : 12}
+        'size'   : 18}
 
 plt.rc('font', **font)
    
@@ -58,9 +58,9 @@ width = 0.25
 plt.bar(r, Burke2013, color = 'grey', 
         width = width, edgecolor = 'black', 
         label='Burke 2013 Data')   
-plt.errorbar(r, Burke2013, yerr=error_SD,color='black',fmt='none',capsize=6,lw=3)
-eb2 = plt.errorbar(r, Burke2013, yerr=[II_min, II_max],fmt='none',color='black',capsize=5)
-eb2[-1][0].set_linestyle('-.')
+#plt.errorbar(r, Burke2013, yerr=error_SD,color='black',fmt='none',capsize=6,lw=3)
+#eb2 = plt.errorbar(r, Burke2013, yerr=[II_min, II_max],fmt='none',color='black',capsize=5)
+#eb2[-1][0].set_linestyle('-.')
 plt.bar(r + width, model, color = 'royalblue', 
         width = width, edgecolor = 'black', 
         label='Model') 
@@ -79,8 +79,20 @@ plt.plot(r + width, [-0.17115303825973882, -0.17115695697379607, 0.8756813789396
 plt.plot(r + width, [-0.3234762446624444, -0.3234762446624444, 0.7132851442735699, 0.7132851442735699],'o',color = 'darkorange',label = 'Late Chronotype')
 plt.plot(r + width, [-0.23653804417646285, 0.18080009999820135, 0.7690794651279518, 1.221421273841564],'o',color = 'darkorange',label = 'Increased Light Intensity')
 plt.plot(r + width, [-0.2363937376018157, 0.08931684235497528, 0.9157121172801084, 1.2677500901559142],'o',color = 'darkorange',label = 'Decreased Light Intensity')
-#plt.plot(r + width, [-0.29966864361298207, -0.29966864361298207, 0.7390668527878788, 0.7390668527878788],'o',color = 'green',label = 'High Production + Late Chronotype')
+
+plt.plot(r, [-1.0762711864406778, -1.0084745762711864, -0.8305084745762707, -0.11016949152542344],'o',color = 'black')
+plt.plot(r, [-0.8898305084745757, -0.18644067796610164, -0.11016949152542344, 0.3728813559322035],'o',color = 'black')
+plt.plot(r, [-0.6779661016949152, -0.025423728813559254, -0.03389830508474567, 0.47457627118644097],'o',color = 'black')
+plt.plot(r, [-0.6355932203389831, 0.25423728813559343, 0.3728813559322035, 0.576271186440678],'o',color = 'black')
+plt.plot(r, [-0.36440677966101687, 0.322033898305085, 0.5677966101694916, 0.6525423728813562],'o',color = 'black')
+plt.plot(r, [-0.2627118644067794, 0.43220338983050866, 0.6440677966101698, 0.7542372881355932],'o',color = 'black')
+plt.plot(r, [-0.06779661016949134, 0.576271186440678, 0.7966101694915257, 0.8728813559322035],'o',color = 'black')
+plt.plot(r, [0, 0.728813559322034, 0.8728813559322035, 1.1101694915254239],'o',color = 'black')
+plt.plot(r, [0, 0.728813559322034, 0.8728813559322035, 1.5],'o',color = 'black')
+
 plt.axhline(0,linestyle='dashed',color='black')
 #plt.legend(["Model", "Data"], loc ='center right', bbox_to_anchor=(1.7, 0.5)) 
 plt.show()
+
+
 
